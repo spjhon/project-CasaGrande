@@ -1,0 +1,17 @@
+.container{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notFound {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 2rem;
+    color: #f8e8e8;
+  }
+
+.picture {
+ margin-top: 2rem;
+  border-radius: 30px;
+}
