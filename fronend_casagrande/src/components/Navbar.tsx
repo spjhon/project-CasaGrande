@@ -1,4 +1,3 @@
-"use client"
 
 //Importacion de link de next
 import Link from "next/link";
