@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function about() {
+export default function aboutPage() {
   return (
     <div className='text-center'>
         this is the about page

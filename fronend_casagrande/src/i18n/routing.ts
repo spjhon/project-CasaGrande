@@ -15,5 +15,9 @@ export const routing = defineRouting({
     '/about': {
       es: '/acercadenosotors'
     },
+
+    '/explore': {
+      es: '/explorar'
+    },
   }
 });

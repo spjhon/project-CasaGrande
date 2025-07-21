@@ -27,7 +27,7 @@ import { I18nToggle } from './i18nToggle';
 
 //Props para la barra de navegacion
 export interface RouteProps {
-  href: "/" | "/about" ;
+  href: "/" | "/about" | "/explore";
   label: string;
 }
 
@@ -45,6 +45,10 @@ export const Navbar = () => {
   {
     href: "/about",
     label: t('aboutLink'),
+  },
+  {
+    href: "/explore",
+    label: "Explore",
   },
   
   
