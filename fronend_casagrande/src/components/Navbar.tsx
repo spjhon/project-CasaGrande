@@ -21,11 +21,12 @@ import {Link} from '@/i18n/navigation';
 import { buttonVariants } from "./ui/button";
 import { /*Menu*/ CarFront } from "lucide-react";
 import { MobileMenu } from './MobileMenu';
+import { I18nToggle } from './i18nToggle';
 
 
 
 //Props para la barra de navegacion
-interface RouteProps {
+export interface RouteProps {
   href: "/" | "/about" ;
   label: string;
 }
@@ -97,10 +98,11 @@ export const Navbar = () => {
             </a>
 
             <ModeToggle />
+            <I18nToggle />
 
         </div>
 
-        <MobileMenu />
+        <MobileMenu routes = {routeList} />
 
       </div>
     </header>

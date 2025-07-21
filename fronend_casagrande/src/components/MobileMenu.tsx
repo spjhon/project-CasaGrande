@@ -1,10 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { Minus, Plus } from "lucide-react"
 
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Drawer,
   DrawerClose,
@@ -15,14 +14,20 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
+import { NavigationMenu, NavigationMenuList } from "./ui/navigation-menu"
+import { Link } from "@/i18n/navigation"
+import {RouteProps} from "./Navbar"
 
 
-export function MobileMenu() {
-  const [goal, setGoal] = React.useState(350)
+interface MobileMenuProps {
+  routes: RouteProps[];
+}
 
-  function onClick(adjustment: number) {
-    setGoal(Math.max(200, Math.min(400, goal + adjustment)))
-  }
+
+export function MobileMenu({routes}: MobileMenuProps) {
+ 
+
+  
 
   return (
     <Drawer>
@@ -36,45 +41,38 @@ export function MobileMenu() {
 
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
+
           <DrawerHeader>
-            <DrawerTitle>Move Goal</DrawerTitle>
-            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+            <DrawerTitle>Colombian Real State</DrawerTitle>
+            <DrawerDescription>Vende Tu casa con confianza</DrawerDescription>
           </DrawerHeader>
+
+          {/* mobile */}
           <div className="p-4 pb-0">
-            <div className="flex items-center justify-center space-x-2">
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 shrink-0 rounded-full"
-                onClick={() => onClick(-10)}
-                disabled={goal <= 200}
-              >
-                <Minus />
-                <span className="sr-only">Decrease</span>
-              </Button>
-              <div className="flex-1 text-center">
-                <div className="text-7xl font-bold tracking-tighter">
-                  {goal}
-                </div>
-                <div className="text-muted-foreground text-[0.70rem] uppercase">
-                  Calories/day
-                </div>
-              </div>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 shrink-0 rounded-full"
-                onClick={() => onClick(10)}
-                disabled={goal >= 400}
-              >
-                <Plus />
-                <span className="sr-only">Increase</span>
-              </Button>
-            </div>
-            <div className="mt-3 h-[120px]">
-              Aqui van los charts
-            </div>
+            <NavigationMenu className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+
+              <NavigationMenuList className="">
+                <nav className="flex gap-2">
+                  {routes.map((route, i) => (
+                    <DrawerClose asChild key={i}>
+                      <Link
+                        rel="noreferrer noopener"
+                        href={route.href}
+                        className={`text-[17px] ${buttonVariants({
+                          variant: "ghost",
+                        })}`}
+                        >
+                        {route.label}
+                      </Link>
+                    </DrawerClose>
+                  ))}
+                </nav>
+              </NavigationMenuList>
+              
+            </NavigationMenu>
           </div>
+
+
           <DrawerFooter>
             <Button>Submit</Button>
             <DrawerClose asChild>
