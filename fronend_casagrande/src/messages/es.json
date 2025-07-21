@@ -2,5 +2,9 @@
   "HomePage": {
     "title": "Hola Mundo!",
     "about": "Ve al acerca de"
+  },
+  "Navbar": {
+    "tittle": "Colombian Inmobiliaria",
+    "aboutLink": "Acerca de Nosotros"
   }
 }

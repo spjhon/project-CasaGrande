@@ -1,6 +1,4 @@
 
-//Importacion de link de next
-import Link from "next/link";
 
 //Importacion del dropdown para el cambio de tema
 import { ModeToggle } from "./mode-toggle";
@@ -12,41 +10,44 @@ import {
 } from "@/components/ui/navigation-menu";
 
 
+import {useTranslations} from 'next-intl';
+//Link especial para i18n
+import {Link} from '@/i18n/navigation';
+
+
 
 
 //Importacion de iconos de radix y lucide
 import { buttonVariants } from "./ui/button";
 import { /*Menu*/ CarFront } from "lucide-react";
-import { DrawerDemo } from './MenuDrawer';
+import { MobileMenu } from './MobileMenu';
 
 
 
 //Props para la barra de navegacion
 interface RouteProps {
-  href: string;
+  href: "/" | "/about" ;
   label: string;
 }
 
-const routeList: RouteProps[] = [
-  {
-    href: "#OurWork",
-    label: "Nuestro Trabajo",
-  },
-  {
-    href: "#pricing",
-    label: "Servicios y Precios",
-  },
-  {
-    href: "#faq",
-    label: "FAQ",
-  },
-  {
-    href: "#contact",
-    label: "Contacto",
-  },
-];
+
 
 export const Navbar = () => {
+
+  const t = useTranslations('Navbar');
+
+  const routeList: RouteProps[] = [
+    {
+    href: "/",
+    label: "Home",
+  },
+  {
+    href: "/about",
+    label: t('aboutLink'),
+  },
+  
+  
+];
   
   return (
     <header className="sticky border-b-[1px] top-0 z-40 bg-white dark:border-b-slate-700 dark:bg-background">
@@ -58,7 +59,7 @@ export const Navbar = () => {
           className="ml-2 font-bold text-xl"
         >
           <CarFront />
-          Inmobiliaria Casa Grande
+          {t('tittle')}
         </Link>
 
         <NavigationMenu className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -99,7 +100,7 @@ export const Navbar = () => {
 
         </div>
 
-        <DrawerDemo />
+        <MobileMenu />
 
       </div>
     </header>

@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/drawer"
 
 
-export function DrawerDemo() {
+export function MobileMenu() {
   const [goal, setGoal] = React.useState(350)
 
   function onClick(adjustment: number) {
@@ -26,9 +26,14 @@ export function DrawerDemo() {
 
   return (
     <Drawer>
+
+
+
       <DrawerTrigger asChild className="xl:hidden">
         <Button variant="outline" >Menu</Button>
       </DrawerTrigger>
+
+
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
@@ -78,6 +83,10 @@ export function DrawerDemo() {
           </DrawerFooter>
         </div>
       </DrawerContent>
+
+
+
+      
     </Drawer>
   )
 }
