@@ -52,7 +52,7 @@ export default async function LocaleLayout({children, params}
           >
           <NextIntlClientProvider>
             <Navbar />
-            <div className="container px-7 xl:px-20 m-auto ">
+            <div className="mx-auto container">
               {children} 
               <Footer></Footer> 
             </div>
