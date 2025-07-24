@@ -70,7 +70,7 @@ export const Navbar = () => {
         <NavigationMenu className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <NavigationMenuList className="">
             {/* desktop */}
-            <nav className="hidden xl:flex gap-2">
+            <nav className="hidden xl:flex gap-6">
               {routeList.map((route: RouteProps, i) => (
                 <Link
                   rel="noreferrer noopener"

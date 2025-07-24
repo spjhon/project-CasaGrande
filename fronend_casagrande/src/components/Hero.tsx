@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, CirclePlay } from "lucide-react";
+import Image from "next/image";
 
 const Hero = () => {
   return (
@@ -31,7 +32,19 @@ const Hero = () => {
             </Button>
           </div>
         </div>
-        <div className="w-full aspect-video lg:aspect-auto lg:w-[1000px] lg:h-screen bg-accent rounded-xl lg:rounded-none" />
+        
+        <div className="relative w-170 h-200" >
+
+          <Image
+          alt="alternative"
+          src={"https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+          
+          fill
+          //className="object-cover"
+          ></Image>
+
+
+        </div>
       </div>
     </div>
   );
