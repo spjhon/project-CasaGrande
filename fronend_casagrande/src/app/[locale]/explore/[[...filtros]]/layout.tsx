@@ -1,4 +1,4 @@
-import CitySearch from "@/components/CitySearch";
+import {CitySearch} from "@/components/CitySearch";
 import { BreadcrumbWithCustomSeparator } from "../../../../components/Breadcrumb";
 import { ComboboxDemo } from "@/components/Combobox";
 import { notFound } from "next/navigation";
