@@ -22,7 +22,7 @@ import {
   CommandList,
   CommandItem,
   CommandEmpty,
-  CommandSeparator,
+  //CommandSeparator,
   CommandGroup,
 } from "@/components/ui/command"
 import { Check, ChevronsUpDown } from "lucide-react"
@@ -64,7 +64,7 @@ export function CitySearch() {
 
   //Este filto lo que hace es guardar en selected todo el object cuyo key value es igual al value guardado en el state
   const selected: CiudadOption | undefined = ciudades.find((ciudades) => ciudades.value === value)
-  console.log(selected)
+ 
 
   //Esto devuelve una lista de resultados tipo:
   /*

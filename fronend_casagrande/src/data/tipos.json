@@ -1,0 +1,22 @@
+[
+    {
+        "id":0,
+        "tipo":"Habitacion Estudiantil"
+    },
+    {
+        "id":1,
+        "tipo":"Habitacion Profesional"
+    },
+    {
+        "id":2,
+        "tipo":"Apartaestudio"
+    },
+    {
+        "id":2,
+        "tipo":"Coliving"
+    },
+    {
+        "id":3,
+        "tipo":"Suits de Recuperacion"
+    }
+]
