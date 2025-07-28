@@ -1,6 +1,5 @@
 import {CitySearch} from "@/components/CitySearch";
 import { BreadcrumbWithCustomSeparator } from "../../../../components/Breadcrumb";
-import { ComboboxDemo } from "@/components/Combobox";
 import { notFound } from "next/navigation";
 
 interface RootLayoutProps {
@@ -10,10 +9,7 @@ interface RootLayoutProps {
   };
 }
 
-export default async function ExploreLayout({
-  children,
-  params,
-}: RootLayoutProps) {
+export default async function ExploreLayout({children, params}: RootLayoutProps) {
 
   const filtros = (await params.filtros) || [];
 
@@ -21,10 +17,6 @@ export default async function ExploreLayout({
   if (filtros.includes("cualquiera666")) {
   notFound();
 }
-
-
-
-
 
 
 
@@ -51,7 +43,7 @@ export default async function ExploreLayout({
         <div>
           Div de los botones de filtro y orden
           <CitySearch></CitySearch>
-          <ComboboxDemo></ComboboxDemo>
+          
         </div>
       </div>
 

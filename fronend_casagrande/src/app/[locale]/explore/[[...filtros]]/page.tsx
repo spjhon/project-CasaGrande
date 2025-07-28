@@ -12,8 +12,6 @@ export default async function Filtros({ params }: FilteredNewsParams) {
 
 const filtros = (await params.filtros) || [];
 
-console.log(filtros)
-
 
   return (
     <div className="h-100 border-2 border-amber-300">
