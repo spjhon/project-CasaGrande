@@ -8,26 +8,30 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import { Fragment } from "react";
 
-export function BreadcrumbWithCustomSeparator() {
+type BreadcrumbWithCustomSeparatorProps = {
+  items: string[];
+};
+
+export function BreadcrumbWithCustomSeparator({items}: BreadcrumbWithCustomSeparatorProps) {
+
+
   return (
     <Breadcrumb>
       <BreadcrumbList>
+      {items.map((item, index) => (
+        <Fragment key={index}>
+          <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href="/">Home</Link>
+            <Link href={`/${item}`}>{item}</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href="/components">Components</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
-        </BreadcrumbItem>
+        
+       </Fragment>
+      ) )}
+        
       </BreadcrumbList>
     </Breadcrumb>
   )

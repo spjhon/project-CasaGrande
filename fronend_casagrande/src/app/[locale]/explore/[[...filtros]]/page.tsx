@@ -1,16 +1,14 @@
 
-
 type FilteredNewsParams = {
-  params: {
-    filtros?: string[];
-  };
+  params: {filtros?: string[]}
 };
 
-export default async function Filtros({ params }: FilteredNewsParams) {
 
- 
+export default async function FiltrosPage({params}: FilteredNewsParams) {
 
-const filtros = (await params.filtros) || [];
+
+const filtros = (await params).filtros || [];
+
 
 
   return (

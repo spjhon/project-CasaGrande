@@ -1,22 +1,29 @@
 [
     {
-        "id":0,
-        "tipo":"Habitacion Estudiantil"
-    },
-    {
         "id":1,
-        "tipo":"Habitacion Profesional"
+        "tipo":"Habitacion Estudiantil Familiar",
+        "slug":"habitacion-estudiantil-familiar"
     },
     {
         "id":2,
-        "tipo":"Apartaestudio"
-    },
-    {
-        "id":2,
-        "tipo":"Coliving"
+        "tipo":"Habitacion Estudiantil Coliving",
+        "slug":"habitacion-estudiantil-coliving"
     },
     {
         "id":3,
-        "tipo":"Suits de Recuperacion"
+        "tipo":"Habitacion Profesional Coliving (No estudiantes)",
+        "slug":"habitacion-profesional-coliving"
+    },
+    {
+        "id":4,
+        "tipo":"Suits de recuperacion / Habitaciones Postambulatorios",
+        "slug":"habitaciones-portambulatorios"
+
+    },
+    {
+        "id":5,
+        "tipo":"Apartaestudio",
+        "slug":"apartaestudio"
+        
     }
 ]

@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/command"
 import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useRouter } from "@/i18n/navigation"
 
 //estraccion de los datos del json
 //Explicacion de este flatmap al final de este archivo
@@ -57,10 +58,16 @@ type CiudadOption = {
   departamento: string
 }
 
-export function CitySearch() {
+type CitySearchProps = {
+  value: string;
+  setValue: (value: string) => void;
+};
+
+export function CitySearch({ value, setValue }: CitySearchProps) {
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState("")
-  const [inputValue, setInputValue] = useState("")
+  
+  const [inputValue, setInputValue] = useState(value)
+  const router = useRouter();
 
   //Este filto lo que hace es guardar en selected todo el object cuyo key value es igual al value guardado en el state
   const selected: CiudadOption | undefined = ciudades.find((ciudades) => ciudades.value === value)
@@ -82,10 +89,11 @@ export function CitySearch() {
     const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen)
 
-    if (!isOpen && inputValue.trim() === "") {
+    if (inputValue.trim() === "" && !isOpen) {
       // Si se cierra sin escribir ni seleccionar, limpiamos todo
       setValue("")
-      setInputValue("")
+      // @ts-expect-error es necesario
+        router.push(`/explore/type/ciudades`)
     }
   }
 
@@ -129,7 +137,8 @@ export function CitySearch() {
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue)
                       setOpen(false)
-                      setInputValue("")
+                      // @ts-expect-error es necesario
+                      router.push(`/explore/type/${currentValue}`)
                     }}
                   >
                     {ciudad.label}, {ciudad.departamento}
