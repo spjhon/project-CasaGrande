@@ -36,9 +36,18 @@ import { useRouter } from "@/i18n/navigation"
 //Object { value: "puerto nariño", label: "Puerto Nariño", departamento: "Amazonas" }
 //como se puede observar el departamento esta repetido con el fin de tener un solo object por ciudad con su respectivo deptarta
 //1. Formateo de ciudades
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .normalize("NFD") // Descompone tildes
+    .replace(/[\u0300-\u036f]/g, "") // Remueve los acentos
+    .replace(/ñ/g, "n") // Reemplaza ñ
+    .replace(/[^a-z0-9]+/g, "-") // Reemplaza espacios y caracteres especiales por guiones
+    .replace(/^-+|-+$/g, ""); // Elimina guiones al inicio/final
+
 const ciudades = ciudadesColombia.flatMap((dep) =>
   dep.ciudades.map((ciudad) => ({
-    value: ciudad.toLowerCase(),
+    value: slugify(ciudad),
     label: ciudad,
     departamento: dep.departamento,
   }))
