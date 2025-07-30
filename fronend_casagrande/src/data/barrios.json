@@ -1,0 +1,72 @@
+[
+  {
+    "id": "1",
+    "nombre": "Palogrande",
+    "slug": "palogrande",
+    "ciudad": "Manizales",
+    "departamento": "Caldas"
+  },
+  {
+    "id": "2",
+    "nombre": "El Cable",
+    "slug": "el-cable",
+    "ciudad": "Manizales",
+    "departamento": "Caldas"
+  },
+  {
+    "id": "3",
+    "nombre": "Universidad",
+    "slug": "universidad",
+    "ciudad": "Manizales",
+    "departamento": "Caldas"
+  },
+  {
+    "id": "4",
+    "nombre": "La Estrella",
+    "slug": "la-estrella",
+    "ciudad": "Manizales",
+    "departamento": "Caldas"
+  },
+  {
+    "id": "5",
+    "nombre": "Los Rosales",
+    "slug": "los-rosales",
+    "ciudad": "Manizales",
+    "departamento": "Caldas"
+  },
+  {
+    "id": "6",
+    "nombre": "La Camelia",
+    "slug": "la-camelia",
+    "ciudad": "Manizales",
+    "departamento": "Caldas"
+  },
+  {
+    "id": "7",
+    "nombre": "Chipre",
+    "slug": "chipre",
+    "ciudad": "Manizales",
+    "departamento": "Caldas"
+  },
+  {
+    "id": "8",
+    "nombre": "Campohermoso",
+    "slug": "campohermoso",
+    "ciudad": "Manizales",
+    "departamento": "Caldas"
+  },
+  {
+    "id": "9",
+    "nombre": "San Rafael",
+    "slug": "san-rafael",
+    "ciudad": "Manizales",
+    "departamento": "Caldas"
+  },
+  {
+    "id": "10",
+    "nombre": "Milán",
+    "slug": "milan",
+    "ciudad": "Manizales",
+    "departamento": "Caldas"
+  }
+]
