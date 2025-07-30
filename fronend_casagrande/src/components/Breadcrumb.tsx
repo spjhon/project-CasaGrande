@@ -20,17 +20,37 @@ export function BreadcrumbWithCustomSeparator({items}: BreadcrumbWithCustomSepar
   return (
     <Breadcrumb>
       <BreadcrumbList>
-      {items.map((item, index) => (
-        <Fragment key={index}>
-          <BreadcrumbSeparator />
-        <BreadcrumbItem>
+      <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href={`/${item}`}>{item}</Link>
+            <Link href={`/`}>Inicio</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
-        
-       </Fragment>
-      ) )}
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <Link href={`/explore/`}>Explorar</Link>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+
+
+      {items.map((item, index) => {
+          const href = "/explore/" + items.slice(0, index + 1).join("/")
+
+          return (
+            <Fragment key={index}>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                {index === items.length - 1 ? (
+                  <BreadcrumbPage>{decodeURIComponent(item)}</BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink asChild>
+                    <Link href={href}>{decodeURIComponent(item)}</Link>
+                  </BreadcrumbLink>
+                )}
+              </BreadcrumbItem>
+            </Fragment>
+          );
+        })}
         
       </BreadcrumbList>
     </Breadcrumb>

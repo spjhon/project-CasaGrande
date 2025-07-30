@@ -32,8 +32,8 @@ import { useRouter } from "@/i18n/navigation"
 //estraccion de los datos del json
 //Explicacion de este flatmap al final de este archivo
 //La estructura final es algo asi por cada elemento del array final
-//Object { value: "leticia", label: "Leticia", departamento: "Amazonas" }
-//Object { value: "puerto nariño", label: "Puerto Nariño", departamento: "Amazonas" }
+//Object { city: "leticia", label: "Leticia", departamento: "Amazonas" }
+//Object { city: "puerto nariño", label: "Puerto Nariño", departamento: "Amazonas" }
 //como se puede observar el departamento esta repetido con el fin de tener un solo object por ciudad con su respectivo deptarta
 //1. Formateo de ciudades
 const slugify = (text: string) =>
@@ -47,7 +47,7 @@ const slugify = (text: string) =>
 
 const ciudades = ciudadesColombia.flatMap((dep) =>
   dep.ciudades.map((ciudad) => ({
-    value: slugify(ciudad),
+    city: slugify(ciudad),
     label: ciudad,
     departamento: dep.departamento,
   }))
@@ -62,31 +62,31 @@ const fuse = new Fuse(ciudades, {
 //Types
 
 type CiudadOption = {
-  value: string
+  city: string
   label: string
   departamento: string
 }
 
 type CitySearchProps = {
-  value: string;
-  setValue: (value: string) => void;
+  city: string;
+  setCity: (city: string) => void;
 };
 
-export function CitySearch({ value, setValue }: CitySearchProps) {
+export function CitySearch({ city, setCity }: CitySearchProps) {
   const [open, setOpen] = useState(false)
   
-  const [inputValue, setInputValue] = useState(value)
+  const [inputValue, setInputValue] = useState(city)
   const router = useRouter();
 
-  //Este filto lo que hace es guardar en selected todo el object cuyo key value es igual al value guardado en el state
-  const selected: CiudadOption | undefined = ciudades.find((ciudades) => ciudades.value === value)
+  //Este filto lo que hace es guardar en selected todo el object cuyo key city es igual al city guardado en el state
+  const selected: CiudadOption | undefined = ciudades.find((ciudades) => ciudades.city === city)
  
 
   //Esto devuelve una lista de resultados tipo:
   /*
   [
-    { item: { label: "Manizales", departamento: "Caldas", value: "manizales" }, ... },
-    { item: { label: "La Dorada", departamento: "Caldas", value: "la dorada" }, ... },
+    { item: { label: "Manizales", departamento: "Caldas", city: "manizales" }, ... },
+    { item: { label: "La Dorada", departamento: "Caldas", city: "la dorada" }, ... },
   ...]
   */
   const filtered: CiudadOption[] = inputValue.length >= 2 ? fuse.search(inputValue).map((res) => res.item) : []
@@ -100,7 +100,7 @@ export function CitySearch({ value, setValue }: CitySearchProps) {
 
     if (inputValue.trim() === "" && !isOpen) {
       // Si se cierra sin escribir ni seleccionar, limpiamos todo
-      setValue("")
+      setCity("")
       // @ts-expect-error es necesario
         router.push(`/explore/type/ciudades`)
     }
@@ -141,10 +141,10 @@ export function CitySearch({ value, setValue }: CitySearchProps) {
               <CommandGroup>
                 {filtered.map((ciudad) => (
                   <CommandItem
-                    key={`${ciudad.value}-${ciudad.departamento}`}
-                    value={ciudad.value}
+                    key={`${ciudad.city}-${ciudad.departamento}`}
+                    value={ciudad.city}
                     onSelect={(currentValue) => {
-                      setValue(currentValue === value ? "" : currentValue)
+                      setCity(currentValue === city ? "" : currentValue)
                       setOpen(false)
                       // @ts-expect-error es necesario
                       router.push(`/explore/type/${currentValue}`)
@@ -154,7 +154,7 @@ export function CitySearch({ value, setValue }: CitySearchProps) {
                     <Check
                       className={cn(
                         "ml-auto",
-                        value === ciudad.value ? "opacity-100" : "opacity-0"
+                        city === ciudad.city ? "opacity-100" : "opacity-0"
                       )}
                     />
                   </CommandItem>
@@ -208,7 +208,7 @@ Tú escribiste:
 ```ts
 ciudadesColombia.flatMap((dep) =>
   dep.ciudades.map((ciudad) => ({
-    value: ciudad.toLowerCase(),
+    city: ciudad.toLowerCase(),
     label: ciudad,
     departamento: dep.departamento,
   }))
@@ -223,8 +223,8 @@ Ese `.map(...)` **devuelve un array de objetos**, por ejemplo:
 
 ```ts
 [
-  { value: "manizales", label: "Manizales", departamento: "Caldas" },
-  { value: "chinchiná", label: "Chinchiná", departamento: "Caldas" }
+  { city: "manizales", label: "Manizales", departamento: "Caldas" },
+  { city: "chinchiná", label: "Chinchiná", departamento: "Caldas" }
 ]
 ```
 

@@ -16,7 +16,7 @@ export default function ExploreLayout({children}: RootLayoutProps) {
 
   const params = useParams() as { filtros?: string[] };
   const filtros = params.filtros || [];
-  const [value, setValue] = useState(filtros[1]?(filtros[1]==="ciudades"?"":filtros[1]):"")
+  const [city, setCity] = useState(filtros[1]?(filtros[1]==="ciudades"?"":filtros[1]):"")
 
  
 
@@ -44,7 +44,7 @@ export default function ExploreLayout({children}: RootLayoutProps) {
 
         <div>
           Div de los botones de filtro y orden
-          <CitySearch value={value} setValue={setValue}></CitySearch>
+          <CitySearch city={city} setCity={setCity}></CitySearch>
           
         </div>
       </div>
