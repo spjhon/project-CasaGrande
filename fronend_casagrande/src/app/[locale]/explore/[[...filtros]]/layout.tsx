@@ -10,8 +10,31 @@ import Fuse from "fuse.js"
 
 //Importaciones del json
 import ciudadesColombia from "@/data/ciudades.json"
+/**
+ * Tipos llegan con esta estructura
+ * {
+        "id":1,
+        "tipo":"Habitacion Estudiantil Familiar",
+        "slug":"arriendo-habitacion-estudiantil-familiar"
+    },
+ */
 import tipoOperacion from "@/data/tipos.json"
-
+//Los barrios llegan con esta estructura
+/*{"id": "1","nombre": "Palogrande","slug": "palogrande","ciudad": "Manizales","departamento": "Caldas"},*/
+import barrios from "@/data/barrios.json"
+/**
+ * Universidades llegan con esta estructura
+ * {
+    "id": "1",
+    "nombre": "Universidad de Caldas - Sede Central",
+    "slug": "universidad-de-caldas-sede-central",
+    "tipo": "Pública",
+    "ciudad": "Manizales",
+    "departamento": "Caldas",
+    "universidad": "Universidad de Caldas"
+  },
+ */
+import universidades from "@/data/universidades_manziales.json"
 
 /**
  * Este va a ser un componente que va a recopilar la url, la va a parsear y enviar los repectivos states a todos los hijos
@@ -60,18 +83,77 @@ const fuse = new Fuse(ciudades, {
 })
 
 
-const filtrado = function (/*filtros*/) {
+type GrupoNombre = "ciudad" | "barrio" | "universidad" | "tipo"
 
-
-
-return {
-  tipo: "",
-  ciudad: "",
-  universidad: "",
-  barrio: "esto es un barrio"
+type ResultadoFiltro = {
+  grupo: GrupoNombre;
+  slug: string;
+  label: string;
 }
 
-} 
+/**
+ * 
+ * @param filtros son los filtros que llegan de los params
+ * @returns Entonces Record sería un objeto que tiene exactamente 4 claves (ciudad, barrio, universidad, tipo) 
+ * y cada una debe tener un valor del tipo ResultadoFiltro. y Partial Convierte todas las propiedades de un tipo en opcionales.
+ */
+ function identificarFiltros(filtros: string[]): Partial<Record<GrupoNombre, ResultadoFiltro>> {
+  const resultado: Partial<Record<GrupoNombre, ResultadoFiltro>> = {}
+
+
+  /**
+   * Un Set es una colección de valores únicos. Es como un array, pero:
+    - No permite elementos duplicados.
+    - Tiene métodos como .add(), .has(), .delete().
+    - Su propósito es verificar presencia o ausencia rápida de valores.
+    Le estás diciendo a TypeScript que este Set solo va a contener valores de tipo string.
+(Ej: "manizales", "arriendo", "palogrande"... etc.
+   */
+  const usados = new Set<string>();
+
+  filtros.forEach((filtro) => {
+    if (usados.has(filtro)) return;
+
+    //Tu código sí tiene una prioridad implícita en el orden en que se buscan los matches:
+    /**
+     * Eso significa:
+    - Primero intenta match con tipo
+    - Luego con ciudad
+    - Luego con barrio
+    - Y por último con universidad
+     */
+    const matchTipo = tipoOperacion.find(t => t.slug === filtro);
+    if (matchTipo && !resultado.tipo) {
+      resultado.tipo = { grupo: "tipo", slug: matchTipo.slug, label: matchTipo.tipo };
+      usados.add(filtro);
+      return;
+    }
+
+    const matchCiudad = ciudades.find(c => c.city === filtro);
+    if (matchCiudad && !resultado.ciudad) {
+      resultado.ciudad = { grupo: "ciudad", slug: matchCiudad.city, label: matchCiudad.label };
+      usados.add(filtro);
+      return;
+    }
+
+    const matchBarrio = barrios.find(b => b.slug === filtro);
+    if (matchBarrio && !resultado.barrio) {
+      resultado.barrio = { grupo: "barrio", slug: matchBarrio.slug, label: matchBarrio.nombre };
+      usados.add(filtro);
+      return;
+    }
+
+    const matchUniversidad = universidades.find(u => u.slug === filtro);
+    if (matchUniversidad && !resultado.universidad) {
+      resultado.universidad = { grupo: "universidad", slug: matchUniversidad.slug, label: matchUniversidad.nombre };
+      usados.add(filtro);
+      return;
+    }
+  });
+
+  return resultado;
+}
+
 
 
 /**
@@ -83,24 +165,31 @@ return {
  */
 export default function ExploreLayout({children}: RootLayoutProps) {
 
- 
+
 
   const params = useParams() as { filtros?: string[] };
   const filtros = params.filtros || [];
-  const [city, setCity] = useState(filtros[1]?(filtros[1]==="ciudades"?"":filtros[1]):"")
+  const [city, setCity] = useState(filtros[1]?(filtros[1]==="ciudadesss"?"":filtros[1]):"")
 
- 
+  console.log(identificarFiltros(filtros))
 
-
-console.log(filtrado().barrio + " esto viene desde layout.tsx")
+/*
+OJO, EL PRIMER RENDER AL MONTAR EL COMPONENTE ES EN EL SERVIDOR, EL RESTO ES EN EL CLIENTE
+if (typeof window !== "undefined") {
+    console.log("Ciudad cambió en el CLIENTE:", city);
+  } else {
+    console.log("Ciudad cambió en el SERVIDOR:", city);
+  }*/
+//console.log(filtrado().barrio + " esto viene desde layout.tsx")
 
   return (
     <section>
       <div className="flex items-center justify-between border-2 border-amber-800 h-60">
         <div>
           <BreadcrumbWithCustomSeparator items={filtros} />
-
+          
           <div>
+            
             este es el div del mensaje de donde esta la busqueda actualmente
           </div>
 

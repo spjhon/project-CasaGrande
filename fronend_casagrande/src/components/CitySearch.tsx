@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/command"
 import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useRouter } from "@/i18n/navigation"
+import { redirect, useRouter } from "@/i18n/navigation"
 
 //estraccion de los datos del json
 //Explicacion de este flatmap al final de este archivo
