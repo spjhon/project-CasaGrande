@@ -67,10 +67,10 @@ type CitySearchProps = {
   filtros?: string[];
 };
 
-export function CitySearch({ filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */ }: CitySearchProps) {
-  
+export function SearchCity({ filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */ }: CitySearchProps) {
+  const newFiltros = [...filtros]; // este const para darle orden a la url con 4 parametros
   const [open, setOpen] = useState(false)
-  const [city, setCity] = useState(filtros[1]?(filtros[1]==="ciudadess"?"":filtros[1]):"")
+  const [city, setCity] = useState(filtros[0]?(filtros[0]==="todas-las-ciudades"?"":filtros[0]):"")
   const [inputValue, setInputValue] = useState(city)
 
   const router = useRouter();
@@ -98,8 +98,9 @@ export function CitySearch({ filtros = []/*Valor por defecto para un array vacio
     if (inputValue.trim() === "" && !isOpen) {
       // Si se cierra sin escribir ni seleccionar, limpiamos todo
       setCity("")
+      newFiltros[0] = "todas-las-ciudades"; // actualizas la ciudad
       // @ts-expect-error es necesario
-        router.push(`/explore/type/ciudades`)
+      router.push(`/explore/${newFiltros.join("/")}`);
     }
   }
 
@@ -143,8 +144,9 @@ export function CitySearch({ filtros = []/*Valor por defecto para un array vacio
                     onSelect={(currentValue) => {
                       setCity(currentValue === city ? "" : currentValue)
                       setOpen(false)
+                      newFiltros[0] = currentValue; // actualizas la ciudad
                       // @ts-expect-error es necesario
-                      router.push(`/explore/type/${currentValue}`)
+                      router.push(`/explore/${newFiltros.join("/")}`);
                     }}
                   >
                     {ciudad.label}, {ciudad.departamento}

@@ -1,7 +1,7 @@
 
 
 //Importacion de componentes
-import {CitySearch} from "@/components/CitySearch";
+import {SearchCity} from "@/components/SearchCity";
 import { BreadcrumbWithCustomSeparator } from "../../../../components/Breadcrumb";
 
 
@@ -240,7 +240,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
         <div>
           Div de los botones de filtro y orden
-          <CitySearch filtros={filtros}></CitySearch>
+          <SearchCity filtros={filtros}></SearchCity>
           
         </div>
       </div>
