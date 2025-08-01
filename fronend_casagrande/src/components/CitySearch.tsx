@@ -26,25 +26,21 @@ import {
   CommandGroup,
 } from "@/components/ui/command"
 import { Check, ChevronsUpDown } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { redirect, useRouter } from "@/i18n/navigation"
 
-//estraccion de los datos del json
-//Explicacion de este flatmap al final de este archivo
-//La estructura final es algo asi por cada elemento del array final
-//Object { city: "leticia", label: "Leticia", departamento: "Amazonas" }
-//Object { city: "puerto nariño", label: "Puerto Nariño", departamento: "Amazonas" }
-//como se puede observar el departamento esta repetido con el fin de tener un solo object por ciudad con su respectivo deptarta
-//1. Formateo de ciudades
-const slugify = (text: string) =>
-  text
-    .toLowerCase()
-    .normalize("NFD") // Descompone tildes
-    .replace(/[\u0300-\u036f]/g, "") // Remueve los acentos
-    .replace(/ñ/g, "n") // Reemplaza ñ
-    .replace(/[^a-z0-9]+/g, "-") // Reemplaza espacios y caracteres especiales por guiones
-    .replace(/^-+|-+$/g, ""); // Elimina guiones al inicio/final
+//Importacion de utilidades
+import { cn, slugify } from "@/lib/utils"
 
+//Importacion del router para la navegacion desde i18n
+import { useRouter } from "@/i18n/navigation"
+
+/*estraccion de los datos del json
+Explicacion de este flatmap al final de este archivo
+La estructura final es algo asi por cada elemento del array final
+Object { city: "leticia", label: "Leticia", departamento: "Amazonas" }
+Object { city: "puerto nariño", label: "Puerto Nariño", departamento: "Amazonas" }
+como se puede observar el departamento esta repetido con el fin de tener un solo object por ciudad con su respectivo deptarta
+Formateo de ciudades
+*/
 const ciudades = ciudadesColombia.flatMap((dep) =>
   dep.ciudades.map((ciudad) => ({
     city: slugify(ciudad),
@@ -53,7 +49,7 @@ const ciudades = ciudadesColombia.flatMap((dep) =>
   }))
 )
 
-// 2. Inicializamos Fuse
+// Inicializamos Fuse
 const fuse = new Fuse(ciudades, {
   keys: ["label", "departamento"],
   threshold: 0.3,
@@ -68,14 +64,15 @@ type CiudadOption = {
 }
 
 type CitySearchProps = {
-  city: string;
-  setCity: (city: string) => void;
+  filtros?: string[];
 };
 
-export function CitySearch({ city, setCity }: CitySearchProps) {
-  const [open, setOpen] = useState(false)
+export function CitySearch({ filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */ }: CitySearchProps) {
   
+  const [open, setOpen] = useState(false)
+  const [city, setCity] = useState(filtros[1]?(filtros[1]==="ciudadess"?"":filtros[1]):"")
   const [inputValue, setInputValue] = useState(city)
+
   const router = useRouter();
 
   //Este filto lo que hace es guardar en selected todo el object cuyo key city es igual al city guardado en el state

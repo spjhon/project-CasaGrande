@@ -1,31 +1,29 @@
-"use client"
 
+
+//Importacion de componentes
 import {CitySearch} from "@/components/CitySearch";
 import { BreadcrumbWithCustomSeparator } from "../../../../components/Breadcrumb";
-import { useParams } from "next/navigation";
-import { useState } from "react";
 
-//Importacion de fuse
-import Fuse from "fuse.js"
+
+//Importacion de utilidades de react
+
+
+/*Importacion de fuse
+import Fuse from "fuse.js"*/
+
+
 
 //Importaciones del json
 import ciudadesColombia from "@/data/ciudades.json"
-/**
- * Tipos llegan con esta estructura
- * {
-        "id":1,
-        "tipo":"Habitacion Estudiantil Familiar",
-        "slug":"arriendo-habitacion-estudiantil-familiar"
-    },
- */
+/** Tipos llegan con esta estructura
+ * {"id":1,"tipo":"Habitacion Estudiantil Familiar","slug":"arriendo-habitacion-estudiantil-familiar"},*/
 import tipoOperacion from "@/data/tipos.json"
 //Los barrios llegan con esta estructura
 /*{"id": "1","nombre": "Palogrande","slug": "palogrande","ciudad": "Manizales","departamento": "Caldas"},*/
 import barrios from "@/data/barrios.json"
 /**
  * Universidades llegan con esta estructura
- * {
-    "id": "1",
+ * {"id": "1",
     "nombre": "Universidad de Caldas - Sede Central",
     "slug": "universidad-de-caldas-sede-central",
     "tipo": "Pública",
@@ -36,30 +34,27 @@ import barrios from "@/data/barrios.json"
  */
 import universidades from "@/data/universidades_manziales.json"
 
+//Importacion de funciones utilitarias
+import { slugify } from "@/lib/utils";
+
 /**
  * Este va a ser un componente que va a recopilar la url, la va a parsear y enviar los repectivos states a todos los hijos
  * los 6 niveles de la url es:
  * explorer(habitaciones)/tipo/ciudad/universidad/barrio
  * y para las propiedades será explorer(habitaciones)/slug-de-la-habitacion/id
  * y para los user seria explorer(habitaciones)/guest/id
- */
+*/
 
-//estraccion de los datos del json
-//Explicacion de este flatmap al final de este archivo
-//La estructura final es algo asi por cada elemento del array final
-//Object { city: "leticia", label: "Leticia", departamento: "Amazonas" }
-//Object { city: "puerto nariño", label: "Puerto Nariño", departamento: "Amazonas" }
-//como se puede observar el departamento esta repetido con el fin de tener un solo object por ciudad con su respectivo deptarta
-//1. Formateo de ciudades
-const slugify = (text: string) =>
-  text
-    .toLowerCase()
-    .normalize("NFD") // Descompone tildes
-    .replace(/[\u0300-\u036f]/g, "") // Remueve los acentos
-    .replace(/ñ/g, "n") // Reemplaza ñ
-    .replace(/[^a-z0-9]+/g, "-") // Reemplaza espacios y caracteres especiales por guiones
-    .replace(/^-+|-+$/g, ""); // Elimina guiones al inicio/final
 
+
+
+/*estraccion de los datos del json
+Explicacion de este flatmap al final de este archivo
+La estructura final es algo asi por cada elemento del array final
+Object { city: "leticia", label: "Leticia", departamento: "Amazonas" }
+Object { city: "puerto nariño", label: "Puerto Nariño", departamento: "Amazonas" }
+como se puede observar el departamento esta repetido con el fin de tener un solo object por ciudad con su respectivo deptarta
+*/
 const ciudades = ciudadesColombia.flatMap((dep) =>
   dep.ciudades.map((ciudad) => ({
     city: slugify(ciudad),
@@ -69,36 +64,52 @@ const ciudades = ciudadesColombia.flatMap((dep) =>
 )
 
 
-interface RootLayoutProps {
-  children: React.ReactNode;
-  params: {
-    filtros?: string[];
-  };
-}
-
-// 2. Inicializamos Fuse
+/* Inicilizacino de fuse
 const fuse = new Fuse(ciudades, {
   keys: ["label", "departamento"],
   threshold: 0.3,
-})
+})*/
 
 
-type GrupoNombre = "ciudad" | "barrio" | "universidad" | "tipo"
+
+type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo"
 
 type ResultadoFiltro = {
-  grupo: GrupoNombre;
+  grupo: categoriasAbuscar;
   slug: string;
   label: string;
 }
 
-/**
+/** Este comentario se hizo con chatgpt y la idea es que se describa la mejor forma para crear estos comentarios
+ * Identifica y clasifica los filtros ingresados en la URL según su grupo correspondiente:
+ * tipo de operación, ciudad, barrio o universidad.
+ *
+ * El orden de prioridad para hacer match es:
+ * 1. Tipo de operación (venta, arriendo, etc.)
+ * 2. Ciudad
+ * 3. Barrio
+ * 4. Universidad
+ *
+ * Solo se permite un match por grupo. Si un filtro ya fue clasificado, se ignora en futuras iteraciones.
+ *
+ * @param filtros - Array de strings provenientes de los params de la URL, como ["manizales", "arriendo", "palogrande"].
+ * @returns Un objeto parcial que puede contener hasta 4 claves (tipo, ciudad, barrio, universidad),
+ * cada una con su valor correspondiente del tipo `ResultadoFiltro`.
+ *
+ * El tipo `Partial<Record<categoriasAbuscar, ResultadoFiltro>>` permite representar de forma segura
+ * un conjunto incompleto de resultados de filtros clasificados.
  * 
- * @param filtros son los filtros que llegan de los params
- * @returns Entonces Record sería un objeto que tiene exactamente 4 claves (ciudad, barrio, universidad, tipo) 
- * y cada una debe tener un valor del tipo ResultadoFiltro. y Partial Convierte todas las propiedades de un tipo en opcionales.
- */
- function identificarFiltros(filtros: string[]): Partial<Record<GrupoNombre, ResultadoFiltro>> {
-  const resultado: Partial<Record<GrupoNombre, ResultadoFiltro>> = {}
+ * @example
+ * identificarFiltros(["manizales", "arriendo", "palogrande"])
+ *  {
+ *    ciudad: { grupo: "ciudad", slug: "manizales", label: "Manizales" },
+ *    tipo: { grupo: "tipo", slug: "arriendo", label: "Arriendo" },
+ *    barrio: { grupo: "barrio", slug: "palogrande", label: "Palogrande" }
+ *  }
+ * 
+*/
+function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, ResultadoFiltro>> {
+  
 
 
   /**
@@ -107,21 +118,24 @@ type ResultadoFiltro = {
     - Tiene métodos como .add(), .has(), .delete().
     - Su propósito es verificar presencia o ausencia rápida de valores.
     Le estás diciendo a TypeScript que este Set solo va a contener valores de tipo string.
-(Ej: "manizales", "arriendo", "palogrande"... etc.
-   */
+  (Ej: "manizales", "arriendo", "palogrande"... etc.
+  */
   const usados = new Set<string>();
 
+  const resultado: Partial<Record<categoriasAbuscar, ResultadoFiltro>> = {}
+
   filtros.forEach((filtro) => {
+
     if (usados.has(filtro)) return;
 
     //Tu código sí tiene una prioridad implícita en el orden en que se buscan los matches:
     /**
-     * Eso significa:
+    * Eso significa:
     - Primero intenta match con tipo
     - Luego con ciudad
     - Luego con barrio
     - Y por último con universidad
-     */
+    */
     const matchTipo = tipoOperacion.find(t => t.slug === filtro);
     if (matchTipo && !resultado.tipo) {
       resultado.tipo = { grupo: "tipo", slug: matchTipo.slug, label: matchTipo.tipo };
@@ -155,38 +169,59 @@ type ResultadoFiltro = {
 }
 
 
+/**
+ * Extrae los labels (nombres legibles) de un objeto de filtros clasificados.
+ *
+ * @param clasificados - Objeto parcial que contiene los resultados del parsing de filtros,
+ * generado por la función `clasificarParams`.
+ * @returns Un array de strings con los labels de cada filtro clasificado.
+ *
+ * @example
+ * const clasificados = clasificarParams(["manizales", "arriendo", "palogrande"]);
+ * getLabelsFromFiltros(clasificados);
+ *  ["Manizales", "Arriendo", "Palogrande"]
+ */
+function getLabelsFromFiltros(paramsClasificados: Partial<Record<categoriasAbuscar, ResultadoFiltro>>): string[] {
+  return Object.values(paramsClasificados).map((f) => f.label);
+}
+
+
+
+
+
+
 
 /**
  * 
  * @param children
- * params
+ * 
  *
  * @returns el respectivo page con los hijos y sus respectivos states
- */
-export default function ExploreLayout({children}: RootLayoutProps) {
+*/
+export default async function ExploreLayout({children, params}:{params: Promise<{ filtros: string[] }>, children: React.ReactNode}) {
 
+  const filtros = (await params).filtros || [];
+ 
 
+  console.log(clasificarParams(filtros))
 
-  const params = useParams() as { filtros?: string[] };
-  const filtros = params.filtros || [];
-  const [city, setCity] = useState(filtros[1]?(filtros[1]==="ciudadesss"?"":filtros[1]):"")
+  const breadCrumbItems = getLabelsFromFiltros(clasificarParams(filtros))
 
-  console.log(identificarFiltros(filtros))
+  /*
+  OJO, EL PRIMER RENDER AL MONTAR EL COMPONENTE ES EN EL SERVIDOR, EL RESTO ES EN EL CLIENTE CUANDO SE USA "USE CLIENT"
+    if (typeof window !== "undefined") {
+      console.log("Ciudad cambió en el CLIENTE:", city);
+    } else {
+      console.log("Ciudad cambió en el SERVIDOR:", city);
+    }
+  */
 
-/*
-OJO, EL PRIMER RENDER AL MONTAR EL COMPONENTE ES EN EL SERVIDOR, EL RESTO ES EN EL CLIENTE
-if (typeof window !== "undefined") {
-    console.log("Ciudad cambió en el CLIENTE:", city);
-  } else {
-    console.log("Ciudad cambió en el SERVIDOR:", city);
-  }*/
-//console.log(filtrado().barrio + " esto viene desde layout.tsx")
 
   return (
     <section>
       <div className="flex items-center justify-between border-2 border-amber-800 h-60">
         <div>
-          <BreadcrumbWithCustomSeparator items={filtros} />
+          <BreadcrumbWithCustomSeparator items={breadCrumbItems} />
           
           <div>
             
@@ -205,7 +240,7 @@ if (typeof window !== "undefined") {
 
         <div>
           Div de los botones de filtro y orden
-          <CitySearch city={city} setCity={setCity}></CitySearch>
+          <CitySearch filtros={filtros}></CitySearch>
           
         </div>
       </div>
