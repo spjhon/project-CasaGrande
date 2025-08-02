@@ -79,7 +79,7 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
   /*Cada barrio a buscar viene asi:
   {"id": "9", "nombre": "San Rafael", "slug": "san-rafael", "ciudad": "Manizales", "departamento": "Caldas"}*/
   const selected: barriosdeColombia | undefined = barriosColombiaJson.find((barrioABuscar) => barrioABuscar.slug === neightbor)
-  console.log(selected + "desde SearchNeightbor")
+  
  const [inputValue, setInputValue] = useState(selected?.nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "") ?? "");
 
   //Esto devuelve una lista de resultados tipo:

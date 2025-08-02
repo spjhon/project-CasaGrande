@@ -90,7 +90,7 @@ export function SearchCity({
 
   //Este filto lo que hace es guardar en selected todo el object cuyo key city es igual al city guardado en el state
   const selected: CiudadOption | undefined = ciudades.find((ciudadesaBuscar) => ciudadesaBuscar.slug === city)
- console.log(selected + "desde SearchCity")
+
 const [inputValue, setInputValue] = useState(selected?.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") ?? "");
   //Esto devuelve una lista de resultados tipo:
   /*
