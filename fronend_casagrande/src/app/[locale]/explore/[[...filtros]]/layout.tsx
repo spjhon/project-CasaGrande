@@ -58,7 +58,7 @@ como se puede observar el departamento esta repetido con el fin de tener un solo
 */
 const ciudades = ciudadesColombia.flatMap((dep) =>
   dep.ciudades.map((ciudad) => ({
-    city: slugify(ciudad),
+    city: `${slugify(ciudad)}-${slugify(dep.departamento)}`,
     label: ciudad,
     departamento: dep.departamento,
   }))

@@ -4,7 +4,8 @@
 import { useState } from "react"
 
 //Importacion de fuse
-import Fuse from "fuse.js"
+//import Fuse from "fuse.js"
+import fuzzysort from 'fuzzysort'
 
 //Importaciones del json
 import barriosColombiaJson from "@/data/barrios.json"
@@ -36,11 +37,13 @@ import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...
 
 
 
-// Inicializamos Fuse
+/* Inicializamos Fuse
 const fuse = new Fuse(barriosColombiaJson, {
   keys: ["nombre"],
   threshold: 0.3,
-})
+})*/
+
+
 
 //Types
 
@@ -67,8 +70,8 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
 
 
   const [open, setOpen] = useState(false)
-  const [neightbor, setBarrio] = useState(Neightborslug === "todos-los-barrios" ? "" : Neightborslug ?? "");
-  const [inputValue, setInputValue] = useState(neightbor)
+  const [neightbor, setBarrio] = useState(Neightborslug ?? "");
+  
 
   const router = useRouter();
 
@@ -76,7 +79,8 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
   /*Cada barrio a buscar viene asi:
   {"id": "9", "nombre": "San Rafael", "slug": "san-rafael", "ciudad": "Manizales", "departamento": "Caldas"}*/
   const selected: barriosdeColombia | undefined = barriosColombiaJson.find((barrioABuscar) => barrioABuscar.slug === neightbor)
- 
+  console.log(selected + "desde SearchNeightbor")
+ const [inputValue, setInputValue] = useState(selected?.nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "") ?? "");
 
   //Esto devuelve una lista de resultados tipo:
   /*
@@ -88,7 +92,11 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
     "departamento": "Caldas"
   },
   */
-  const filtered: barriosdeColombia[] = inputValue.length >= 2 ? fuse.search(inputValue).map((res) => res.item) : []
+
+  const searchResults = inputValue.length >= 2
+  ? fuzzysort.go(inputValue, barriosColombiaJson, { key: "nombre", threshold: -10000 }) : []
+
+  const filtered: barriosdeColombia[] = searchResults.map(result => result.obj)
 
 
   //este handleOpenChange es una manipulacion al set que se pasa al pop over para que cuando se cierre y no se haya
@@ -100,9 +108,7 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
     if (inputValue.trim() === "" && !isOpen) {
       // Si se cierra sin escribir ni seleccionar, limpiamos todo
       setBarrio("")
-      newFiltros[1] = "todos-las-barrios"; // actualizas la ciudad
-      // @ts-expect-error es necesario
-      router.push(`/explore/${newFiltros.join("/")}`);
+      
     }
   }
 

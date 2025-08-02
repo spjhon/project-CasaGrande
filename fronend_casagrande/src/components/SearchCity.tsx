@@ -46,9 +46,10 @@ Formateo de ciudades
 */
 const ciudades = ciudadesColombia.flatMap((dep) =>
   dep.ciudades.map((ciudad) => ({
-    slug: slugify(ciudad),
+    slug: `${slugify(ciudad)}-${slugify(dep.departamento)}`,
     name: ciudad,
     departamento: dep.departamento,
+    
   }))
 )
 
@@ -80,17 +81,17 @@ export function SearchCity({
   
   
   const ciudadSlug = paramsClasificados?.ciudad?.slug;
-  const newFiltros = [...filtros]; // este const para darle orden a la url con 4 parametros
+  
   const [open, setOpen] = useState(false)
-  const [city, setCity] = useState(ciudadSlug === "todas-las-ciudades" ? "" : ciudadSlug ?? "");
-  const [inputValue, setInputValue] = useState(city)
+  const [city, setCity] = useState(ciudadSlug ?? "");
+  
 
   const router = useRouter();
 
   //Este filto lo que hace es guardar en selected todo el object cuyo key city es igual al city guardado en el state
-  const selected: CiudadOption | undefined = ciudades.find((ciudades) => ciudades.slug === city)
- 
-
+  const selected: CiudadOption | undefined = ciudades.find((ciudadesaBuscar) => ciudadesaBuscar.slug === city)
+ console.log(selected + "desde SearchCity")
+const [inputValue, setInputValue] = useState(selected?.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") ?? "");
   //Esto devuelve una lista de resultados tipo:
   /*
   [
@@ -110,9 +111,7 @@ export function SearchCity({
     if (inputValue.trim() === "" && !isOpen) {
       // Si se cierra sin escribir ni seleccionar, limpiamos todo
       setCity("")
-      newFiltros[0] = "todas-las-ciudades"; // actualizas la ciudad
-      // @ts-expect-error es necesario
-      router.push(`/explore/${newFiltros.join("/")}`);
+      
     }
   }
 
@@ -154,30 +153,31 @@ export function SearchCity({
                     key={`${ciudad.slug}-${ciudad.departamento}`}
                     value={ciudad.slug}
                     onSelect={(currentValue) => {
-  setCity(currentValue === city ? "" : currentValue);
+  const ciudadSlugActual = paramsClasificados?.ciudad?.slug;
+  const nuevaSeleccion = currentValue === ciudadSlugActual ? "" : currentValue;
+
+  setCity(nuevaSeleccion);
   setOpen(false);
 
-  const ciudadSlugActual = paramsClasificados?.ciudad?.slug;
-
-  // Copia del array original
   const newFiltros = [...(filtros || [])];
 
   if (ciudadSlugActual) {
-    const indexCiudad = newFiltros.findIndex(f => f === ciudadSlugActual);
-
-    if (indexCiudad !== -1) {
-      // Reemplazar el slug de ciudad
-      newFiltros[indexCiudad] = currentValue;
-    } else {
-      // Si no se encuentra, agregarlo al final
-      newFiltros.push(currentValue);
+    const index = newFiltros.indexOf(ciudadSlugActual);
+    if (index !== -1) {
+      if (nuevaSeleccion) {
+        // Si hay nueva selección, reemplazar
+        newFiltros[index] = nuevaSeleccion;
+      } else {
+        // Si se deseleccionó (nuevaSeleccion es ""), eliminar
+        newFiltros.splice(index, 1);
+      }
     }
   } else {
-    // No había ciudad antes → agregarla
-    newFiltros.push(currentValue);
+    if (nuevaSeleccion) {
+      newFiltros.push(nuevaSeleccion);
+    }
   }
 
-  // Navegar con los nuevos filtros
   // @ts-expect-error es necesario
   router.push(`/explore/${newFiltros.join("/")}`);
 }}
