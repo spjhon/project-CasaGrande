@@ -36,6 +36,7 @@ import universidades from "@/data/universidades_manziales.json"
 
 //Importacion de funciones utilitarias
 import { slugify } from "@/lib/utils";
+import { SearchNeightbor } from "@/components/SearchNeightbor";
 
 /**
  * Este va a ser un componente que va a recopilar la url, la va a parsear y enviar los repectivos states a todos los hijos
@@ -72,9 +73,9 @@ const fuse = new Fuse(ciudades, {
 
 
 
-type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo"
+export type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo"
 
-type ResultadoFiltro = {
+export type ResultadoFiltro = {
   grupo: categoriasAbuscar;
   slug: string;
   label: string;
@@ -203,9 +204,9 @@ export default async function ExploreLayout({children, params}:{params: Promise<
   const filtros = (await params).filtros || [];
  
 
-  console.log(clasificarParams(filtros))
+  const paramsClasificados = (clasificarParams(filtros))
 
-  const breadCrumbItems = getLabelsFromFiltros(clasificarParams(filtros))
+  const breadCrumbItems = getLabelsFromFiltros(paramsClasificados)
 
   /*
   OJO, EL PRIMER RENDER AL MONTAR EL COMPONENTE ES EN EL SERVIDOR, EL RESTO ES EN EL CLIENTE CUANDO SE USA "USE CLIENT"
@@ -240,7 +241,8 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
         <div>
           Div de los botones de filtro y orden
-          <SearchCity filtros={filtros}></SearchCity>
+          <SearchCity filtros={filtros} paramsClasificados = {paramsClasificados}></SearchCity>
+          <SearchNeightbor filtros={filtros} paramsClasificados = {paramsClasificados}></SearchNeightbor>
           
         </div>
       </div>

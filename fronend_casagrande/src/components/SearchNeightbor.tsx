@@ -32,6 +32,7 @@ import { cn } from "@/lib/utils"
 
 //Importacion del router para la navegacion desde i18n
 import { useRouter } from "@/i18n/navigation"
+import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 
 
@@ -54,28 +55,38 @@ type barriosdeColombia = {
 
 type NeightborSearchProps = {
   filtros?: string[];
+  paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
 };
 
-export function SearchCity({ filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */ }: NeightborSearchProps) {
+export function SearchNeightbor({ filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */,
+  paramsClasificados
+ }: NeightborSearchProps) {
+
+  const Neightborslug = paramsClasificados?.barrio?.slug;
   const newFiltros = [...filtros]; // este const para darle orden a la url con 4 parametros
+
+
   const [open, setOpen] = useState(false)
-  const [barrio, setBarrio] = useState(filtros[1]?(filtros[1]==="todos-los-barrios"?"":filtros[1]):"")
-  const [inputValue, setInputValue] = useState(barrio)
+  const [neightbor, setBarrio] = useState(Neightborslug === "todos-los-barrios" ? "" : Neightborslug ?? "");
+  const [inputValue, setInputValue] = useState(neightbor)
 
   const router = useRouter();
 
   //Este filto lo que hace es guardar en selected todo el object cuyo key city es igual al city guardado en el state
   /*Cada barrio a buscar viene asi:
   {"id": "9", "nombre": "San Rafael", "slug": "san-rafael", "ciudad": "Manizales", "departamento": "Caldas"}*/
-  const selected: barriosdeColombia | undefined = barriosColombiaJson.find((barrioABuscar) => barrioABuscar.nombre === barrio)
+  const selected: barriosdeColombia | undefined = barriosColombiaJson.find((barrioABuscar) => barrioABuscar.slug === neightbor)
  
 
   //Esto devuelve una lista de resultados tipo:
   /*
-  [
-    { item: { label: "Manizales", departamento: "Caldas", city: "manizales" }, ... },
-    { item: { label: "La Dorada", departamento: "Caldas", city: "la dorada" }, ... },
-  ...]
+  {
+    "id": "1",
+    "nombre": "Palogrande",
+    "slug": "palogrande",
+    "ciudad": "Manizales",
+    "departamento": "Caldas"
+  },
   */
   const filtered: barriosdeColombia[] = inputValue.length >= 2 ? fuse.search(inputValue).map((res) => res.item) : []
 
@@ -89,7 +100,7 @@ export function SearchCity({ filtros = []/*Valor por defecto para un array vacio
     if (inputValue.trim() === "" && !isOpen) {
       // Si se cierra sin escribir ni seleccionar, limpiamos todo
       setBarrio("")
-      newFiltros[1] = "todas-las-barrios"; // actualizas la ciudad
+      newFiltros[1] = "todos-las-barrios"; // actualizas la ciudad
       // @ts-expect-error es necesario
       router.push(`/explore/${newFiltros.join("/")}`);
     }
@@ -105,7 +116,7 @@ export function SearchCity({ filtros = []/*Valor por defecto para un array vacio
           aria-expanded={open}
           className="w-[250px] justify-between"
           >
-            {selected ? `${selected.barrio}, ${selected.ciudad}` : "Selecciona una ciudad..."}
+            {selected ? `${selected.nombre}, ${selected.ciudad}` : "Selecciona un barrio..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -113,7 +124,7 @@ export function SearchCity({ filtros = []/*Valor por defecto para un array vacio
       <PopoverContent className="w-[250px] p-0">
         <Command>
           <CommandInput
-            placeholder="Buscar ciudad..."
+            placeholder="Buscar barrio..."
             value={inputValue}
             onValueChange={setInputValue}
             className="h-9"
@@ -126,25 +137,44 @@ export function SearchCity({ filtros = []/*Valor por defecto para un array vacio
               </div>
             
             ) : filtered.length === 0 ? (
-              <CommandEmpty>No se encontraron ciudades.</CommandEmpty>) : (
+              <CommandEmpty>No se encontraron barrios.</CommandEmpty>) : (
               <CommandGroup>
                 {filtered.map((barrio) => (
                   <CommandItem
-                    key={`${barrio.barrio}-${barrio.ciudad}`}
-                    value={barrio.barrio}
+                    key={`${barrio.slug}-${barrio.ciudad}`}
+                    value={barrio.slug}
                     onSelect={(currentValue) => {
-                      setBarrio(currentValue === barrio ? "" : currentValue)
-                      setOpen(false)
-                      newFiltros[1] = currentValue; // actualizas la ciudad
-                      // @ts-expect-error es necesario
-                      router.push(`/explore/${newFiltros.join("/")}`);
-                    }}
+  const selectedBarrioSlug = paramsClasificados?.barrio?.slug;
+  const nuevaSeleccion = currentValue === selectedBarrioSlug ? "" : currentValue;
+
+  setBarrio(nuevaSeleccion);
+  setOpen(false);
+
+  // Clonar el array original
+  const updatedFiltros = [...newFiltros];
+
+  if (selectedBarrioSlug) {
+    // Si ya había un barrio, reemplazarlo en su posición
+    const index = updatedFiltros.indexOf(selectedBarrioSlug);
+    if (index !== -1) {
+      updatedFiltros[index] = nuevaSeleccion;
+    }
+  } else {
+    // Si no había barrio, agregarlo al final (solo si no está vacío)
+    if (nuevaSeleccion) {
+      updatedFiltros.push(nuevaSeleccion);
+    }
+  }
+
+  // @ts-expect-error es necesario
+  router.push(`/explore/${updatedFiltros.join("/")}`);
+}}
                   >
-                    {barrio.barrio}, {barrio.ciudad}
+                    {barrio.nombre}, {barrio.ciudad}
                     <Check
                       className={cn(
                         "ml-auto",
-                        barrio === barrio.barrio ? "opacity-100" : "opacity-0"
+                        neightbor === barrio.slug ? "opacity-100" : "opacity-0"
                       )}
                     />
                   </CommandItem>

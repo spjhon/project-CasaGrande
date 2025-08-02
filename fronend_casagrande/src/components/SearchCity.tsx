@@ -33,6 +33,9 @@ import { cn, slugify } from "@/lib/utils"
 //Importacion del router para la navegacion desde i18n
 import { useRouter } from "@/i18n/navigation"
 
+//Importacion de los types desde el layout donde esta la funcion
+import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout"
+
 /*estraccion de los datos del json
 Explicacion de este flatmap al final de este archivo
 La estructura final es algo asi por cada elemento del array final
@@ -43,40 +46,49 @@ Formateo de ciudades
 */
 const ciudades = ciudadesColombia.flatMap((dep) =>
   dep.ciudades.map((ciudad) => ({
-    city: slugify(ciudad),
-    label: ciudad,
+    slug: slugify(ciudad),
+    name: ciudad,
     departamento: dep.departamento,
   }))
 )
 
 // Inicializamos Fuse
 const fuse = new Fuse(ciudades, {
-  keys: ["label", "departamento"],
+  keys: ["name", "departamento"],
   threshold: 0.3,
 })
 
 //Types
 
 type CiudadOption = {
-  city: string
-  label: string
+  slug: string
+  name: string
   departamento: string
 }
 
 type CitySearchProps = {
   filtros?: string[];
+  paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
 };
 
-export function SearchCity({ filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */ }: CitySearchProps) {
+
+export function SearchCity({ 
+  filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */,
+  paramsClasificados
+}: CitySearchProps) {
+  
+  
+  
+  const ciudadSlug = paramsClasificados?.ciudad?.slug;
   const newFiltros = [...filtros]; // este const para darle orden a la url con 4 parametros
   const [open, setOpen] = useState(false)
-  const [city, setCity] = useState(filtros[0]?(filtros[0]==="todas-las-ciudades"?"":filtros[0]):"")
+  const [city, setCity] = useState(ciudadSlug === "todas-las-ciudades" ? "" : ciudadSlug ?? "");
   const [inputValue, setInputValue] = useState(city)
 
   const router = useRouter();
 
   //Este filto lo que hace es guardar en selected todo el object cuyo key city es igual al city guardado en el state
-  const selected: CiudadOption | undefined = ciudades.find((ciudades) => ciudades.city === city)
+  const selected: CiudadOption | undefined = ciudades.find((ciudades) => ciudades.slug === city)
  
 
   //Esto devuelve una lista de resultados tipo:
@@ -114,7 +126,7 @@ export function SearchCity({ filtros = []/*Valor por defecto para un array vacio
           aria-expanded={open}
           className="w-[250px] justify-between"
           >
-            {selected ? `${selected.label}, ${selected.departamento}` : "Selecciona una ciudad..."}
+            {selected ? `${selected.name}, ${selected.departamento}` : "Selecciona una ciudad..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -139,21 +151,42 @@ export function SearchCity({ filtros = []/*Valor por defecto para un array vacio
               <CommandGroup>
                 {filtered.map((ciudad) => (
                   <CommandItem
-                    key={`${ciudad.city}-${ciudad.departamento}`}
-                    value={ciudad.city}
+                    key={`${ciudad.slug}-${ciudad.departamento}`}
+                    value={ciudad.slug}
                     onSelect={(currentValue) => {
-                      setCity(currentValue === city ? "" : currentValue)
-                      setOpen(false)
-                      newFiltros[0] = currentValue; // actualizas la ciudad
-                      // @ts-expect-error es necesario
-                      router.push(`/explore/${newFiltros.join("/")}`);
-                    }}
+  setCity(currentValue === city ? "" : currentValue);
+  setOpen(false);
+
+  const ciudadSlugActual = paramsClasificados?.ciudad?.slug;
+
+  // Copia del array original
+  const newFiltros = [...(filtros || [])];
+
+  if (ciudadSlugActual) {
+    const indexCiudad = newFiltros.findIndex(f => f === ciudadSlugActual);
+
+    if (indexCiudad !== -1) {
+      // Reemplazar el slug de ciudad
+      newFiltros[indexCiudad] = currentValue;
+    } else {
+      // Si no se encuentra, agregarlo al final
+      newFiltros.push(currentValue);
+    }
+  } else {
+    // No había ciudad antes → agregarla
+    newFiltros.push(currentValue);
+  }
+
+  // Navegar con los nuevos filtros
+  // @ts-expect-error es necesario
+  router.push(`/explore/${newFiltros.join("/")}`);
+}}
                   >
-                    {ciudad.label}, {ciudad.departamento}
+                    {ciudad.name}, {ciudad.departamento}
                     <Check
                       className={cn(
                         "ml-auto",
-                        city === ciudad.city ? "opacity-100" : "opacity-0"
+                        city === ciudad.slug ? "opacity-100" : "opacity-0"
                       )}
                     />
                   </CommandItem>
