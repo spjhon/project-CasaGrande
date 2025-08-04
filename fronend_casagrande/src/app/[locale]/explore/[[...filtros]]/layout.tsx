@@ -1,36 +1,30 @@
 
-
 //Importacion de componentes
 import {SearchCity} from "@/components/SearchCity";
 import { BreadcrumbWithCustomSeparator } from "../../../../components/Breadcrumb";
 
 
-//Importacion de utilidades de react
-
-
-/*Importacion de fuse
-import Fuse from "fuse.js"*/
-
-
-
 //Importaciones del json
+/**
+ * Lista de ciudades de Colombia con su departamento.
+ * { id: string, departamento: string, ciudades: string[] }
+ */
 import ciudadesColombia from "@/data/ciudades.json"
-/** Tipos llegan con esta estructura
- * {"id":1,"tipo":"Habitacion Estudiantil Familiar","slug":"arriendo-habitacion-estudiantil-familiar"},*/
+
+/** Tipos de operacion que el cliente busca como Habitacion Estudiantil Familiar
+ * {"id": string,"tipo": string,"slug":"string"},
+ */
 import tipoOperacion from "@/data/tipos.json"
-//Los barrios llegan con esta estructura
-/*{"id": "1","nombre": "Palogrande","slug": "palogrande","ciudad": "Manizales","departamento": "Caldas"},*/
+
+/**
+ * Los barrios llegan con esta estructura
+ *{"id": string,"nombre": string,"slug": string,"ciudad": string,"departamento": string}
+ */
 import barrios from "@/data/barrios.json"
+
 /**
  * Universidades llegan con esta estructura
- * {"id": "1",
-    "nombre": "Universidad de Caldas - Sede Central",
-    "slug": "universidad-de-caldas-sede-central",
-    "tipo": "Pública",
-    "ciudad": "Manizales",
-    "departamento": "Caldas",
-    "universidad": "Universidad de Caldas"
-  },
+ * {"id": string, "nombre": string, "slug": string, "tipo": string, "ciudad": string, "departamento": string, "universidad": string}
  */
 import universidades from "@/data/universidades_manziales.json"
 
@@ -58,28 +52,12 @@ como se puede observar el departamento esta repetido con el fin de tener un solo
 */
 const ciudades = ciudadesColombia.flatMap((dep) =>
   dep.ciudades.map((ciudad) => ({
-    city: `${slugify(ciudad)}-${slugify(dep.departamento)}`,
+    slug: `${slugify(ciudad)}-${slugify(dep.departamento)}`,
     label: ciudad,
     departamento: dep.departamento,
   }))
 )
 
-
-/* Inicilizacino de fuse
-const fuse = new Fuse(ciudades, {
-  keys: ["label", "departamento"],
-  threshold: 0.3,
-})*/
-
-
-
-export type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo"
-
-export type ResultadoFiltro = {
-  grupo: categoriasAbuscar;
-  slug: string;
-  label: string;
-}
 
 /** Este comentario se hizo con chatgpt y la idea es que se describa la mejor forma para crear estos comentarios
  * Identifica y clasifica los filtros ingresados en la URL según su grupo correspondiente:
@@ -100,6 +78,21 @@ export type ResultadoFiltro = {
  * El tipo `Partial<Record<categoriasAbuscar, ResultadoFiltro>>` permite representar de forma segura
  * un conjunto incompleto de resultados de filtros clasificados.
  * 
+ * Record quiere decir: Es una utilidad de TypeScript que crea un objeto cuyas claves son del 
+ * tipo Clave y cuyos valores son del tipo Valor.
+ * 
+ * Ejemplo básico:
+ *
+ * type Rol = "admin" | "editor" | "viewer";
+ *
+ * const permisos: Record<Rol, boolean> = {
+ * admin: true,
+ * editor: true,
+ * viewer: false,
+ *};
+ *
+ * → Aquí, TypeScript exige que existan todas las claves "admin", "editor", y "viewer" con valores boolean.
+ * 
  * @example
  * identificarFiltros(["manizales", "arriendo", "palogrande"])
  *  {
@@ -109,6 +102,13 @@ export type ResultadoFiltro = {
  *  }
  * 
 */
+export type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo"
+
+export type ResultadoFiltro = {
+  grupo: categoriasAbuscar;
+  slug: string;
+  label: string;
+}
 function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, ResultadoFiltro>> {
   
 
@@ -137,16 +137,18 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
     - Luego con barrio
     - Y por último con universidad
     */
-    const matchTipo = tipoOperacion.find(t => t.slug === filtro);
+    const matchTipo = tipoOperacion.find(t => t.slug === filtro); //Al menos con esto el slug tiene que ser totalmente exacto
+    //Lo que dice este if es que si existe un matchTipo y el resultado.tipo esta vacio (osea no existe) entonces se hace la escritura
     if (matchTipo && !resultado.tipo) {
       resultado.tipo = { grupo: "tipo", slug: matchTipo.slug, label: matchTipo.tipo };
+      //La finalidad de este set llamado usados es que si el filtro ya se proceso entonces se descarta en la proxima iteracion del forEach
       usados.add(filtro);
       return;
     }
 
-    const matchCiudad = ciudades.find(c => c.city === filtro);
+    const matchCiudad = ciudades.find(c => c.slug === filtro);
     if (matchCiudad && !resultado.ciudad) {
-      resultado.ciudad = { grupo: "ciudad", slug: matchCiudad.city, label: matchCiudad.label };
+      resultado.ciudad = { grupo: "ciudad", slug: matchCiudad.slug, label: matchCiudad.label };
       usados.add(filtro);
       return;
     }
@@ -171,9 +173,9 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
 
 
 /**
- * Extrae los labels (nombres legibles) de un objeto de filtros clasificados.
+ * Extrae los labels (nombres legibles) de un objeto de filtros clasificados, se utiliza para enviar labels al breadcrumb
  *
- * @param clasificados - Objeto parcial que contiene los resultados del parsing de filtros,
+ * @param paramsClasificados - Objeto parcial que contiene los resultados del parsing de filtros,
  * generado por la función `clasificarParams`.
  * @returns Un array de strings con los labels de cada filtro clasificado.
  *
@@ -189,12 +191,10 @@ function getLabelsFromFiltros(paramsClasificados: Partial<Record<categoriasAbusc
 
 
 
-
-
-
 /**
  * 
- * @param children
+ * @param children - Representa el page.tsx
+ * @param params - Es el array de la url.
  * 
  *
  * @returns el respectivo page con los hijos y sus respectivos states
@@ -241,7 +241,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
         <div>
           Div de los botones de filtro y orden
-          <SearchCity filtros={filtros} paramsClasificados = {paramsClasificados}></SearchCity>
+          <SearchCity filtros={filtros} paramsClasificados = {paramsClasificados} ciudades={ciudades}></SearchCity>
           <SearchNeightbor filtros={filtros} paramsClasificados = {paramsClasificados}></SearchNeightbor>
           
         </div>

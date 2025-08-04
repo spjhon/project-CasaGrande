@@ -3,11 +3,10 @@
 //Importaciones de hooks
 import { useState } from "react"
 
-//Importacion de fuse
-import Fuse from "fuse.js"
 
-//Importaciones del json
-import ciudadesColombia from "@/data/ciudades.json"
+//import fuzzysort
+import fuzzysort from 'fuzzysort'
+
 
 //Importacion de shadcn
 import { Button } from "@/components/ui/button"
@@ -28,7 +27,7 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react"
 
 //Importacion de utilidades
-import { cn, slugify } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 
 //Importacion del router para la navegacion desde i18n
 import { useRouter } from "@/i18n/navigation"
@@ -36,62 +35,56 @@ import { useRouter } from "@/i18n/navigation"
 //Importacion de los types desde el layout donde esta la funcion
 import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
-/*estraccion de los datos del json
-Explicacion de este flatmap al final de este archivo
-La estructura final es algo asi por cada elemento del array final
-Object { city: "leticia", label: "Leticia", departamento: "Amazonas" }
-Object { city: "puerto nariño", label: "Puerto Nariño", departamento: "Amazonas" }
-como se puede observar el departamento esta repetido con el fin de tener un solo object por ciudad con su respectivo deptarta
-Formateo de ciudades
-*/
-const ciudades = ciudadesColombia.flatMap((dep) =>
-  dep.ciudades.map((ciudad) => ({
-    slug: `${slugify(ciudad)}-${slugify(dep.departamento)}`,
-    name: ciudad,
-    departamento: dep.departamento,
-    
-  }))
-)
-
-// Inicializamos Fuse
-const fuse = new Fuse(ciudades, {
-  keys: ["name", "departamento"],
-  threshold: 0.3,
-})
-
 //Types
 
 type CiudadOption = {
   slug: string
-  name: string
+  label: string
   departamento: string
 }
 
 type CitySearchProps = {
   filtros?: string[];
   paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
+  ciudades?: CiudadOption[];
 };
 
-
+/**
+ * 
+ * @param filtros Es un array de filtros que son de la url desde layout
+ * @param paramsClasificados Es un array de filtros que son de la url desde layout que ya estan filtrados y hay 
+ * seguridad de a donde pertenece cada param y el object con la informacion
+ * @ciudades Todo el object de ciudades ya slugidificado y listo para incorporarse al selected
+ * 
+ * @returns Un dropdown con las ciduades listas para buscar y la ciudad seleccionada en caso de haberla 
+ */
 export function SearchCity({ 
   filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */,
-  paramsClasificados
+  paramsClasificados,
+  ciudades = []
 }: CitySearchProps) {
   
   
-  
+  //obtiene el slug de los params que ya fueron clasificados en caso de existir
   const ciudadSlug = paramsClasificados?.ciudad?.slug;
   
+  //Este es el state para abrir y cerrar el dropdown
   const [open, setOpen] = useState(false)
+  //Este state es para establecer que ciudad va en el selected, si viene del slug del layout entonces va ese, sino va vacio
   const [city, setCity] = useState(ciudadSlug ?? "");
   
 
   const router = useRouter();
 
-  //Este filto lo que hace es guardar en selected todo el object cuyo key city es igual al city guardado en el state
+  //Este filto lo que hace es guardar en selected todo el object cuyo key slug es igual al slug guardado en el state
   const selected: CiudadOption | undefined = ciudades.find((ciudadesaBuscar) => ciudadesaBuscar.slug === city)
 
-const [inputValue, setInputValue] = useState(selected?.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") ?? "");
+  //Este el el inputValue que hace que el componente sea controlado y saber por cada tecla que input ha ingresado el usuario
+  const [inputValue, setInputValue] = useState(selected?.label.normalize("NFD").replace(/[\u0300-\u036f]/g, "") ?? "");
+  
+
+  const searchResults = inputValue.length >= 2 ? fuzzysort.go(inputValue, ciudades, { key: "label", threshold: -10000 }) : []
+  
   //Esto devuelve una lista de resultados tipo:
   /*
   [
@@ -99,13 +92,13 @@ const [inputValue, setInputValue] = useState(selected?.name.normalize("NFD").rep
     { item: { label: "La Dorada", departamento: "Caldas", city: "la dorada" }, ... },
   ...]
   */
-  const filtered: CiudadOption[] = inputValue.length >= 2 ? fuse.search(inputValue).map((res) => res.item) : []
-
+  const filtered: CiudadOption[] = searchResults.map(result => result.obj)
 
   //este handleOpenChange es una manipulacion al set que se pasa al pop over para que cuando se cierre y no se haya
   //escrito nada en el inputValue entonces quite las selecciones
   //Entonces ya no estás pasándole directamente setOpen, sino una función que tú defines:
-    const handleOpenChange = (isOpen: boolean) => {
+  const handleOpenChange = (isOpen: boolean) => {
+
     setOpen(isOpen)
 
     if (inputValue.trim() === "" && !isOpen) {
@@ -114,6 +107,39 @@ const [inputValue, setInputValue] = useState(selected?.name.normalize("NFD").rep
       
     }
   }
+
+  const handleOnSelect = (currentValue: string) => {
+    const ciudadSlugActual = paramsClasificados?.ciudad?.slug;
+    const nuevaSeleccion = currentValue === ciudadSlugActual ? "" : currentValue;
+
+    setCity(nuevaSeleccion);
+    setOpen(false);
+
+    const newFiltros = [...(filtros || [])];
+
+    if (ciudadSlugActual) {
+      const index = newFiltros.indexOf(ciudadSlugActual);
+      if (index !== -1) {
+        if (nuevaSeleccion) {
+          // Si hay nueva selección, reemplazar
+          newFiltros[index] = nuevaSeleccion;
+        } else {
+          // Si se deseleccionó (nuevaSeleccion es ""), eliminar
+          newFiltros.splice(index, 1);
+        }
+      }
+    } else {
+      if (nuevaSeleccion) {
+        newFiltros.push(nuevaSeleccion);
+      }
+    }
+
+    // @ts-expect-error es necesario
+    router.push(`/explore/${newFiltros.join("/")}`);
+  }
+
+
+
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange} modal>
@@ -125,7 +151,7 @@ const [inputValue, setInputValue] = useState(selected?.name.normalize("NFD").rep
           aria-expanded={open}
           className="w-[250px] justify-between"
           >
-            {selected ? `${selected.name}, ${selected.departamento}` : "Selecciona una ciudad..."}
+            {selected ? `${selected.label}, ${selected.departamento}` : "Selecciona una ciudad..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -152,37 +178,9 @@ const [inputValue, setInputValue] = useState(selected?.name.normalize("NFD").rep
                   <CommandItem
                     key={`${ciudad.slug}-${ciudad.departamento}`}
                     value={ciudad.slug}
-                    onSelect={(currentValue) => {
-  const ciudadSlugActual = paramsClasificados?.ciudad?.slug;
-  const nuevaSeleccion = currentValue === ciudadSlugActual ? "" : currentValue;
-
-  setCity(nuevaSeleccion);
-  setOpen(false);
-
-  const newFiltros = [...(filtros || [])];
-
-  if (ciudadSlugActual) {
-    const index = newFiltros.indexOf(ciudadSlugActual);
-    if (index !== -1) {
-      if (nuevaSeleccion) {
-        // Si hay nueva selección, reemplazar
-        newFiltros[index] = nuevaSeleccion;
-      } else {
-        // Si se deseleccionó (nuevaSeleccion es ""), eliminar
-        newFiltros.splice(index, 1);
-      }
-    }
-  } else {
-    if (nuevaSeleccion) {
-      newFiltros.push(nuevaSeleccion);
-    }
-  }
-
-  // @ts-expect-error es necesario
-  router.push(`/explore/${newFiltros.join("/")}`);
-}}
+                    onSelect={(currentValue) => handleOnSelect(currentValue)}
                   >
-                    {ciudad.name}, {ciudad.departamento}
+                    {ciudad.label}, {ciudad.departamento}
                     <Check
                       className={cn(
                         "ml-auto",
@@ -201,153 +199,3 @@ const [inputValue, setInputValue] = useState(selected?.name.normalize("NFD").rep
     </Popover>
   )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Explicacion del flatmap
- * 
- * entonces lo que hace el map inicial, el map que hace junto al flat es que cada elemento es un object en el cual 
- * hay un key que tiene un array (la key de ciudades), pero entonces lo que retorna ese map (y que hace esto por cada object 
- * en el array del json), es el valor de lo que pase adentro y como lo que pasa adentro es que se extrae o se acomoda la 
- * informacion, lo que retorna es un array con la forma que se quiere pero eso es un array por cada key y todas esas keys estan 
- * dentro de un array, entonces la idea del falt a un nive es destruir esos arrays que encierran cada elemento que antes era un 
- * object (no lo transforma, es parte de un array nuevo pero pues toma su posicion) y como no hay un elemento jerarquico sino 
- * que se creo esa redundancia en el map interior entonces no es necesario que este en un array por elemento sino que se esparza 
- * asi ocupe mas elementos en el array exterior, estoy bien asi?
- * 
- * 
- * 
- * ¡Sí Juan! Estás **muy, muy cerca** de comprenderlo completamente. Vamos a pulir tu explicación con un desglose detallado para que te quede **cristalino**.
-
----
-
-## 🔍 1. ¿Qué recibe `flatMap`?
-
-Recibe una **función que devuelve un array**.
-
-Tú escribiste:
-
-```ts
-ciudadesColombia.flatMap((dep) =>
-  dep.ciudades.map((ciudad) => ({
-    city: ciudad.toLowerCase(),
-    label: ciudad,
-    departamento: dep.departamento,
-  }))
-)
-```
-
-Entonces para cada `dep` (departamento), la función hace esto:
-
-### ➤ `dep = { departamento: "Caldas", ciudades: ["Manizales", "Chinchiná"] }`
-
-Ese `.map(...)` **devuelve un array de objetos**, por ejemplo:
-
-```ts
-[
-  { city: "manizales", label: "Manizales", departamento: "Caldas" },
-  { city: "chinchiná", label: "Chinchiná", departamento: "Caldas" }
-]
-```
-
----
-
-## 🔍 2. ¿Qué hace `flatMap`?
-
-Hace lo mismo que si hicieras:
-
-```ts
-array.map(...).flat()
-```
-
-O sea:
-
-1. Recorre cada elemento (como un `map`)
-2. Pero **automáticamente aplana** (quita la capa de arrays intermedios)
-
----
-
-## 🎯 Entonces tú dijiste:
-
-> *"lo que retorna ese map... es un array por cada key..."*
-
-🔸 Correcto. Por cada departamento (`dep`), el `.map(...)` devuelve un **array de ciudades convertidas a objetos**.
-
-> *"...y todas esas keys están dentro de un array"*
-
-🔸 Casi. Realmente no son keys. Son arrays (uno por cada departamento), entonces el resultado intermedio sin `flatMap` sería algo así como:
-
-```ts
-[
-  [ // de Caldas
-    { ...Manizales },
-    { ...Chinchiná }
-  ],
-  [ // de Antioquia
-    { ...Medellín },
-    { ...Bello }
-  ],
-  ...
-]
-```
-
-> *"...entonces la idea del flat es destruir esos arrays..."*
-
-🔸 ¡Exactamente! El `.flatMap(...)` aplana eso a un solo array plano:
-
-```ts
-[
-  { ...Manizales },
-  { ...Chinchiná },
-  { ...Medellín },
-  { ...Bello }
-]
-```
-
-> *"...no lo transforma, es parte de un array nuevo pero toma su posición..."*
-
-🔸 👌 Perfecto. Los objetos **no se modifican más**, simplemente **se sacan de los arrays intermedios y se colocan juntos en el mismo nivel**.
-
----
-
-## ✅ En resumen
-
-Tu comprensión es **muy buena**. Solo que en lugar de hablar de “keys”, lo correcto sería decir:
-
-> “El `map` interno devuelve arrays de objetos por cada departamento, y `flatMap` los aplana todos en un solo array continuo.”
-
----
-
-Si lo representaras visualmente:
-
-### Antes de `flatMap`:
-
-```ts
-[
-  [obj1, obj2],   // ciudades de Caldas
-  [obj3, obj4],   // ciudades de Antioquia
-]
-```
-
-### Después de `flatMap`:
-
-```ts
-[obj1, obj2, obj3, obj4]  // todas las ciudades, una tras otra
-```
-
----
-
-¿Quieres que te muestre el mismo ejemplo en código paso a paso? ¿O hacemos una versión sin `flatMap` para comparar?
-
- */
-

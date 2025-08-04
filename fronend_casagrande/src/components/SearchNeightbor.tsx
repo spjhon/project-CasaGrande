@@ -93,8 +93,7 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
   },
   */
 
-  const searchResults = inputValue.length >= 2
-  ? fuzzysort.go(inputValue, barriosColombiaJson, { key: "nombre", threshold: -10000 }) : []
+  const searchResults = inputValue.length >= 2 ? fuzzysort.go(inputValue, barriosColombiaJson, { key: "nombre", threshold: -10000 }) : []
 
   const filtered: barriosdeColombia[] = searchResults.map(result => result.obj)
 
