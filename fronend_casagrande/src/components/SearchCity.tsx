@@ -104,7 +104,7 @@ export function SearchCity({
     if (inputValue.trim() === "" && !isOpen) {
       // Si se cierra sin escribir ni seleccionar, limpiamos todo
       setCity("")
-      
+      handleOnSelect("")
     }
   }
 

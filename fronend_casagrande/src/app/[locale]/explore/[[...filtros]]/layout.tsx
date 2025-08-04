@@ -225,7 +225,6 @@ export default async function ExploreLayout({children, params}:{params: Promise<
           <BreadcrumbWithCustomSeparator items={breadCrumbItems} />
           
           <div>
-            
             este es el div del mensaje de donde esta la busqueda actualmente
           </div>
 
@@ -240,11 +239,20 @@ export default async function ExploreLayout({children, params}:{params: Promise<
         </div>
 
         <div>
-          Div de los botones de filtro y orden
-          <SearchCity filtros={filtros} paramsClasificados = {paramsClasificados} ciudades={ciudades}></SearchCity>
-          <SearchNeightbor filtros={filtros} paramsClasificados = {paramsClasificados}></SearchNeightbor>
+
+          <SearchCity 
+            filtros={filtros} 
+            paramsClasificados = {paramsClasificados} 
+            ciudades={ciudades}>
+          </SearchCity>
+          <SearchNeightbor 
+            filtros={filtros} 
+            paramsClasificados = {paramsClasificados} 
+            barriosdeColombiaJson={barrios}>
+          </SearchNeightbor>
           
         </div>
+
       </div>
 
       {children}

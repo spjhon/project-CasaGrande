@@ -3,12 +3,8 @@
 //Importaciones de hooks
 import { useState } from "react"
 
-//Importacion de fuse
-//import Fuse from "fuse.js"
+//Importacion de fuzzysort
 import fuzzysort from 'fuzzysort'
-
-//Importaciones del json
-import barriosColombiaJson from "@/data/barrios.json"
 
 //Importacion de shadcn
 import { Button } from "@/components/ui/button"
@@ -36,18 +32,9 @@ import { useRouter } from "@/i18n/navigation"
 import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 
-
-/* Inicializamos Fuse
-const fuse = new Fuse(barriosColombiaJson, {
-  keys: ["nombre"],
-  threshold: 0.3,
-})*/
-
-
-
 //Types
 
-type barriosdeColombia = {
+type barriosdeColombiaJson = {
   id: string
   nombre: string
   slug: string
@@ -59,14 +46,16 @@ type barriosdeColombia = {
 type NeightborSearchProps = {
   filtros?: string[];
   paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
+  barriosdeColombiaJson?: barriosdeColombiaJson[]
 };
 
 export function SearchNeightbor({ filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */,
-  paramsClasificados
+  paramsClasificados,
+  barriosdeColombiaJson = []
  }: NeightborSearchProps) {
 
   const Neightborslug = paramsClasificados?.barrio?.slug;
-  const newFiltros = [...filtros]; // este const para darle orden a la url con 4 parametros
+  
 
 
   const [open, setOpen] = useState(false)
@@ -78,7 +67,7 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
   //Este filto lo que hace es guardar en selected todo el object cuyo key city es igual al city guardado en el state
   /*Cada barrio a buscar viene asi:
   {"id": "9", "nombre": "San Rafael", "slug": "san-rafael", "ciudad": "Manizales", "departamento": "Caldas"}*/
-  const selected: barriosdeColombia | undefined = barriosColombiaJson.find((barrioABuscar) => barrioABuscar.slug === neightbor)
+  const selected: barriosdeColombiaJson | undefined = barriosdeColombiaJson.find((barrioABuscar) => barrioABuscar.slug === neightbor)
   
  const [inputValue, setInputValue] = useState(selected?.nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "") ?? "");
 
@@ -93,9 +82,9 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
   },
   */
 
-  const searchResults = inputValue.length >= 2 ? fuzzysort.go(inputValue, barriosColombiaJson, { key: "nombre", threshold: -10000 }) : []
+  const searchResults = inputValue.length >= 2 ? fuzzysort.go(inputValue, barriosdeColombiaJson, { key: "nombre", threshold: -10000 }) : []
 
-  const filtered: barriosdeColombia[] = searchResults.map(result => result.obj)
+  const filtered: barriosdeColombiaJson[] = searchResults.map(result => result.obj)
 
 
   //este handleOpenChange es una manipulacion al set que se pasa al pop over para que cuando se cierre y no se haya
@@ -107,8 +96,35 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
     if (inputValue.trim() === "" && !isOpen) {
       // Si se cierra sin escribir ni seleccionar, limpiamos todo
       setBarrio("")
-      
+      handleOnSelect("")
     }
+  }
+
+  const handleOnSelect = (currentValue: string) => {
+    const selectedBarrioSlug = paramsClasificados?.barrio?.slug;
+    const nuevaSeleccion = currentValue === selectedBarrioSlug ? "" : currentValue;
+    const newFiltros = [...filtros]; 
+    setBarrio(nuevaSeleccion);
+    setOpen(false);
+
+    // Clonar el array original
+    const updatedFiltros = [...newFiltros];
+
+    if (selectedBarrioSlug) {
+      // Si ya había un barrio, reemplazarlo en su posición
+      const index = updatedFiltros.indexOf(selectedBarrioSlug);
+      if (index !== -1) {
+        updatedFiltros[index] = nuevaSeleccion;
+      }
+    } else {
+      // Si no había barrio, agregarlo al final (solo si no está vacío)
+      if (nuevaSeleccion) {
+        updatedFiltros.push(nuevaSeleccion);
+      }
+    }
+
+    // @ts-expect-error es necesario
+    router.push(`/explore/${updatedFiltros.join("/")}`);
   }
 
   return (
@@ -148,32 +164,7 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
                   <CommandItem
                     key={`${barrio.slug}-${barrio.ciudad}`}
                     value={barrio.slug}
-                    onSelect={(currentValue) => {
-  const selectedBarrioSlug = paramsClasificados?.barrio?.slug;
-  const nuevaSeleccion = currentValue === selectedBarrioSlug ? "" : currentValue;
-
-  setBarrio(nuevaSeleccion);
-  setOpen(false);
-
-  // Clonar el array original
-  const updatedFiltros = [...newFiltros];
-
-  if (selectedBarrioSlug) {
-    // Si ya había un barrio, reemplazarlo en su posición
-    const index = updatedFiltros.indexOf(selectedBarrioSlug);
-    if (index !== -1) {
-      updatedFiltros[index] = nuevaSeleccion;
-    }
-  } else {
-    // Si no había barrio, agregarlo al final (solo si no está vacío)
-    if (nuevaSeleccion) {
-      updatedFiltros.push(nuevaSeleccion);
-    }
-  }
-
-  // @ts-expect-error es necesario
-  router.push(`/explore/${updatedFiltros.join("/")}`);
-}}
+                    onSelect={(currentValue) => handleOnSelect(currentValue)}
                   >
                     {barrio.nombre}, {barrio.ciudad}
                     <Check
