@@ -1,6 +1,6 @@
 "use client";
 
-import cavernicola from "../../public/dribbble_1.gif";
+import cavernicola from "../../../public/dribbble_1.gif";
 import Image from "next/image";
 import styles from "./notFound.module.css";
 

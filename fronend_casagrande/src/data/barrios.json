@@ -4,6 +4,7 @@
     "nombre": "Palogrande",
     "slug": "palogrande-manizales",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
   },
   {
@@ -11,6 +12,7 @@
     "nombre": "El Cable",
     "slug": "el-cable-manizales",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
   },
   {
@@ -18,6 +20,7 @@
     "nombre": "Universidad",
     "slug": "universidad-manizales",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
   },
   {
@@ -25,6 +28,7 @@
     "nombre": "La Estrella",
     "slug": "la-estrella-manizales",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
   },
   {
@@ -32,6 +36,7 @@
     "nombre": "Los Rosales",
     "slug": "los-rosales-manizales",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
   },
   {
@@ -39,6 +44,7 @@
     "nombre": "La Camelia",
     "slug": "la-camelia-manizales",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
   },
   {
@@ -46,6 +52,7 @@
     "nombre": "Chipre",
     "slug": "chipre-manizales",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
   },
   {
@@ -53,6 +60,7 @@
     "nombre": "Campohermoso",
     "slug": "campohermoso-manizales",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
   },
   {
@@ -60,6 +68,7 @@
     "nombre": "San Rafael",
     "slug": "san-rafael-manizales",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
   },
   {
@@ -67,6 +76,7 @@
     "nombre": "Milán",
     "slug": "milan-manizales",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
   }
 ]

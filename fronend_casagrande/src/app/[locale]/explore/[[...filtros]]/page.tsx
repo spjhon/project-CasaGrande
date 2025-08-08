@@ -1,10 +1,17 @@
-
-type FilteredNewsParams = {
-  params: {filtros?: string[]}
-};
+import type { Metadata } from 'next'
 
 
-export default async function FiltrosPage({params}: FilteredNewsParams) {
+ 
+export const metadata: Metadata = {
+  title: 'My Blog',
+  description: '...',
+}
+
+export default async function FiltrosPage({
+  params,
+}: {
+  params: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
 
 
 const filtros = (await params).filtros || [];
@@ -15,11 +22,7 @@ const filtros = (await params).filtros || [];
     <div className="h-100 border-2 border-amber-300">
       <h1>Parámetros de la URL:</h1>
       <ul>
-        {filtros.map((item, index) => (
-          <li key={index}>
-            {index + 1}. {item}
-          </li>
-        ))}
+        
       </ul>
     </div>
   );

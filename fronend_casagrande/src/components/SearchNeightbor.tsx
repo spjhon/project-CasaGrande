@@ -3,9 +3,6 @@
 //Importaciones de hooks
 import { useState } from "react"
 
-//Importacion de fuzzysort
-import fuzzysort from 'fuzzysort'
-
 //Importacion de shadcn
 import { Button } from "@/components/ui/button"
 import {
@@ -35,10 +32,11 @@ import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...
 //Types
 
 type barriosdeColombiaJson = {
-  id: string
-  nombre: string
-  slug: string
-  ciudad: string
+  id: string,
+  nombre: string,
+  slug: string,
+  ciudad: string,
+  ciudadSlug: string,
   departamento: string
 
 }
@@ -55,7 +53,7 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
  }: NeightborSearchProps) {
 
   const Neightborslug = paramsClasificados?.barrio?.slug;
-  
+  const ciudadSlug = paramsClasificados?.ciudad?.slug;
 
 
   const [open, setOpen] = useState(false)
@@ -69,11 +67,12 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
   {"id": "9", "nombre": "San Rafael", "slug": "san-rafael", "ciudad": "Manizales", "departamento": "Caldas"}*/
   const selected: barriosdeColombiaJson | undefined = barriosdeColombiaJson.find((barrioABuscar) => barrioABuscar.slug === neightbor)
   
+  //El codigo nfd de normalizacion es para eliminar las tildes y que el buscador lo entienda.
  const [inputValue, setInputValue] = useState(selected?.nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "") ?? "");
 
   //Esto devuelve una lista de resultados tipo:
   /*
-  {
+  obj: {
     "id": "1",
     "nombre": "Palogrande",
     "slug": "palogrande",
@@ -81,23 +80,20 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
     "departamento": "Caldas"
   },
   */
-
-  const searchResults = inputValue.length >= 2 ? fuzzysort.go(inputValue, barriosdeColombiaJson, { key: "nombre", threshold: -10000 }) : []
-
-  const filtered: barriosdeColombiaJson[] = searchResults.map(result => result.obj)
+  
 
 
   //este handleOpenChange es una manipulacion al set que se pasa al pop over para que cuando se cierre y no se haya
   //escrito nada en el inputValue entonces quite las selecciones
   //Entonces ya no estás pasándole directamente setOpen, sino una función que tú defines:
-    const handleOpenChange = (isOpen: boolean) => {
+  const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen)
 
     if (inputValue.trim() === "" && !isOpen) {
       // Si se cierra sin escribir ni seleccionar, limpiamos todo
       setBarrio("")
       handleOnSelect("")
-    }
+  }
   }
 
   const handleOnSelect = (currentValue: string) => {
@@ -151,16 +147,10 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
             className="h-9"
           />
           <CommandList>
-            {inputValue.length < 2 ? (
-              
-              <div className="p-4 text-center text-sm text-muted-foreground">
-                Escribe al menos 2 letras para buscar.
-              </div>
             
-            ) : filtered.length === 0 ? (
-              <CommandEmpty>No se encontraron barrios.</CommandEmpty>) : (
+              <CommandEmpty>No se encontraron barrios.</CommandEmpty>
               <CommandGroup>
-                {filtered.map((barrio) => (
+                {barriosdeColombiaJson.map((barrio) => (
                   <CommandItem
                     key={`${barrio.slug}-${barrio.ciudad}`}
                     value={barrio.slug}
@@ -176,7 +166,7 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
                   </CommandItem>
                 ))}
               </CommandGroup>
-            )}
+            
           </CommandList>
         </Command>
       </PopoverContent>

@@ -16,6 +16,10 @@ export const routing = defineRouting({
       es: '/acercadenosotors'
     },
 
+    '/explore': {
+      es: '/explorar'
+    },
+
     '/explore/[[...filtros]]': {
       es: '/explorar/[[...filtros]]'
     },
