@@ -4,10 +4,6 @@
 import { useState } from "react"
 
 
-//import fuzzysort
-import fuzzysort from 'fuzzysort'
-
-
 //Importacion de shadcn
 import { Button } from "@/components/ui/button"
 import {
@@ -32,21 +28,23 @@ import { cn } from "@/lib/utils"
 //Importacion del router para la navegacion desde i18n
 import { useRouter } from "@/i18n/navigation"
 
-//Importacion de los types desde el layout donde esta la funcion
+//Importacion de los types de los parametros ya clasificados desde el layout donde esta la funcion
 import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 //Types
 
-type CiudadOption = {
-  slug: string
+
+type tipodeArriendoOption = {
+  id: string
   label: string
-  departamento: string
+  slug: string
 }
 
-type CitySearchProps = {
-  filtros?: string[];
-  paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
-  ciudades?: CiudadOption[];
+
+type TipodeArriendoSearchProps = {
+    filtros?: string[];
+    paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
+    tipodeArriendo?: tipodeArriendoOption[];
 };
 
 /**
@@ -54,45 +52,35 @@ type CitySearchProps = {
  * @param filtros Es un array de filtros que son de la url desde layout
  * @param paramsClasificados Es un array de filtros que son de la url desde layout que ya estan filtrados y hay 
  * seguridad de a donde pertenece cada param y el object con la informacion
- * @ciudades Todo el object de ciudades ya slugidificado y listo para incorporarse al selected
+ * @tipodeArriendo Todo el object de tipo de arriendo ya slugidificado y listo para incorporarse al selected
  * 
- * @returns Un dropdown con las ciduades listas para buscar y la ciudad seleccionada en caso de haberla 
+ * @returns Un dropdown con los tipos de arriendos listas para buscar y el tipo de arriendo seleccionado en caso de haberlo
  */
-export function SearchCity({ 
+export function SearchType({ 
   filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */,
   paramsClasificados,
-  ciudades = []
-}: CitySearchProps) {
+  tipodeArriendo = []
+}: TipodeArriendoSearchProps) {
   
   
   //obtiene el slug de los params que ya fueron clasificados en caso de existir
-  const ciudadSlug = paramsClasificados?.ciudad?.slug;
+  const ciudadSlug = paramsClasificados?.tipo?.slug;
   
   //Este es el state para abrir y cerrar el dropdown
   const [open, setOpen] = useState(false)
   //Este state es para establecer que ciudad va en el selected, si viene del slug del layout entonces va ese, sino va vacio
-  const [city, setCity] = useState(ciudadSlug ?? "");
+  const [tipo, setTipo] = useState(ciudadSlug ?? "");
   
 
   const router = useRouter();
 
   //Este filto lo que hace es guardar en selected todo el object cuyo key slug es igual al slug guardado en el state
-  const selected: CiudadOption | undefined = ciudades.find((ciudadesaBuscar) => ciudadesaBuscar.slug === city)
+  const selected: tipodeArriendoOption | undefined = tipodeArriendo.find((tipodeArriendoaBuscar) => tipodeArriendoaBuscar.slug === tipo)
 
   //Este el el inputValue que hace que el componente sea controlado y saber por cada tecla que input ha ingresado el usuario
   const [inputValue, setInputValue] = useState(selected? selected.label : "");
   
-
-  const searchResults = inputValue.length >= 2 ? fuzzysort.go(inputValue, ciudades, { key: "label", threshold: -10000 }) : []
-  
-  //Esto devuelve una lista de resultados tipo:
-  /*
-  [
-    { item: { label: "Manizales", departamento: "Caldas", city: "manizales" }, ... },
-    { item: { label: "La Dorada", departamento: "Caldas", city: "la dorada" }, ... },
-  ...]
-  */
-  const filtered: CiudadOption[] = searchResults.map(result => result.obj)
+ 
 
   //este handleOpenChange es una manipulacion al set que se pasa al pop over para que cuando se cierre y no se haya
   //escrito nada en el inputValue entonces quite las selecciones
@@ -101,24 +89,24 @@ export function SearchCity({
 
     setOpen(isOpen)
 
-    if (inputValue.trim() === "" && !isOpen) {
+    if (inputValue === "" && !isOpen) {
       // Si se cierra sin escribir ni seleccionar, limpiamos todo
-      setCity("")
+      setTipo("")
       handleOnSelect("")
     }
   }
 
   const handleOnSelect = (currentValue: string) => {
-    const ciudadSlugActual = paramsClasificados?.ciudad?.slug;
-    const nuevaSeleccion = currentValue === ciudadSlugActual ? "" : currentValue;
+    const tipoSlugActual = paramsClasificados?.tipo?.slug;
+    const nuevaSeleccion = currentValue === tipoSlugActual ? "" : currentValue;
 
-    setCity(nuevaSeleccion);
+    setTipo(nuevaSeleccion);
     setOpen(false);
 
     const newFiltros = [...(filtros || [])];
 
-    if (ciudadSlugActual) {
-      const index = newFiltros.indexOf(ciudadSlugActual);
+    if (tipoSlugActual) {
+      const index = newFiltros.indexOf(tipoSlugActual);
       if (index !== -1) {
         if (nuevaSeleccion) {
           // Si hay nueva selección, reemplazar
@@ -151,7 +139,7 @@ export function SearchCity({
           aria-expanded={open}
           className="w-[250px] justify-between"
           >
-            {selected ? `${selected.label}, ${selected.departamento}` : "Selecciona una ciudad..."}
+            {selected ? `${selected.label}` : "Selecciona un tipo..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -159,38 +147,32 @@ export function SearchCity({
       <PopoverContent className="w-[250px] p-0" >
         <Command>
           <CommandInput
-            placeholder="Buscar ciudad..."
+            placeholder="Buscar tipo..."
             value={inputValue}
             onValueChange={setInputValue}
             className="h-9"
           />
           <CommandList>
-            {inputValue.length < 2 ? (
-              
-              <div className="p-4 text-center text-sm text-muted-foreground">
-                Escribe al menos 2 letras para buscar.
-              </div>
             
-            ) : filtered.length === 0 ? (
-              <CommandEmpty>No se encontraron ciudades.</CommandEmpty>) : (
+              <CommandEmpty>No se encontraron tipos.</CommandEmpty>
               <CommandGroup>
-                {filtered.map((ciudad) => (
+                {tipodeArriendo.map((tipoOperacion) => (
                   <CommandItem
-                    key={`${ciudad.slug}-${ciudad.departamento}`}
-                    value={ciudad.label}
-                    onSelect={() => handleOnSelect(ciudad.slug)}
+                    key={`${tipoOperacion.slug}`}
+                    value={tipoOperacion.label}
+                    onSelect={() => handleOnSelect(tipoOperacion.slug)}
                   >
-                    {ciudad.label}, {ciudad.departamento}
+                    {tipoOperacion.label}
                     <Check
                       className={cn(
                         "ml-auto",
-                        city === ciudad.slug ? "opacity-100" : "opacity-0"
+                        tipo === tipoOperacion.slug ? "opacity-100" : "opacity-0"
                       )}
                     />
                   </CommandItem>
                 ))}
               </CommandGroup>
-            )}
+            
           </CommandList>
         </Command>
       </PopoverContent>

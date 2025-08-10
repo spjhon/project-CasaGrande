@@ -47,6 +47,8 @@ type NeightborSearchProps = {
   barriosdeColombiaJson?: barriosdeColombiaJson[]
 };
 
+let barriosdeColombiaJsonARenderizar = []
+
 export function SearchNeightbor({ filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */,
   paramsClasificados,
   barriosdeColombiaJson = []
@@ -56,19 +58,26 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
   const ciudadSlug = paramsClasificados?.ciudad?.slug;
 
 
+//Este if lo que hace es que si existe una ciudad entonces filtre los barrios 
+if (ciudadSlug) {
+  barriosdeColombiaJsonARenderizar = barriosdeColombiaJson.filter((barrio) => barrio.ciudadSlug === ciudadSlug)
+}else{
+  barriosdeColombiaJsonARenderizar = [...barriosdeColombiaJson]
+}
+
   const [open, setOpen] = useState(false)
   const [neightbor, setBarrio] = useState(Neightborslug ?? "");
   
 
   const router = useRouter();
 
-  //Este filto lo que hace es guardar en selected todo el object cuyo key city es igual al city guardado en el state
+  //Este filto lo que hace es guardar en selected todo el object cuyo key neightborslug es igual al neighbor guardado en el state
   /*Cada barrio a buscar viene asi:
   {"id": "9", "nombre": "San Rafael", "slug": "san-rafael", "ciudad": "Manizales", "departamento": "Caldas"}*/
   const selected: barriosdeColombiaJson | undefined = barriosdeColombiaJson.find((barrioABuscar) => barrioABuscar.slug === neightbor)
   
   //El codigo nfd de normalizacion es para eliminar las tildes y que el buscador lo entienda.
- const [inputValue, setInputValue] = useState(selected?.nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "") ?? "");
+ const [inputValue, setInputValue] = useState(selected? selected.nombre : "");
 
   //Esto devuelve una lista de resultados tipo:
   /*
@@ -138,7 +147,7 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[250px] p-0">
+      <PopoverContent className="w-[250px] p-0" >
         <Command>
           <CommandInput
             placeholder="Buscar barrio..."
@@ -148,13 +157,13 @@ export function SearchNeightbor({ filtros = []/*Valor por defecto para un array 
           />
           <CommandList>
             
-              <CommandEmpty>No se encontraron barrios.</CommandEmpty>
+              <CommandEmpty>{`No se encontraron barrios en ${paramsClasificados?.ciudad?.label}`}</CommandEmpty>
               <CommandGroup>
-                {barriosdeColombiaJson.map((barrio) => (
+                {barriosdeColombiaJsonARenderizar.map((barrio) => (
                   <CommandItem
                     key={`${barrio.slug}-${barrio.ciudad}`}
-                    value={barrio.slug}
-                    onSelect={(currentValue) => handleOnSelect(currentValue)}
+                    value={barrio.nombre}
+                    onSelect={() => handleOnSelect(barrio.slug)}
                   >
                     {barrio.nombre}, {barrio.ciudad}
                     <Check

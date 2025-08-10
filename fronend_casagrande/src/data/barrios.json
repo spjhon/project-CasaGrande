@@ -78,5 +78,86 @@
     "ciudad": "Manizales",
     "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
+  },
+  {
+    "id": "11",
+    "nombre": "El Poblado",
+    "slug": "el-poblado-medellin",
+    "ciudad": "Medellín",
+    "ciudadSlug": "medellin-antioquia",
+    "departamento": "Antioquia"
+  },
+  {
+    "id": "12",
+    "nombre": "Laureles",
+    "slug": "laureles-medellin",
+    "ciudad": "Medellín",
+    "ciudadSlug": "medellin-antioquia",
+    "departamento": "Antioquia"
+  },
+  {
+    "id": "13",
+    "nombre": "Belén",
+    "slug": "belen-medellin",
+    "ciudad": "Medellín",
+    "ciudadSlug": "medellin-antioquia",
+    "departamento": "Antioquia"
+  },
+  {
+    "id": "14",
+    "nombre": "Robledo",
+    "slug": "robledo-medellin",
+    "ciudad": "Medellín",
+    "ciudadSlug": "medellin-antioquia",
+    "departamento": "Antioquia"
+  },
+  {
+    "id": "15",
+    "nombre": "Buenos Aires",
+    "slug": "buenos-aires-medellin",
+    "ciudad": "Medellín",
+    "ciudadSlug": "medellin-antioquia",
+    "departamento": "Antioquia"
+  },
+  {
+    "id": "16",
+    "nombre": "Aranjuez",
+    "slug": "aranjuez-medellin",
+    "ciudad": "Medellín",
+    "ciudadSlug": "medellin-antioquia",
+    "departamento": "Antioquia"
+  },
+  {
+    "id": "17",
+    "nombre": "Manrique",
+    "slug": "manrique-medellin",
+    "ciudad": "Medellín",
+    "ciudadSlug": "medellin-antioquia",
+    "departamento": "Antioquia"
+  },
+  {
+    "id": "18",
+    "nombre": "Castilla",
+    "slug": "castilla-medellin",
+    "ciudad": "Medellín",
+    "ciudadSlug": "medellin-antioquia",
+    "departamento": "Antioquia"
+  },
+  {
+    "id": "19",
+    "nombre": "San Javier",
+    "slug": "san-javier-medellin",
+    "ciudad": "Medellín",
+    "ciudadSlug": "medellin-antioquia",
+    "departamento": "Antioquia"
+  },
+  {
+    "id": "20",
+    "nombre": "Doce de Octubre",
+    "slug": "doce-de-octubre-medellin",
+    "ciudad": "Medellín",
+    "ciudadSlug": "medellin-antioquia",
+    "departamento": "Antioquia"
   }
+
 ]

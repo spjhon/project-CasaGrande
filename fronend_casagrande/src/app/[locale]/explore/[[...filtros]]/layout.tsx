@@ -31,6 +31,7 @@ import universidades from "@/data/universidades_manziales.json"
 //Importacion de funciones utilitarias
 import { slugify } from "@/lib/utils";
 import { SearchNeightbor } from "@/components/SearchNeightbor";
+import { SearchType } from "@/components/SearchType";
 
 /**
  * Este va a ser un componente que va a recopilar la url, la va a parsear y enviar los repectivos states a todos los hijos
@@ -140,7 +141,7 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
     const matchTipo = tipoOperacion.find(t => t.slug === filtro); //Al menos con esto el slug tiene que ser totalmente exacto
     //Lo que dice este if es que si existe un matchTipo y el resultado.tipo esta vacio (osea no existe) entonces se hace la escritura
     if (matchTipo && !resultado.tipo) {
-      resultado.tipo = { grupo: "tipo", slug: matchTipo.slug, label: matchTipo.tipo };
+      resultado.tipo = { grupo: "tipo", slug: matchTipo.slug, label: matchTipo.label };
       //La finalidad de este set llamado usados es que si el filtro ya se proceso entonces se descarta en la proxima iteracion del forEach
       usados.add(filtro);
       return;
@@ -239,7 +240,11 @@ export default async function ExploreLayout({children, params}:{params: Promise<
         </div>
 
         <div>
-
+          <SearchType
+            filtros={filtros} 
+            paramsClasificados = {paramsClasificados} 
+            tipodeArriendo={tipoOperacion}>
+          </SearchType>
           <SearchCity 
             filtros={filtros} 
             paramsClasificados = {paramsClasificados} 
@@ -250,6 +255,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
             paramsClasificados = {paramsClasificados} 
             barriosdeColombiaJson={barrios}>
           </SearchNeightbor>
+          
           
         </div>
 
