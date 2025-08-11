@@ -1,7 +1,7 @@
 [
   {
     "id": "1",
-    "nombre": "Universidad de Caldas - Sede Central",
+    "label": "Universidad de Caldas - Sede Central",
     "slug": "universidad-de-caldas-sede-central",
     "tipo": "Pública",
     "ciudad": "Manizales",
@@ -11,7 +11,7 @@
   },
   {
     "id": "2",
-    "nombre": "Universidad de Caldas - Facultad de Ciencias para la Salud",
+    "label": "Universidad de Caldas - Facultad de Ciencias para la Salud",
     "slug": "universidad-de-caldas-facultad-ciencias-salud",
     "tipo": "Pública",
     "ciudad": "Manizales",
@@ -21,7 +21,7 @@
   },
   {
     "id": "3",
-    "nombre": "Universidad Nacional de Colombia - Sede Palogrande",
+    "label": "Universidad Nacional de Colombia - Sede Palogrande",
     "slug": "universidad-nacional-palogrande",
     "tipo": "Pública",
     "ciudad": "Manizales",
@@ -31,7 +31,7 @@
   },
   {
     "id": "4",
-    "nombre": "Universidad Nacional de Colombia - Sede El Cable",
+    "label": "Universidad Nacional de Colombia - Sede El Cable",
     "slug": "universidad-nacional-el-cable",
     "tipo": "Pública",
     "ciudad": "Manizales",
@@ -41,7 +41,7 @@
   },
   {
     "id": "5",
-    "nombre": "Universidad Católica de Manizales - Campus Principal",
+    "label": "Universidad Católica de Manizales - Campus Principal",
     "slug": "universidad-catolica-campus-principal",
     "tipo": "Privada",
     "ciudad": "Manizales",
@@ -51,7 +51,7 @@
   },
   {
     "id": "6",
-    "nombre": "Universidad Autónoma de Manizales - Campus Universitario",
+    "label": "Universidad Autónoma de Manizales - Campus Universitario",
     "slug": "universidad-autonoma-campus-universitario",
     "tipo": "Privada",
     "ciudad": "Manizales",
@@ -61,7 +61,7 @@
   },
   {
     "id": "7",
-    "nombre": "Universidad de Manizales - Sede Principal",
+    "label": "Universidad de Manizales - Sede Principal",
     "slug": "universidad-de-manizales-sede-principal",
     "tipo": "Privada",
     "ciudad": "Manizales",
@@ -71,7 +71,7 @@
   },
   {
   "id": "8",
-  "nombre": "Fundación Universitaria Luis Amigó - Sede Manizales",
+  "label": "Fundación Universitaria Luis Amigó - Sede Manizales",
   "slug": "fundacion-universitaria-luis-amigo-sede-manziales",
   "tipo": "Privada",
   "ciudad": "Manizales",
@@ -79,112 +79,124 @@
   "departamento": "Caldas",
   "universidad": "Fundación Universitaria Luis Amigó"
   },
-    {
+   {
     "id": "9",
-    "nombre": "Unitécnica Manizales",
+    "label": "Unitécnica Manizales",
     "slug": "unitecnica-manizales",
     "tipo": "Técnica",
     "ciudad": "Manizales",
     "ciudadSlug": "manizales-caldas",
-    "departamento": "Caldas"
+    "departamento": "Caldas",
+    "universidad": "Unitécnica Manizales"
   },
   {
     "id": "10",
-    "nombre": "Fundación Universitaria del Área Andina",
+    "label": "Fundación Universitaria del Área Andina",
     "slug": "area-andina",
     "tipo": "Privada",
     "ciudad": "Pereira",
     "ciudadSlug": "pereira-risaralda",
-    "departamento": "Risaralda"
+    "departamento": "Risaralda",
+    "universidad": "Fundación Universitaria del Área Andina"
   },
   {
     "id": "11",
-    "nombre": "Universidad Libre - Seccional Pereira",
+    "label": "Universidad Libre - Seccional Pereira",
     "slug": "universidad-libre-pereira",
     "tipo": "Privada",
     "ciudad": "Pereira",
     "ciudadSlug": "pereira-risaralda",
-    "departamento": "Risaralda"
+    "departamento": "Risaralda",
+    "universidad": "Universidad Libre - Seccional Pereira"
   },
   {
     "id": "12",
-    "nombre": "UCPR - Universidad Católica Popular del Risaralda",
+    "label": "UCPR - Universidad Católica Popular del Risaralda",
     "slug": "ucpr",
     "tipo": "Privada",
     "ciudad": "Pereira",
     "ciudadSlug": "pereira-risaralda",
-    "departamento": "Risaralda"
+    "departamento": "Risaralda",
+    "universidad": "Universidad Católica Popular del Risaralda"
   },
   {
     "id": "13",
-    "nombre": "UTP - Universidad Tecnológica de Pereira",
+    "label": "UTP - Universidad Tecnológica de Pereira",
     "slug": "utp",
     "tipo": "Pública",
     "ciudad": "Pereira",
     "ciudadSlug": "pereira-risaralda",
-    "departamento": "Risaralda"
+    "departamento": "Risaralda",
+    "universidad": "Universidad Tecnológica de Pereira"
   },
   {
     "id": "14",
-    "nombre": "Uniclaretiana - Fundación Universitaria Claretiana",
+    "label": "Uniclaretiana - Fundación Universitaria Claretiana",
     "slug": "uniclaretiana",
     "tipo": "Privada",
     "ciudad": "Pereira",
     "ciudadSlug": "pereira-risaralda",
-    "departamento": "Risaralda"
+    "departamento": "Risaralda",
+    "universidad": "Fundación Universitaria Claretiana"
   },
   {
     "id": "15",
-    "nombre": "Fundación Universitaria Autónoma de las Américas",
+    "label": "Fundación Universitaria Autónoma de las Américas",
     "slug": "autonoma-de-las-americas",
     "tipo": "Privada",
     "ciudad": "Pereira",
     "ciudadSlug": "pereira-risaralda",
-    "departamento": "Risaralda"
+    "departamento": "Risaralda",
+    "universidad": "Fundación Universitaria Autónoma de las Américas"
   },
   {
     "id": "16",
-    "nombre": "Universidad Externado de Colombia",
+    "label": "Universidad Externado de Colombia",
     "slug": "externado",
     "tipo": "Privada",
     "ciudad": "Pereira",
     "ciudadSlug": "pereira-risaralda",
-    "departamento": "Risaralda"
+    "departamento": "Risaralda",
+    "universidad": "Universidad Externado de Colombia"
   },
   {
     "id": "17",
-    "nombre": "Corporación Universitaria Remington - Sede Pereira",
+    "label": "Corporación Universitaria Remington - Sede Pereira",
     "slug": "remington-pereira",
     "tipo": "Privada",
     "ciudad": "Pereira",
     "ciudadSlug": "pereira-risaralda",
-    "departamento": "Risaralda"
+    "departamento": "Risaralda",
+    "universidad": "Corporación Universitaria Remington"
   },
   {
     "id": "18",
-    "nombre": "Universidad Católica de Pereira",
+    "label": "Universidad Católica de Pereira",
     "slug": "catolica-de-pereira",
     "tipo": "Privada",
     "ciudad": "Pereira",
     "ciudadSlug": "pereira-risaralda",
-    "departamento": "Risaralda"
+    "departamento": "Risaralda",
+    "universidad": "Universidad Católica de Pereira"
   },
   {
     "id": "19",
-    "nombre": "Universidad Externado de Colombia - Facultad de Contaduría Pública",
+    "label": "Universidad Externado de Colombia - Facultad de Contaduría Pública",
     "slug": "externado-contaduria-pereira",
     "tipo": "Privada",
     "ciudad": "Pereira",
     "ciudadSlug": "pereira-risaralda",
-    "departamento": "Risaralda"
+    "departamento": "Risaralda",
+    "universidad": "Universidad Externado de Colombia"
   },
   {
     "id": "20",
-    "nombre": "Universidad EAFIT - Educación Continuada",
+    "label": "Universidad EAFIT - Educación Continuada",
     "slug": "eafit-pereira",
     "tipo": "Privada",
     "ciudad": "Pereira",
     "ciudadSlug": "pereira-risaralda",
-    "departamento": "Risaralda"
+    "departamento": "Risaralda",
+    "universidad": "Universidad EAFIT"
   }
 ]

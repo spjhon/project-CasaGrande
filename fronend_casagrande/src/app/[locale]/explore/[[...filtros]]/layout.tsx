@@ -32,6 +32,7 @@ import universidades from "@/data/universidades.json"
 import { slugify } from "@/lib/utils";
 import { SearchNeightbor } from "@/components/SearchNeightbor";
 import { SearchType } from "@/components/SearchType";
+import { SearchUniversity } from "@/components/SearchUniversity";
 
 /**
  * Este va a ser un componente que va a recopilar la url, la va a parsear y enviar los repectivos states a todos los hijos
@@ -163,7 +164,7 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
 
     const matchUniversidad = universidades.find(u => u.slug === filtro);
     if (matchUniversidad && !resultado.universidad) {
-      resultado.universidad = { grupo: "universidad", slug: matchUniversidad.slug, label: matchUniversidad.nombre };
+      resultado.universidad = { grupo: "universidad", slug: matchUniversidad.slug, label: matchUniversidad.label };
       usados.add(filtro);
       return;
     }
@@ -238,7 +239,11 @@ export default async function ExploreLayout({children, params}:{params: Promise<
             barriosdeColombiaJson={barrios}>
           </SearchNeightbor>
           </div>
-          
+          <SearchUniversity
+          filtros={filtros} 
+          paramsClasificados = {paramsClasificados} 
+          universidadesdeColombiaJson={universidades}>
+          </SearchUniversity>
         </div>
 
       </div>
