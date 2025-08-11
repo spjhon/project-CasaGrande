@@ -1,5 +1,5 @@
-import Link from "next/link"
-
+import Link from "next/link";
+import { Fragment } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,52 +7,64 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Fragment } from "react";
+} from "@/components/ui/breadcrumb";
+import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout";
 
-type BreadcrumbWithCustomSeparatorProps = {
-  items: string[];
-};
+type tipodeArriendoOption = {
+  id: string
+  label: string
+  slug: string
+}
 
-export function BreadcrumbWithCustomSeparator({items}: BreadcrumbWithCustomSeparatorProps) {
+type paramsClasificadosProps = {
+filtros?: string[];
+    paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
+    tipodeArriendo?: tipodeArriendoOption[];
+}
 
+export function BreadcrumbWithCustomSeparator({ paramsClasificados }: paramsClasificadosProps) {
+  // Convertimos el objeto a un array manteniendo el orden de categorías
+  const orderedKeys: categoriasAbuscar[] = ["tipo", "ciudad", "barrio", "universidad",];
+  const items = orderedKeys
+    .map((key) => paramsClasificados?.[key])
+    .filter((item): item is ResultadoFiltro => Boolean(item));
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
-      <BreadcrumbItem>
+        <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href={`/`}>Inicio</Link>
+            <Link href="/">Inicio</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href={`/explore/`}>Explorar</Link>
+            <Link href="/explore">Explorar</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
 
-
-      {items.map((item, index) => {
-          const href = "/explore/" + items.slice(0, index + 1).join("/")
+        {items.map((item, index) => {
+          const href =
+            "/explore/" +
+            items.slice(0, index + 1).map((i) => i.slug).join("/");
 
           return (
-            <Fragment key={index}>
+            <Fragment key={item.slug}>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 {index === items.length - 1 ? (
-                  <BreadcrumbPage>{decodeURIComponent(item)}</BreadcrumbPage>
+                  <BreadcrumbPage>{item.label}</BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink asChild>
-                    <Link href={href}>{decodeURIComponent(item)}</Link>
+                    <Link href={href}>{item.label}</Link>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
             </Fragment>
           );
         })}
-        
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }

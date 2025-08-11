@@ -5,6 +5,7 @@
     "slug": "universidad-de-caldas-sede-central",
     "tipo": "Pública",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas",
     "universidad": "Universidad de Caldas"
   },
@@ -14,6 +15,7 @@
     "slug": "universidad-de-caldas-facultad-ciencias-salud",
     "tipo": "Pública",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas",
     "universidad": "Universidad de Caldas"
   },
@@ -23,6 +25,7 @@
     "slug": "universidad-nacional-palogrande",
     "tipo": "Pública",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas",
     "universidad": "Universidad Nacional de Colombia - Sede Manizales"
   },
@@ -32,6 +35,7 @@
     "slug": "universidad-nacional-el-cable",
     "tipo": "Pública",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas",
     "universidad": "Universidad Nacional de Colombia - Sede Manizales"
   },
@@ -41,6 +45,7 @@
     "slug": "universidad-catolica-campus-principal",
     "tipo": "Privada",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas",
     "universidad": "Universidad Católica de Manizales"
   },
@@ -50,6 +55,7 @@
     "slug": "universidad-autonoma-campus-universitario",
     "tipo": "Privada",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas",
     "universidad": "Universidad Autónoma de Manizales"
   },
@@ -59,6 +65,7 @@
     "slug": "universidad-de-manizales-sede-principal",
     "tipo": "Privada",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas",
     "universidad": "Universidad de Manizales"
   },
@@ -68,6 +75,7 @@
   "slug": "fundacion-universitaria-luis-amigo-sede-manziales",
   "tipo": "Privada",
   "ciudad": "Manizales",
+  "ciudadSlug": "manizales-caldas",
   "departamento": "Caldas",
   "universidad": "Fundación Universitaria Luis Amigó"
   },
@@ -77,6 +85,7 @@
     "slug": "unitecnica-manizales",
     "tipo": "Técnica",
     "ciudad": "Manizales",
+    "ciudadSlug": "manizales-caldas",
     "departamento": "Caldas"
   },
   {
@@ -85,6 +94,7 @@
     "slug": "area-andina",
     "tipo": "Privada",
     "ciudad": "Pereira",
+    "ciudadSlug": "pereira-risaralda",
     "departamento": "Risaralda"
   },
   {
@@ -93,6 +103,7 @@
     "slug": "universidad-libre-pereira",
     "tipo": "Privada",
     "ciudad": "Pereira",
+    "ciudadSlug": "pereira-risaralda",
     "departamento": "Risaralda"
   },
   {
@@ -101,6 +112,7 @@
     "slug": "ucpr",
     "tipo": "Privada",
     "ciudad": "Pereira",
+    "ciudadSlug": "pereira-risaralda",
     "departamento": "Risaralda"
   },
   {
@@ -109,6 +121,7 @@
     "slug": "utp",
     "tipo": "Pública",
     "ciudad": "Pereira",
+    "ciudadSlug": "pereira-risaralda",
     "departamento": "Risaralda"
   },
   {
@@ -117,6 +130,7 @@
     "slug": "uniclaretiana",
     "tipo": "Privada",
     "ciudad": "Pereira",
+    "ciudadSlug": "pereira-risaralda",
     "departamento": "Risaralda"
   },
   {
@@ -125,6 +139,7 @@
     "slug": "autonoma-de-las-americas",
     "tipo": "Privada",
     "ciudad": "Pereira",
+    "ciudadSlug": "pereira-risaralda",
     "departamento": "Risaralda"
   },
   {
@@ -133,6 +148,7 @@
     "slug": "externado",
     "tipo": "Privada",
     "ciudad": "Pereira",
+    "ciudadSlug": "pereira-risaralda",
     "departamento": "Risaralda"
   },
   {
@@ -141,6 +157,7 @@
     "slug": "remington-pereira",
     "tipo": "Privada",
     "ciudad": "Pereira",
+    "ciudadSlug": "pereira-risaralda",
     "departamento": "Risaralda"
   },
   {
@@ -149,6 +166,7 @@
     "slug": "catolica-de-pereira",
     "tipo": "Privada",
     "ciudad": "Pereira",
+    "ciudadSlug": "pereira-risaralda",
     "departamento": "Risaralda"
   },
   {
@@ -157,6 +175,7 @@
     "slug": "externado-contaduria-pereira",
     "tipo": "Privada",
     "ciudad": "Pereira",
+    "ciudadSlug": "pereira-risaralda",
     "departamento": "Risaralda"
   },
   {
@@ -165,6 +184,7 @@
     "slug": "eafit-pereira",
     "tipo": "Privada",
     "ciudad": "Pereira",
+    "ciudadSlug": "pereira-risaralda",
     "departamento": "Risaralda"
   }
 ]

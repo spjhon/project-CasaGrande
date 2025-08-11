@@ -157,7 +157,7 @@ if (ciudadSlug) {
           />
           <CommandList>
             
-              <CommandEmpty>{`No se encontraron barrios en ${paramsClasificados?.ciudad?.label}`}</CommandEmpty>
+              <CommandEmpty>{`No se encontraron barrios, ${paramsClasificados?.ciudad?.label?? ""}`}</CommandEmpty>
               <CommandGroup>
                 {barriosdeColombiaJsonARenderizar.map((barrio) => (
                   <CommandItem

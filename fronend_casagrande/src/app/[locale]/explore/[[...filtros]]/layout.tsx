@@ -26,7 +26,7 @@ import barrios from "@/data/barrios.json"
  * Universidades llegan con esta estructura
  * {"id": string, "nombre": string, "slug": string, "tipo": string, "ciudad": string, "departamento": string, "universidad": string}
  */
-import universidades from "@/data/universidades_manziales.json"
+import universidades from "@/data/universidades.json"
 
 //Importacion de funciones utilitarias
 import { slugify } from "@/lib/utils";
@@ -173,23 +173,6 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
 }
 
 
-/**
- * Extrae los labels (nombres legibles) de un objeto de filtros clasificados, se utiliza para enviar labels al breadcrumb
- *
- * @param paramsClasificados - Objeto parcial que contiene los resultados del parsing de filtros,
- * generado por la función `clasificarParams`.
- * @returns Un array de strings con los labels de cada filtro clasificado.
- *
- * @example
- * const clasificados = clasificarParams(["manizales", "arriendo", "palogrande"]);
- * getLabelsFromFiltros(clasificados);
- *  ["Manizales", "Arriendo", "Palogrande"]
- */
-function getLabelsFromFiltros(paramsClasificados: Partial<Record<categoriasAbuscar, ResultadoFiltro>>): string[] {
-  return Object.values(paramsClasificados).map((f) => f.label);
-}
-
-
 
 
 /**
@@ -207,8 +190,6 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
   const paramsClasificados = (clasificarParams(filtros))
 
-  const breadCrumbItems = getLabelsFromFiltros(paramsClasificados)
-
   /*
   OJO, EL PRIMER RENDER AL MONTAR EL COMPONENTE ES EN EL SERVIDOR, EL RESTO ES EN EL CLIENTE CUANDO SE USA "USE CLIENT"
     if (typeof window !== "undefined") {
@@ -223,7 +204,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
     <section>
       <div className="flex items-center justify-between border-2 border-amber-800 h-60">
         <div>
-          <BreadcrumbWithCustomSeparator items={breadCrumbItems} />
+          <BreadcrumbWithCustomSeparator paramsClasificados={paramsClasificados} />
           
           <div>
             este es el div del mensaje de donde esta la busqueda actualmente
@@ -245,6 +226,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
             paramsClasificados = {paramsClasificados} 
             tipodeArriendo={tipoOperacion}>
           </SearchType>
+          <div className="flex">
           <SearchCity 
             filtros={filtros} 
             paramsClasificados = {paramsClasificados} 
@@ -255,7 +237,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
             paramsClasificados = {paramsClasificados} 
             barriosdeColombiaJson={barrios}>
           </SearchNeightbor>
-          
+          </div>
           
         </div>
 
