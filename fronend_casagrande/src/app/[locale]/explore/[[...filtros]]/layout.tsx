@@ -33,6 +33,7 @@ import { slugify } from "@/lib/utils";
 import { SearchNeightbor } from "@/components/SearchNeightbor";
 import { SearchType } from "@/components/SearchType";
 import { SearchUniversity } from "@/components/SearchUniversity";
+import { FiltersDrawer } from "@/components/FiltersDrawer";
 
 /**
  * Este va a ser un componente que va a recopilar la url, la va a parsear y enviar los repectivos states a todos los hijos
@@ -204,6 +205,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
   return (
     <section>
       <div className="flex items-center justify-between border-2 border-amber-800 h-60">
+
         <div>
           <BreadcrumbWithCustomSeparator paramsClasificados={paramsClasificados} />
           
@@ -221,29 +223,44 @@ export default async function ExploreLayout({children, params}:{params: Promise<
           </ul>
         </div>
 
-        <div>
-          <SearchType
-            filtros={filtros} 
-            paramsClasificados = {paramsClasificados} 
-            tipodeArriendo={tipoOperacion}>
-          </SearchType>
-          <div className="flex">
-          <SearchCity 
-            filtros={filtros} 
-            paramsClasificados = {paramsClasificados} 
-            ciudades={ciudades}>
-          </SearchCity>
-          <SearchNeightbor 
-            filtros={filtros} 
-            paramsClasificados = {paramsClasificados} 
-            barriosdeColombiaJson={barrios}>
-          </SearchNeightbor>
+        <div className="flex gap-10 items-center">
+
+          <div>
+
+            <SearchType
+              filtros={filtros} 
+              paramsClasificados = {paramsClasificados} 
+              tipodeArriendo={tipoOperacion}>
+            </SearchType>
+
+            <div className="flex">
+
+              <SearchCity 
+                filtros={filtros} 
+                paramsClasificados = {paramsClasificados} 
+                ciudades={ciudades}>
+              </SearchCity>
+
+              <SearchNeightbor 
+                filtros={filtros} 
+                paramsClasificados = {paramsClasificados} 
+                barriosdeColombiaJson={barrios}>
+              </SearchNeightbor>
+
+            </div>
+
+            <SearchUniversity
+              filtros={filtros} 
+              paramsClasificados = {paramsClasificados} 
+              universidadesdeColombiaJson={universidades}>
+            </SearchUniversity>
+
           </div>
-          <SearchUniversity
-          filtros={filtros} 
-          paramsClasificados = {paramsClasificados} 
-          universidadesdeColombiaJson={universidades}>
-          </SearchUniversity>
+
+          
+          <FiltersDrawer></FiltersDrawer>
+          
+
         </div>
 
       </div>
