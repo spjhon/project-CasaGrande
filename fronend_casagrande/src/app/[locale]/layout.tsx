@@ -9,8 +9,8 @@ import { routing } from "@/i18n/routing";
 /**
  * Theme provider import
  */
-import { ThemeProvider } from "@/components/theme-provider";
-import { Navbar } from "@/components/Navbar";
+import { ThemeProvider } from "@/components/NavBar/theme-provider";
+import { Navbar } from "@/components/NavBar/Navbar";
 import { Footer } from "@/components/Footer";
 
 const geistSans = Geist({

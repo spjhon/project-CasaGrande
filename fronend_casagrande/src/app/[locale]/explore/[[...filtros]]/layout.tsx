@@ -1,7 +1,7 @@
 
 //Importacion de componentes
-import {SearchCity} from "@/components/SearchCity";
-import { BreadcrumbWithCustomSeparator } from "../../../../components/Breadcrumb";
+import {SearchCity} from "@/components/exploreComponents/SearchCity";
+import { BreadcrumbWithCustomSeparator } from "../../../../components/exploreComponents/Breadcrumb";
 
 
 //Importaciones del json
@@ -30,10 +30,10 @@ import universidades from "@/data/universidades.json"
 
 //Importacion de funciones utilitarias
 import { slugify } from "@/lib/utils";
-import { SearchNeightbor } from "@/components/SearchNeightbor";
-import { SearchType } from "@/components/SearchType";
-import { SearchUniversity } from "@/components/SearchUniversity";
-import { FiltersDrawer } from "@/components/FiltersDrawer";
+import { SearchNeightbor } from "@/components/exploreComponents/SearchNeightbor";
+import { SearchType } from "@/components/exploreComponents/SearchType";
+import { SearchUniversity } from "@/components/exploreComponents/SearchUniversity";
+import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
 
 /**
  * Este va a ser un componente que va a recopilar la url, la va a parsear y enviar los repectivos states a todos los hijos

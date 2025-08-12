@@ -14,7 +14,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { NavigationMenu, NavigationMenuList } from "./ui/navigation-menu"
+import { NavigationMenu, NavigationMenuList } from "../ui/navigation-menu"
 import { Link } from "@/i18n/navigation"
 import {RouteProps} from "./Navbar"
 

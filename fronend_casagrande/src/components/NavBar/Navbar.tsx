@@ -18,7 +18,7 @@ import {Link} from '@/i18n/navigation';
 
 
 //Importacion de iconos de radix y lucide
-import { buttonVariants } from "./ui/button";
+import { buttonVariants } from "../ui/button";
 import { /*Menu*/ CarFront } from "lucide-react";
 import { MobileMenu } from './MobileMenu';
 import { I18nToggle } from './i18nToggle';
