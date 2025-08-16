@@ -1,0 +1,33 @@
+[
+  {
+    "id": "1",
+    "label": "Amoblado",
+    "slug": "amoblado"
+  },
+  {
+    "id": "2",
+    "label": "Sin Amoblar",
+    "slug": "sin-amoblado"
+  },
+  {
+    "id": "3",
+    "label": "Con Alimentacion",
+    "slug": "con-alimentacion"
+  },
+  {
+    "id": "4",
+    "label": "Sin Alimentacion",
+    "slug": "sin-alimentacion"
+  },
+  {
+    "id": "5",
+    "label": "Con Arreglo de Ropa",
+    "slug": "con-arreglo-ropa"
+  },
+  {
+    "id": "6",
+    "label": "Sin Arreglo de Ropa",
+    "slug": "sin-arreglo-ropa"
+  }
+
+]

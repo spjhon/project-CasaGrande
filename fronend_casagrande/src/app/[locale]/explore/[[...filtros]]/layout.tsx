@@ -28,6 +28,12 @@ import barrios from "@/data/barrios.json"
  */
 import universidades from "@/data/universidades.json"
 
+/**
+ * Filtros extra llegan con esta estructura
+ * {"id": string, "label": string, "slug": string}
+ */
+import filtrosExtraJson from "@/data/filtrosExtra.json"
+
 //Importacion de funciones utilitarias
 import { slugify } from "@/lib/utils";
 import { SearchNeightbor } from "@/components/exploreComponents/SearchNeightbor";
@@ -105,7 +111,7 @@ const ciudades = ciudadesColombia.flatMap((dep) =>
  *  }
  * 
 */
-export type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo"
+export type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado"
 
 export type ResultadoFiltro = {
   grupo: categoriasAbuscar;
@@ -169,8 +175,18 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
       usados.add(filtro);
       return;
     }
+
+  const matchAmoblado = filtrosExtraJson.find(u => u.slug === filtro);
+    if (matchAmoblado && !resultado.amoblado) {
+      resultado.amoblado = { grupo: "universidad", slug: matchAmoblado.slug, label: matchAmoblado.label };
+      usados.add(filtro);
+      return;
+    }
+
   });
 
+
+  
   return resultado;
 }
 
@@ -215,12 +231,12 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
           <h1>Parámetros de la URL:</h1>
           <ul>
-            {filtros.map((item, index) => (
-              <li key={index}>
-                {index + 1}. {item}
-              </li>
-            ))}
-          </ul>
+  {Object.values(paramsClasificados).map((item, index) => (
+    <li key={index}>
+      {index + 1}. {item.label}
+    </li>
+  ))}
+</ul>
         </div>
 
         <div className="flex gap-10 items-center">
@@ -258,7 +274,14 @@ export default async function ExploreLayout({children, params}:{params: Promise<
           </div>
 
           
-          <FiltersDrawer></FiltersDrawer>
+          <FiltersDrawer
+            filtros={filtros}
+            paramsClasificados = {paramsClasificados}
+            filtrosExtraJson = {filtrosExtraJson}
+            >
+            
+            
+          </FiltersDrawer>
           
 
         </div>

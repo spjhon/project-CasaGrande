@@ -26,7 +26,7 @@ export function FiltroAmoblado({ onClick, goal }: FiltroAmobladoProps) {
         <div className="flex-1 text-center">
           <div className="text-4xl font-bold tracking-tighter">{goal}</div>
           <div className="text-muted-foreground text-[0.70rem] uppercase">
-            Estado amoblado
+            CUARTO AMOBLADO
           </div>
         </div>
 
