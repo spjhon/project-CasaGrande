@@ -6,7 +6,7 @@ import { useState } from "react";
 //Importacion del router para la navegacion desde i18n
 import { useRouter } from "@/i18n/navigation"
 
-import {actualizarFiltros} from "@/lib/utils"
+import {actualizarFiltros, actualizarFiltrosGenero} from "@/lib/utils"
 
 //importe de primitivos
 import { Button } from "@/components/ui/button";
@@ -24,15 +24,16 @@ import {
 //Importe de componentes que son los diferentes filtros extra
 import { TriStateComponent } from "./drawerFilters/TriStateComponent";
 import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout";
+import { FourStateComponent } from "./drawerFilters/FourStateComponent";
 
 //Tipos utilizados en el state del primer filtro ya que sino typescript inferiria que el state inicial es solo un string y no un array
 type FiltrosState = "Todos" | "Si" | "No";
-type GeneroTypeState = "solo-hombres" | "solo-mujeres" | "mixto";
+type GeneroTypeState =  "todos" | "solo-hombres" | "solo-mujeres" | "mixto";
 type Direction = "prev" | "next";
 
 //Constante utilizada para saber los diferentes states y hacer las respectivas comparaciones
 const estados: FiltrosState[] = ["Todos", "Si", "No"];
-const estadosGenero: GeneroTypeState[] = ["solo-hombres", "solo-mujeres", "mixto"];
+const estadosGenero: GeneroTypeState[] = ["todos", "solo-mujeres", "solo-hombres", "mixto"];
 
 type TipodeArriendoSearchProps = {
     filtros?: string[];
@@ -69,14 +70,14 @@ type TipodeArriendoSearchProps = {
     setState: (value: GeneroTypeState) => void,
     direction: Direction
   ) {
-    const index = estadosGenero.indexOf(current);
+    const indexGenero = estadosGenero.indexOf(current);
 
-    if (direction === "next" && index < estados.length - 1) {
-      setState(estadosGenero[index + 1]);
+    if (direction === "next" && indexGenero < estadosGenero.length - 1) {
+      setState(estadosGenero[indexGenero + 1]);
     }
 
-    if (direction === "prev" && index > 0) {
-      setState(estadosGenero[index - 1]);
+    if (direction === "prev" && indexGenero > 0) {
+      setState(estadosGenero[indexGenero - 1]);
     }
   }
 
@@ -96,7 +97,7 @@ type TipodeArriendoSearchProps = {
   if (slug === "solo-hombres" || slug === "solo-mujeres" || slug === "mixto") {
     return slug;
   }
-  return "mixto"; // valor por defecto
+  return "todos"; // valor por defecto
 }
 
 
@@ -191,6 +192,7 @@ export function FiltersDrawer({
     const arregloRopaSlugActual = paramsClasificados?.arregloRopa?.slug;
     const bañoPrivadoSlugActual = paramsClasificados?.bañoPrivado?.slug;
     const arregloHabitacionSlugActual = paramsClasificados?.arregloHabitacion?.slug;
+    const generoSlugActual = paramsClasificados?.genero?.slug;
 
 
     let newFiltros = [...(filtros || [])];
@@ -226,6 +228,8 @@ export function FiltersDrawer({
       Todos: null,
     }, newFiltros);
 
+    newFiltros = actualizarFiltrosGenero(genero, generoSlugActual, newFiltros);
+
     setOpen(false);
 
   
@@ -256,6 +260,7 @@ export function FiltersDrawer({
           <TriStateComponent onClick={onClickArregloRopa} goal={arregloRopa} label="ARREGLO DE ROPA"/>  
           <TriStateComponent onClick={onClickBañoPrivado} goal={bañoPrivado} label="BAÑO PRIVADO"/>  
           <TriStateComponent onClick={onClickArregloHabitacion} goal={arregloHabitacion} label="ARREGLO DE HABITACION"/>  
+          <FourStateComponent onClick={onClickGenero} goal={genero} label="ARREGLO DE HABITACION"/>  
 
           
 

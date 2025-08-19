@@ -47,3 +47,36 @@ export function actualizarFiltros(
 
   return filtros;
 }
+
+
+
+// ---- función utilitaria ---- para el componente FiltersDrawer.tsx
+export function actualizarFiltrosGenero(
+  nuevoGenero: "todos" | "solo-hombres" | "solo-mujeres" | "mixto",
+  slugActual: string | undefined,
+  filtros: string[]
+): string[] {
+  if (nuevoGenero === "todos") {
+    // si selecciona "todos", se elimina el slug actual si existe
+    if (slugActual) {
+      const index = filtros.indexOf(slugActual);
+      if (index !== -1) {
+        filtros.splice(index, 1);
+      }
+    }
+  } else {
+    // si selecciona otro género distinto de "todos"
+    if (slugActual) {
+      const index = filtros.indexOf(slugActual);
+      if (index !== -1) {
+        filtros[index] = nuevoGenero; // reemplazar
+      } else {
+        filtros.push(nuevoGenero); // agregar
+      }
+    } else {
+      filtros.push(nuevoGenero); // agregar
+    }
+  }
+
+  return filtros;
+}
