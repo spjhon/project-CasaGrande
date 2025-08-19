@@ -18,17 +18,85 @@ tipo:
 
 ### Search Params
 
-- Amoblado o sin amoblar
-- Alimentacion o sin alimentar
-- Arreglo de ropa o sin arreglo de ropa
-- Baño privado o baño compartido
-- Tiempo del contrato
+- Amoblado o sin amoblar - SELECCION DUAL
+- Alimentacion o sin alimentar - SELECCION DUAL
+- Arreglo de ropa o sin arreglo de ropa - SELECCION DUAL
+- Baño privado o baño compartido - SELECCION DUAL
+- arreglo de habitacion o sin arreglo de habitacion - SELECCION DUAL
+- genero preferido: solo hombres, solo mujeres, mixto - SELECCION TRIPLE
+- Tiempo minimo del contratoS
 - Estrato
 - Precio
-- Empleada privada o compartida y cada cuanto
-- Mascotas
-- Universidad cercana
-- Parqueadero o sin parqueadero
-- Casa familiar o solo habitaciones
+- Mascotas - SELECCION MULTIPLE
+- Parqueadero o sin parqueadero - SELECCION MULTIPLE
+
+📌 Opciones de filtros adicionales
+
+Servicios incluidos
+
+Internet / WiFi EL PODER DE LOS TAGS RADICA EN QUE SI NO SE SELCCIONA, NO QUIERE DECIR QUE ESTA BUSCANDO SIN WIFI SINO QUE NO IMPORTA SI TIENE WIFI O NO, SI LO MARCA ES POR QUE ESTA BUSCANDO LO QUE TENGAN MARCADOS ESPECIFICAMENTE WIFI, OSEA QUE LA OPCION DE BUSCAR ESPECIFICAMENTE LOS QUE NO TENGAN WIFI QUEDA DESCARTADA
+
+Energía
+
+Agua
+
+Gas
+
+Aseo de zonas comunes
+(pueden ser tipo selección múltiple)
+
+Tipo de habitación
+
+Individual
+
+Compartida
+
+Cercanía a transporte público
+
+Estación de bus / TransMilenio / Metro cercano
+
+CicloRutas / facilidad para bicicleta
+
+Zonas comunes disponibles
+
+Cocina compartida
+
+Sala de estudio
+
+Zona de lavandería
+
+Gimnasio / zonas verdes
+
+Restricciones
+
+No fumadores / fumadores
+
+Horarios de entrada/salida (hay casas que ponen toques de queda)
+
+Tamaño de la habitación
+
+Pequeña / mediana / grande
+
+O incluso en m²
+
+Nivel de ruido / ambiente (para estudiantes que necesitan tranquilidad)
+
+Ambiente tranquilo
+
+Ambiente social / más compartido
+
+Modalidad de pago
+
+Mensual
+
+Trimestral
+
+Semestral
+
+Amigos / visitas
+
+Permite visitas
+
+No permite visitas
 
 ### Tags

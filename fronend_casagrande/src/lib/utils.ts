@@ -14,3 +14,36 @@ export const slugify = (text: string) =>
     .replace(/ñ/g, "n") // Reemplaza ñ
     .replace(/[^a-z0-9]+/g, "-") // Reemplaza espacios y caracteres especiales por guiones
     .replace(/^-+|-+$/g, ""); // Elimina guiones al inicio/final
+
+
+    // ---- función utilitaria ---- para el componente FiltersDrawer.tsx
+export function actualizarFiltros(
+  estado: "Si" | "No" | "Todos",
+  slugActual: string | undefined,
+  mapping: { Si: string; No: string; Todos: null },
+  filtros: string[]
+): string[] {
+  const nuevoSlug = mapping[estado];
+
+  if (nuevoSlug) {
+    if (slugActual) {
+      const index = filtros.indexOf(slugActual);
+      if (index !== -1) {
+        filtros[index] = nuevoSlug;
+      } else {
+        filtros.push(nuevoSlug);
+      }
+    } else {
+      filtros.push(nuevoSlug);
+    }
+  } else {
+    if (slugActual) {
+      const index = filtros.indexOf(slugActual);
+      if (index !== -1) {
+        filtros.splice(index, 1);
+      }
+    }
+  }
+
+  return filtros;
+}

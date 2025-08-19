@@ -111,7 +111,7 @@ const ciudades = ciudadesColombia.flatMap((dep) =>
  *  }
  * 
 */
-export type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado"
+export type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion"
 
 export type ResultadoFiltro = {
   grupo: categoriasAbuscar;
@@ -176,13 +176,50 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
       return;
     }
 
-  const matchAmoblado = filtrosExtraJson.find(u => u.slug === filtro);
+  const matchAmoblado = filtrosExtraJson.find(u => (u.slug === filtro) && (u.label === "Amoblado" || u.label === "Sin Amoblar"));
     if (matchAmoblado && !resultado.amoblado) {
-      resultado.amoblado = { grupo: "universidad", slug: matchAmoblado.slug, label: matchAmoblado.label };
+      resultado.amoblado = { grupo: "amoblado", slug: matchAmoblado.slug, label: matchAmoblado.label };
+      usados.add(filtro);
+      
+      return;
+    }
+
+    
+
+    const matchAlimentacion = filtrosExtraJson.find(u => u.slug === filtro && (u.label === "Con Alimentacion" || u.label === "Sin Alimentacion"));
+    if (matchAlimentacion && !resultado.alimentacion) {
+      resultado.alimentacion = { grupo: "alimentacion", slug: matchAlimentacion.slug, label: matchAlimentacion.label };
+      usados.add(filtro);
+      
+      return;
+    }
+
+
+
+    const matchArregloRopa = filtrosExtraJson.find(u => u.slug === filtro && (u.label === "Con Arreglo de Ropa" || u.label === "Sin Arreglo de Ropa"));
+    if (matchArregloRopa && !resultado.arregloRopa) {
+      resultado.arregloRopa = { grupo: "arregloRopa", slug: matchArregloRopa.slug, label: matchArregloRopa.label };
       usados.add(filtro);
       return;
     }
 
+  
+    const matchBañoPrivado = filtrosExtraJson.find(u => u.slug === filtro && (u.label === "Con Baño Privado" || u.label === "Sin Baño Privado"));
+    if (matchBañoPrivado && !resultado.bañoPrivado) {
+      resultado.bañoPrivado = { grupo: "bañoPrivado", slug: matchBañoPrivado.slug, label: matchBañoPrivado.label };
+      usados.add(filtro);
+      return;
+    }
+
+
+
+    const matchArregloHabitacon = filtrosExtraJson.find(u => u.slug === filtro && (u.label === "Arreglo de Habitacion" || u.label === "Sin Arreglo de Habitacion"));
+    if (matchArregloHabitacon && !resultado.arregloHabitacion) {
+      resultado.arregloHabitacion = { grupo: "arregloHabitacion", slug: matchArregloHabitacon.slug, label: matchArregloHabitacon.label };
+      usados.add(filtro);
+      return;
+    }
+    
   });
 
 
@@ -205,6 +242,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
   const filtros = (await params).filtros || [];
  
+  
 
   const paramsClasificados = (clasificarParams(filtros))
 
@@ -231,12 +269,12 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
           <h1>Parámetros de la URL:</h1>
           <ul>
-  {Object.values(paramsClasificados).map((item, index) => (
-    <li key={index}>
-      {index + 1}. {item.label}
-    </li>
-  ))}
-</ul>
+            {Object.values(paramsClasificados).map((item, index) => (
+              <li key={index}>
+                {index + 1}. {item.label}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="flex gap-10 items-center">
@@ -277,7 +315,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
           <FiltersDrawer
             filtros={filtros}
             paramsClasificados = {paramsClasificados}
-            filtrosExtraJson = {filtrosExtraJson}
+            
             >
             
             

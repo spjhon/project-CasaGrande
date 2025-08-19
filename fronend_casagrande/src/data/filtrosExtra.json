@@ -28,6 +28,26 @@
     "id": "6",
     "label": "Sin Arreglo de Ropa",
     "slug": "sin-arreglo-ropa"
+  },
+  {
+    "id": "7",
+    "label": "Con Baño Privado",
+    "slug": "con-bano-privado"
+  },
+  {
+    "id": "8",
+    "label": "Sin Baño Privado",
+    "slug": "sin-bano-privado"
+  },
+  {
+    "id": "9",
+    "label": "Arreglo de Habitacion",
+    "slug": "arreglo-habitacion"
+  },
+  {
+    "id": "10",
+    "label": "Sin Arreglo de Habitacion",
+    "slug": "sin-arreglo-habitacion"
   }
 
 ]
