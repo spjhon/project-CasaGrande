@@ -27,11 +27,12 @@ import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...
 
 //Tipos utilizados en el state del primer filtro ya que sino typescript inferiria que el state inicial es solo un string y no un array
 type FiltrosState = "Todos" | "Si" | "No";
+type GeneroTypeState = "solo-hombres" | "solo-mujeres" | "mixto";
 type Direction = "prev" | "next";
 
 //Constante utilizada para saber los diferentes states y hacer las respectivas comparaciones
 const estados: FiltrosState[] = ["Todos", "Si", "No"];
-
+const estadosGenero: GeneroTypeState[] = ["solo-hombres", "solo-mujeres", "mixto"];
 
 type TipodeArriendoSearchProps = {
     filtros?: string[];
@@ -63,6 +64,23 @@ type TipodeArriendoSearchProps = {
   }
 
 
+  function onClickEstadoGenero(
+    current: GeneroTypeState,
+    setState: (value: GeneroTypeState) => void,
+    direction: Direction
+  ) {
+    const index = estadosGenero.indexOf(current);
+
+    if (direction === "next" && index < estados.length - 1) {
+      setState(estadosGenero[index + 1]);
+    }
+
+    if (direction === "prev" && index > 0) {
+      setState(estadosGenero[index - 1]);
+    }
+  }
+
+
 
   function getEstadoInicial(
     slug: string | undefined,
@@ -72,6 +90,14 @@ type TipodeArriendoSearchProps = {
     if (slug === opciones.no) return "No";
     return "Todos";
   }
+
+
+  function getGeneroInicial(slug: string | undefined): GeneroTypeState {
+  if (slug === "solo-hombres" || slug === "solo-mujeres" || slug === "mixto") {
+    return slug;
+  }
+  return "mixto"; // valor por defecto
+}
 
 
 /**
@@ -114,11 +140,14 @@ export function FiltersDrawer({
     no: "sin-arreglo-habitacion",
   });
 
+   const generoEstadoInicial = getGeneroInicial(paramsClasificados?.genero?.slug)
+
   const [amoblado, setAmoblado] = useState<FiltrosState>(amobladoEstadoInicial);
   const [alimentacion, setAlimentacion] = useState<FiltrosState>(alimentacionEstadoInicial);
   const [arregloRopa, setArregloRopa] = useState<FiltrosState>(arregloRopaEstadoInicial);
   const [bañoPrivado, setBañoPrivado] = useState<FiltrosState>(bañoPrivadoEstadoInicial);
   const [arregloHabitacion, setArregloHabitacion] = useState<FiltrosState>(arregloHabitacionEstadoInicial);
+  const [genero, setGenero] = useState<GeneroTypeState>(generoEstadoInicial);
 
 
   //Este es el state para abrir y cerrar el dropdown
@@ -151,6 +180,10 @@ export function FiltersDrawer({
     onClickEstado(arregloHabitacion, setArregloHabitacion, direction);
   };
 
+     // Esta función es la que vas a pasar como prop
+  const onClickGenero = (direction: Direction) => {
+    onClickEstadoGenero(genero, setGenero, direction);
+  };
 
   const handleSubmit = () => {
     const amobladoSlugActual = paramsClasificados?.amoblado?.slug;

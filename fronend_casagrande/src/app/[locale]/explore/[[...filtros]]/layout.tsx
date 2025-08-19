@@ -111,7 +111,7 @@ const ciudades = ciudadesColombia.flatMap((dep) =>
  *  }
  * 
 */
-export type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion"
+export type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero"
 
 export type ResultadoFiltro = {
   grupo: categoriasAbuscar;
@@ -219,7 +219,14 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
       usados.add(filtro);
       return;
     }
-    
+
+        const matchGenero = filtrosExtraJson.find(u => u.slug === filtro && (u.label === "Solo Hombres" || u.label === "Solo Mujeres" || u.label === "Mixto"));
+    if (matchGenero && !resultado.genero) {
+      resultado.genero = { grupo: "genero", slug: matchGenero.slug, label: matchGenero.label };
+      usados.add(filtro);
+      return;
+    }
+
   });
 
 

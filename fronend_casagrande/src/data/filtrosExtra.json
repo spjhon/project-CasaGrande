@@ -48,6 +48,21 @@
     "id": "10",
     "label": "Sin Arreglo de Habitacion",
     "slug": "sin-arreglo-habitacion"
+  },
+  {
+    "id": "11",
+    "label": "Solo Hombres",
+    "slug": "solo-hombres"
+  },
+  {
+    "id": "12",
+    "label": "Solo Mujeres",
+    "slug": "solo-mujeres"
+  },
+  {
+    "id": "13",
+    "label": "Mixto",
+    "slug": "mixto"
   }
 
 ]
