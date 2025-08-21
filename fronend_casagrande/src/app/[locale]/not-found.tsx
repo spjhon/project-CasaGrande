@@ -1,6 +1,6 @@
 "use client";
 
-import cavernicola from "../../../public/dribbble_1.gif";
+import cavemenImage from "../../../public/dribbble_1.gif";
 import Image from "next/image";
 import styles from "./notFound.module.css";
 
@@ -14,7 +14,7 @@ export default function NotFound() {
       
      <>
         <div className={styles.container}>
-          <Image className={styles.picture} src={cavernicola} alt="Cavernicola" />
+          <Image className={styles.picture} src={cavemenImage} alt="Cavemen" />
         </div>
         <h1 className={styles.notFound}>Page Not Found / Página No Encontrada</h1>
       

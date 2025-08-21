@@ -14,7 +14,7 @@ export default async function FiltrosPage({
 }) {
 
 
-const filtros = (await params).filtros || [];
+const paramURLFilters = (await params).filtros || [];
 
 
 

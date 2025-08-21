@@ -242,34 +242,45 @@ export function FiltersDrawer({
 
 
       <DrawerContent>
+        
 
-        <div className="mx-auto w-full max-w-sm">
-
-          <DrawerHeader>
-            <DrawerTitle>Filtros</DrawerTitle>
-            <DrawerDescription>Personaliza tu búsqueda.</DrawerDescription>
-          </DrawerHeader>
-
-
-          <TriStateComponent onClick={onClickAmoblado} goal={amoblado} label="CUARTO AMOBLADO"/>  
-          <TriStateComponent onClick={onClickAlimentacion} goal={alimentacion} label="ALIMENTACION"/>  
-          <TriStateComponent onClick={onClickArregloRopa} goal={arregloRopa} label="ARREGLO DE ROPA"/>  
-          <TriStateComponent onClick={onClickBañoPrivado} goal={bañoPrivado} label="BAÑO PRIVADO"/>  
-          <TriStateComponent onClick={onClickArregloHabitacion} goal={arregloHabitacion} label="ARREGLO DE HABITACION"/>  
-          <FourStateComponent onClick={onClickGenero} goal={genero} label="GENERO"/>  
-
-          
-          <DrawerFooter>
-            <Button onClick={handleSubmit}>Aplicar Filtros</Button>
-            <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
+        <DrawerHeader>
+          <DrawerTitle>Filtros</DrawerTitle>
+          <DrawerDescription>Personaliza tu búsqueda.</DrawerDescription>
+        </DrawerHeader>
 
 
-        </div>
+        <div className="flex overflow-y-auto flex-wrap">
+
+          <div className="mx-auto w-full max-w-sm">
+            <FourStateComponent onClick={onClickGenero} goal={genero} label="GENERO"/>  
+          </div>
+
+          <div className="mx-auto w-full max-w-sm">
+            <TriStateComponent onClick={onClickAmoblado} goal={amoblado} label="CUARTO AMOBLADO"/>  
+            <TriStateComponent onClick={onClickAlimentacion} goal={alimentacion} label="ALIMENTACION"/>  
+            <TriStateComponent onClick={onClickArregloRopa} goal={arregloRopa} label="ARREGLO DE ROPA"/>  
+            <TriStateComponent onClick={onClickBañoPrivado} goal={bañoPrivado} label="BAÑO PRIVADO"/>  
+            <TriStateComponent onClick={onClickArregloHabitacion} goal={arregloHabitacion} label="ARREGLO DE HABITACION"/>  
+          </div> 
+
+          <div className="mx-auto w-full max-w-sm">
+            <FourStateComponent onClick={onClickGenero} goal={genero} label="GENERO"/>  
+          </div>
+
+        </div>       
+
+
+        <DrawerFooter className="mx-auto w-full max-w-sm">
+          <Button onClick={handleSubmit}>Aplicar Filtros</Button>
+          <DrawerClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
+        
 
       </DrawerContent>
+
     </Drawer>
   );
 }
