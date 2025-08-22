@@ -6,7 +6,7 @@ import { useState } from "react";
 //Importacion del router para la navegacion desde i18n
 import { useRouter } from "@/i18n/navigation"
 
-import {actualizarFiltros, actualizarFiltrosGenero} from "@/lib/utils"
+import {updateURLFromFilters, actualizarFiltrosGenero} from "@/lib/utils"
 
 //importe de primitivos
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,7 @@ import {
 
 //Importe de componentes que son los diferentes filtros extra
 import { TriStateComponent } from "./drawerFilters/TriStateComponent";
-import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout";
+import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout";
 import { FourStateComponent } from "./drawerFilters/FourStateComponent";
 
 
@@ -40,8 +40,8 @@ const estados: FiltrosState[] = ["Todos", "Si", "No"];
 const estadosGenero: GeneroTypeState[] = ["todos", "solo-mujeres", "solo-hombres", "mixto"];
 
 type TipodeArriendoSearchProps = {
-  filtros?: string[];
-  paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
+  urlFilters?: string[];
+  paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
 };
 
 
@@ -124,7 +124,7 @@ const FILTERS_CONFIG = {
  * @returns Retorna el drawer con todos sus hijos que son filtros y con el boton de submit que le da un .push() a la url
 */
 export function FiltersDrawer({ 
-  filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */,
+  urlFilters = []/*Valor por defecto para un array vacio en caso de ser undefined */,
   paramsClasificados,
   }: TipodeArriendoSearchProps) {
 
@@ -210,14 +210,14 @@ export function FiltersDrawer({
   //FUNCION QUE SE ENCARGA DE COGER LOS FILTROS Y ORGANIZARLOS PARA HACER EL PUSH FINAL A LA URL
   // Versión refactorizada simple
   const handleSubmit = () => {
-    let newFiltros = [...(filtros || [])];
+    let newFiltros = [...(urlFilters || [])];
 
     // Aplicar filtros regulares
-    newFiltros = actualizarFiltros(amoblado, paramsClasificados?.amoblado?.slug, FILTERS_CONFIG.amoblado, newFiltros);
-    newFiltros = actualizarFiltros(alimentacion, paramsClasificados?.alimentacion?.slug, FILTERS_CONFIG.alimentacion, newFiltros);
-    newFiltros = actualizarFiltros(arregloRopa, paramsClasificados?.arregloRopa?.slug, FILTERS_CONFIG.arregloRopa, newFiltros);
-    newFiltros = actualizarFiltros(bañoPrivado, paramsClasificados?.bañoPrivado?.slug, FILTERS_CONFIG.bañoPrivado, newFiltros);
-    newFiltros = actualizarFiltros(arregloHabitacion, paramsClasificados?.arregloHabitacion?.slug, FILTERS_CONFIG.arregloHabitacion, newFiltros);
+    newFiltros = updateURLFromFilters(amoblado, paramsClasificados?.amoblado?.slug, FILTERS_CONFIG.amoblado, newFiltros);
+    newFiltros = updateURLFromFilters(alimentacion, paramsClasificados?.alimentacion?.slug, FILTERS_CONFIG.alimentacion, newFiltros);
+    newFiltros = updateURLFromFilters(arregloRopa, paramsClasificados?.arregloRopa?.slug, FILTERS_CONFIG.arregloRopa, newFiltros);
+    newFiltros = updateURLFromFilters(bañoPrivado, paramsClasificados?.bañoPrivado?.slug, FILTERS_CONFIG.bañoPrivado, newFiltros);
+    newFiltros = updateURLFromFilters(arregloHabitacion, paramsClasificados?.arregloHabitacion?.slug, FILTERS_CONFIG.arregloHabitacion, newFiltros);
     
     // Filtro especial de género
     newFiltros = actualizarFiltrosGenero(genero, paramsClasificados?.genero?.slug, newFiltros);

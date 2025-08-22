@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils"
 import { useRouter } from "@/i18n/navigation"
 
 //Importacion de los types de los parametros ya clasificados desde el layout donde esta la funcion
-import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout"
+import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 //Types
 
@@ -42,8 +42,8 @@ type tipodeArriendoOption = {
 
 
 type TipodeArriendoSearchProps = {
-    filtros?: string[];
-    paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
+    urlFilters?: string[];
+    paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
     tipodeArriendo?: tipodeArriendoOption[];
 };
 
@@ -57,7 +57,7 @@ type TipodeArriendoSearchProps = {
  * @returns Un dropdown con los tipos de arriendos listas para buscar y el tipo de arriendo seleccionado en caso de haberlo
  */
 export function SearchType({ 
-  filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */,
+  urlFilters = []/*Valor por defecto para un array vacio en caso de ser undefined */,
   paramsClasificados,
   tipodeArriendo = []
 }: TipodeArriendoSearchProps) {
@@ -103,7 +103,7 @@ export function SearchType({
     setTipo(nuevaSeleccion);
     setOpen(false);
 
-    const newFiltros = [...(filtros || [])];
+    const newFiltros = [...(urlFilters || [])];
 
     if (tipoSlugActual) {
       const index = newFiltros.indexOf(tipoSlugActual);

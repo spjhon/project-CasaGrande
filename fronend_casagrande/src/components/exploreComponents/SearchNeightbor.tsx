@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils"
 
 //Importacion del router para la navegacion desde i18n
 import { useRouter } from "@/i18n/navigation"
-import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout"
+import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 
 //Types
@@ -42,14 +42,14 @@ type barriosdeColombiaJson = {
 }
 
 type NeightborSearchProps = {
-  filtros?: string[];
-  paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
+  urlFilters?: string[];
+  paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
   barriosdeColombiaJson?: barriosdeColombiaJson[]
 };
 
 let barriosdeColombiaJsonARenderizar = []
 
-export function SearchNeightbor({ filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */,
+export function SearchNeightbor({ urlFilters = []/*Valor por defecto para un array vacio en caso de ser undefined */,
   paramsClasificados,
   barriosdeColombiaJson = []
  }: NeightborSearchProps) {
@@ -108,7 +108,7 @@ if (ciudadSlug) {
   const handleOnSelect = (currentValue: string) => {
     const selectedBarrioSlug = paramsClasificados?.barrio?.slug;
     const nuevaSeleccion = currentValue === selectedBarrioSlug ? "" : currentValue;
-    const newFiltros = [...filtros]; 
+    const newFiltros = [...urlFilters]; 
     setBarrio(nuevaSeleccion);
     setOpen(false);
 

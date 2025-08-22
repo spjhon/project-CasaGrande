@@ -8,7 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout";
+import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout";
 
 type tipodeArriendoOption = {
   id: string
@@ -18,16 +18,16 @@ type tipodeArriendoOption = {
 
 type paramsClasificadosProps = {
 filtros?: string[];
-    paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
+    paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
     tipodeArriendo?: tipodeArriendoOption[];
 }
 
 export function BreadcrumbWithCustomSeparator({ paramsClasificados }: paramsClasificadosProps) {
   // Convertimos el objeto a un array manteniendo el orden de categorías
-  const orderedKeys: categoriasAbuscar[] = ["tipo", "ciudad", "barrio", "universidad",];
+  const orderedKeys: categoriesToSearch[] = ["tipo", "ciudad", "barrio", "universidad",];
   const items = orderedKeys
     .map((key) => paramsClasificados?.[key])
-    .filter((item): item is ResultadoFiltro => Boolean(item));
+    .filter((item): item is finalFilters => Boolean(item));
 
   return (
     <Breadcrumb>

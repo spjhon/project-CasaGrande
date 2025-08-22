@@ -16,8 +16,10 @@ export const slugify = (text: string) =>
     .replace(/^-+|-+$/g, ""); // Elimina guiones al inicio/final
 
 
+
+    
     // ---- función utilitaria ---- para el componente FiltersDrawer.tsx
-export function actualizarFiltros(
+export function updateURLFromFilters(
   estado: "Si" | "No" | "Todos",
   slugActual: string | undefined,
   mapping: { Si: string; No: string; Todos: null },

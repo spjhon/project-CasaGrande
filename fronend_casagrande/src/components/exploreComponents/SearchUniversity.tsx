@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils"
 
 //Importacion del router para la navegacion desde i18n
 import { useRouter } from "@/i18n/navigation"
-import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout"
+import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 
 //Types
@@ -44,14 +44,14 @@ type UniversidadesdeColombiaJson = {
 }
 
 type UniversidadSearchProps = {
-  filtros?: string[];
-  paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
+  urlFilters?: string[];
+  paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
   universidadesdeColombiaJson?: UniversidadesdeColombiaJson[]
 };
 
 let universidadesdeColombiaJsonARenderizar = []
 
-export function SearchUniversity({ filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */,
+export function SearchUniversity({ urlFilters = []/*Valor por defecto para un array vacio en caso de ser undefined */,
   paramsClasificados,
   universidadesdeColombiaJson = []
  }: UniversidadSearchProps) {
@@ -110,7 +110,7 @@ if (ciudadSlug) {
   const handleOnSelect = (currentValue: string) => {
     const selectedUniversidadSlug = paramsClasificados?.universidad?.slug;
     const nuevaSeleccion = currentValue === selectedUniversidadSlug ? "" : currentValue;
-    const newFiltros = [...filtros]; 
+    const newFiltros = [...urlFilters]; 
     setUniversity(nuevaSeleccion);
     setOpen(false);
 

@@ -63,13 +63,13 @@ const citiesFlatened = colombianCitiesJson.flatMap((dep) =>
   dep.ciudades.map((city) => ({
     slug: `${slugify(city)}-${slugify(dep.departamento)}`,
     label: city,
-    departamento: dep.departamento,
+    department: dep.departamento,
   }))
 )
 
 
 /** Este comentario se hizo con chatgpt y la idea es que se describa la mejor forma para crear estos comentarios
- * Identifica y clasifica los filtros ingresados en la URL según su grupo correspondiente:
+ * Identifica y clasifica los filtros ingresados en la URL según su group correspondiente:
  * tipo de operación, ciudad, barrio o universidad.
  *
  * El orden de prioridad para hacer match es:
@@ -78,13 +78,13 @@ const citiesFlatened = colombianCitiesJson.flatMap((dep) =>
  * 3. Barrio
  * 4. Universidad
  *
- * Solo se permite un match por grupo. Si un filtro ya fue clasificado, se ignora en futuras iteraciones.
+ * Solo se permite un match por group. Si un urlFilter ya fue clasificado, se ignora en futuras iteraciones.
  *
  * @param filtros - Array de strings provenientes de los params de la URL, como ["manizales", "arriendo", "palogrande"].
  * @returns Un objeto parcial que puede contener hasta 4 claves (tipo, ciudad, barrio, universidad),
- * cada una con su valor correspondiente del tipo `ResultadoFiltro`.
+ * cada una con su valor correspondiente del tipo `finalFilters`.
  *
- * El tipo `Partial<Record<categoriasAbuscar, ResultadoFiltro>>` permite representar de forma segura
+ * El tipo `Partial<Record<categoriesToSearch, finalFilters>>` permite representar de forma segura
  * un conjunto incompleto de resultados de filtros clasificados.
  * 
  * Record quiere decir: Es una utilidad de TypeScript que crea un objeto cuyas claves son del 
@@ -105,20 +105,20 @@ const citiesFlatened = colombianCitiesJson.flatMap((dep) =>
  * @example
  * identificarFiltros(["manizales", "arriendo", "palogrande"])
  *  {
- *    ciudad: { grupo: "ciudad", slug: "manizales", label: "Manizales" },
- *    tipo: { grupo: "tipo", slug: "arriendo", label: "Arriendo" },
- *    barrio: { grupo: "barrio", slug: "palogrande", label: "Palogrande" }
+ *    ciudad: { group: "ciudad", slug: "manizales", label: "Manizales" },
+ *    tipo: { group: "tipo", slug: "arriendo", label: "Arriendo" },
+ *    barrio: { group: "barrio", slug: "palogrande", label: "Palogrande" }
  *  }
  * 
 */
-export type categoriasAbuscar = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero"
+export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero"
 
-export type ResultadoFiltro = {
-  grupo: categoriasAbuscar;
+export type finalFilters = {
+  group: categoriesToSearch;
   slug: string;
   label: string;
 }
-function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, ResultadoFiltro>> {
+function clasificarParams(filtros: string[]): Partial<Record<categoriesToSearch, finalFilters>> {
   
 
 
@@ -130,13 +130,13 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
     Le estás diciendo a TypeScript que este Set solo va a contener valores de tipo string.
   (Ej: "manizales", "arriendo", "palogrande"... etc.
   */
-  const usados = new Set<string>();
+  const used = new Set<string>();
 
-  const resultado: Partial<Record<categoriasAbuscar, ResultadoFiltro>> = {}
+  const result: Partial<Record<categoriesToSearch, finalFilters>> = {}
 
-  filtros.forEach((filtro) => {
+  filtros.forEach((urlFilter) => {
 
-    if (usados.has(filtro)) return;
+    if (used.has(urlFilter)) return;
 
     //Tu código sí tiene una prioridad implícita en el orden en que se buscan los matches:
     /**
@@ -146,84 +146,84 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
     - Luego con barrio
     - Y por último con universidad
     */
-    const matchTipo = typeOperationJson.find(t => t.slug === filtro); //Al menos con esto el slug tiene que ser totalmente exacto
-    //Lo que dice este if es que si existe un matchTipo y el resultado.tipo esta vacio (osea no existe) entonces se hace la escritura
-    if (matchTipo && !resultado.tipo) {
-      resultado.tipo = { grupo: "tipo", slug: matchTipo.slug, label: matchTipo.label };
-      //La finalidad de este set llamado usados es que si el filtro ya se proceso entonces se descarta en la proxima iteracion del forEach
-      usados.add(filtro);
+    const matchType = typeOperationJson.find(t => t.slug === urlFilter); //Al menos con esto el slug tiene que ser totalmente exacto
+    //Lo que dice este if es que si existe un matchType y el result.tipo esta vacio (osea no existe) entonces se hace la escritura
+    if (matchType && !result.tipo) {
+      result.tipo = { group: "tipo", slug: matchType.slug, label: matchType.label };
+      //La finalidad de este set llamado used es que si el urlFilter ya se proceso entonces se descarta en la proxima iteracion del forEach
+      used.add(urlFilter);
       return;
     }
 
-    const matchCiudad = citiesFlatened.find(c => c.slug === filtro);
-    if (matchCiudad && !resultado.ciudad) {
-      resultado.ciudad = { grupo: "ciudad", slug: matchCiudad.slug, label: matchCiudad.label };
-      usados.add(filtro);
+    const matchCity = citiesFlatened.find(c => c.slug === urlFilter);
+    if (matchCity && !result.ciudad) {
+      result.ciudad = { group: "ciudad", slug: matchCity.slug, label: matchCity.label };
+      used.add(urlFilter);
       return;
     }
 
-    const matchBarrio = neighborhoodJson.find(b => b.slug === filtro);
-    if (matchBarrio && !resultado.barrio) {
-      resultado.barrio = { grupo: "barrio", slug: matchBarrio.slug, label: matchBarrio.nombre };
-      usados.add(filtro);
+    const natchNeighbor = neighborhoodJson.find(b => b.slug === urlFilter);
+    if (natchNeighbor && !result.barrio) {
+      result.barrio = { group: "barrio", slug: natchNeighbor.slug, label: natchNeighbor.nombre };
+      used.add(urlFilter);
       return;
     }
 
-    const matchUniversidad = universitiesJson.find(u => u.slug === filtro);
-    if (matchUniversidad && !resultado.universidad) {
-      resultado.universidad = { grupo: "universidad", slug: matchUniversidad.slug, label: matchUniversidad.label };
-      usados.add(filtro);
+    const matchUniversity = universitiesJson.find(u => u.slug === urlFilter);
+    if (matchUniversity && !result.universidad) {
+      result.universidad = { group: "universidad", slug: matchUniversity.slug, label: matchUniversity.label };
+      used.add(urlFilter);
       return;
     }
 
-  const matchAmoblado = extraFiltersJson.find(u => (u.slug === filtro) && (u.label === "Amoblado" || u.label === "Sin Amoblar"));
-    if (matchAmoblado && !resultado.amoblado) {
-      resultado.amoblado = { grupo: "amoblado", slug: matchAmoblado.slug, label: matchAmoblado.label };
-      usados.add(filtro);
+  const matchFurnished = extraFiltersJson.find(u => (u.slug === urlFilter) && (u.label === "Amoblado" || u.label === "Sin Amoblar"));
+    if (matchFurnished && !result.amoblado) {
+      result.amoblado = { group: "amoblado", slug: matchFurnished.slug, label: matchFurnished.label };
+      used.add(urlFilter);
       
       return;
     }
 
     
 
-    const matchAlimentacion = extraFiltersJson.find(u => u.slug === filtro && (u.label === "Con Alimentacion" || u.label === "Sin Alimentacion"));
-    if (matchAlimentacion && !resultado.alimentacion) {
-      resultado.alimentacion = { grupo: "alimentacion", slug: matchAlimentacion.slug, label: matchAlimentacion.label };
-      usados.add(filtro);
+    const matchAlimentacion = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "Con Alimentacion" || u.label === "Sin Alimentacion"));
+    if (matchAlimentacion && !result.alimentacion) {
+      result.alimentacion = { group: "alimentacion", slug: matchAlimentacion.slug, label: matchAlimentacion.label };
+      used.add(urlFilter);
       
       return;
     }
 
 
 
-    const matchArregloRopa = extraFiltersJson.find(u => u.slug === filtro && (u.label === "Con Arreglo de Ropa" || u.label === "Sin Arreglo de Ropa"));
-    if (matchArregloRopa && !resultado.arregloRopa) {
-      resultado.arregloRopa = { grupo: "arregloRopa", slug: matchArregloRopa.slug, label: matchArregloRopa.label };
-      usados.add(filtro);
+    const matchArregloRopa = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "Con Arreglo de Ropa" || u.label === "Sin Arreglo de Ropa"));
+    if (matchArregloRopa && !result.arregloRopa) {
+      result.arregloRopa = { group: "arregloRopa", slug: matchArregloRopa.slug, label: matchArregloRopa.label };
+      used.add(urlFilter);
       return;
     }
 
   
-    const matchBañoPrivado = extraFiltersJson.find(u => u.slug === filtro && (u.label === "Con Baño Privado" || u.label === "Sin Baño Privado"));
-    if (matchBañoPrivado && !resultado.bañoPrivado) {
-      resultado.bañoPrivado = { grupo: "bañoPrivado", slug: matchBañoPrivado.slug, label: matchBañoPrivado.label };
-      usados.add(filtro);
+    const matchBañoPrivado = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "Con Baño Privado" || u.label === "Sin Baño Privado"));
+    if (matchBañoPrivado && !result.bañoPrivado) {
+      result.bañoPrivado = { group: "bañoPrivado", slug: matchBañoPrivado.slug, label: matchBañoPrivado.label };
+      used.add(urlFilter);
       return;
     }
 
 
 
-    const matchArregloHabitacon = extraFiltersJson.find(u => u.slug === filtro && (u.label === "Arreglo de Habitacion" || u.label === "Sin Arreglo de Habitacion"));
-    if (matchArregloHabitacon && !resultado.arregloHabitacion) {
-      resultado.arregloHabitacion = { grupo: "arregloHabitacion", slug: matchArregloHabitacon.slug, label: matchArregloHabitacon.label };
-      usados.add(filtro);
+    const matchArregloHabitacon = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "Arreglo de Habitacion" || u.label === "Sin Arreglo de Habitacion"));
+    if (matchArregloHabitacon && !result.arregloHabitacion) {
+      result.arregloHabitacion = { group: "arregloHabitacion", slug: matchArregloHabitacon.slug, label: matchArregloHabitacon.label };
+      used.add(urlFilter);
       return;
     }
 
-        const matchGenero = extraFiltersJson.find(u => u.slug === filtro && (u.label === "Solo Hombres" || u.label === "Solo Mujeres" || u.label === "Mixto"));
-    if (matchGenero && !resultado.genero) {
-      resultado.genero = { grupo: "genero", slug: matchGenero.slug, label: matchGenero.label };
-      usados.add(filtro);
+        const matchGenero = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "Solo Hombres" || u.label === "Solo Mujeres" || u.label === "Mixto"));
+    if (matchGenero && !result.genero) {
+      result.genero = { group: "genero", slug: matchGenero.slug, label: matchGenero.label };
+      used.add(urlFilter);
       return;
     }
 
@@ -231,7 +231,7 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
 
 
   
-  return resultado;
+  return result;
 }
 
 
@@ -247,11 +247,11 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriasAbuscar, 
 */
 export default async function ExploreLayout({children, params}:{params: Promise<{ filtros: string[] }>, children: React.ReactNode}) {
 
-  const filtros = (await params).filtros || [];
+  const urlFilters = (await params).filtros || [];
  
   
 
-  const paramsClasificados = (clasificarParams(filtros))
+  const paramsClasificados = (clasificarParams(urlFilters))
 
   /*
   OJO, EL PRIMER RENDER AL MONTAR EL COMPONENTE ES EN EL SERVIDOR, EL RESTO ES EN EL CLIENTE CUANDO SE USA "USE CLIENT"
@@ -289,7 +289,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
           <div>
 
             <SearchType
-              filtros={filtros} 
+              urlFilters={urlFilters} 
               paramsClasificados = {paramsClasificados} 
               tipodeArriendo={typeOperationJson}>
             </SearchType>
@@ -297,13 +297,13 @@ export default async function ExploreLayout({children, params}:{params: Promise<
             <div className="flex">
 
               <SearchCity 
-                filtros={filtros} 
+                urlFilters={urlFilters} 
                 paramsClasificados = {paramsClasificados} 
                 ciudades={citiesFlatened}>
               </SearchCity>
 
               <SearchNeightbor 
-                filtros={filtros} 
+                urlFilters={urlFilters} 
                 paramsClasificados = {paramsClasificados} 
                 barriosdeColombiaJson={neighborhoodJson}>
               </SearchNeightbor>
@@ -311,7 +311,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
             </div>
 
             <SearchUniversity
-              filtros={filtros} 
+              urlFilters={urlFilters} 
               paramsClasificados = {paramsClasificados} 
               universidadesdeColombiaJson={universitiesJson}>
             </SearchUniversity>
@@ -320,7 +320,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
           
           <FiltersDrawer
-            filtros={filtros}
+            urlFilters={urlFilters}
             paramsClasificados = {paramsClasificados}
             
             >

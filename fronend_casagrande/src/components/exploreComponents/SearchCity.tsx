@@ -33,19 +33,19 @@ import { cn } from "@/lib/utils"
 import { useRouter } from "@/i18n/navigation"
 
 //Importacion de los types desde el layout donde esta la funcion
-import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout"
+import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 //Types
 
 type CiudadOption = {
   slug: string
   label: string
-  departamento: string
+  department: string
 }
 
 type CitySearchProps = {
-  filtros?: string[];
-  paramsClasificados?: Partial<Record<categoriasAbuscar, ResultadoFiltro>>;
+  urlFilters?: string[];
+  paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
   ciudades?: CiudadOption[];
 };
 
@@ -59,7 +59,7 @@ type CitySearchProps = {
  * @returns Un dropdown con las ciduades listas para buscar y la ciudad seleccionada en caso de haberla 
  */
 export function SearchCity({ 
-  filtros = []/*Valor por defecto para un array vacio en caso de ser undefined */,
+  urlFilters = []/*Valor por defecto para un array vacio en caso de ser undefined */,
   paramsClasificados,
   ciudades = []
 }: CitySearchProps) {
@@ -115,7 +115,7 @@ export function SearchCity({
     setCity(nuevaSeleccion);
     setOpen(false);
 
-    const newFiltros = [...(filtros || [])];
+    const newFiltros = [...(urlFilters || [])];
 
     if (ciudadSlugActual) {
       const index = newFiltros.indexOf(ciudadSlugActual);
@@ -151,7 +151,7 @@ export function SearchCity({
           aria-expanded={open}
           className="w-[250px] justify-between"
           >
-            {selected ? `${selected.label}, ${selected.departamento}` : "Selecciona una ciudad..."}
+            {selected ? `${selected.label}, ${selected.department}` : "Selecciona una ciudad..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -176,11 +176,11 @@ export function SearchCity({
               <CommandGroup>
                 {filtered.map((ciudad) => (
                   <CommandItem
-                    key={`${ciudad.slug}-${ciudad.departamento}`}
+                    key={`${ciudad.slug}-${ciudad.department}`}
                     value={ciudad.label}
                     onSelect={() => handleOnSelect(ciudad.slug)}
                   >
-                    {ciudad.label}, {ciudad.departamento}
+                    {ciudad.label}, {ciudad.department}
                     <Check
                       className={cn(
                         "ml-auto",
