@@ -324,9 +324,8 @@ export default async function ExploreLayout({children, params}:{params: Promise<
             paramsClasificados = {paramsClasificados}
             
             >
-            
-            
           </FiltersDrawer>
+          
           
 
         </div>

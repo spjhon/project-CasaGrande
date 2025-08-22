@@ -63,6 +63,21 @@
     "id": "13",
     "label": "Mixto",
     "slug": "mixto"
+  },
+  {
+    "id": "14",
+    "label": "GATOS",
+    "slug": "gatos"
+  },
+  {
+    "id": "15",
+    "label": "PERROS PEQUEÑOS",
+    "slug": "perros-pequenos"
+  },
+  {
+    "id": "16",
+    "label": "PERROS GRANDES",
+    "slug": "perros-grandes"
   }
 
 ]

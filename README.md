@@ -25,11 +25,10 @@ tipo:
 - arreglo de habitacion o sin arreglo de habitacion - SELECCION DUAL
 - genero preferido: solo hombres, solo mujeres, mixto - SELECCION TRIPLE
 - Parqueadero o sin parqueadero - SELECCION MULTIPLE
+- Mascotas - SELECCION MULTIPLE
 - Tiempo minimo del contratoS
 - Estrato
 - Precio
-- Mascotas - SELECCION MULTIPLE
-
 
 📌 Opciones de filtros adicionales
 

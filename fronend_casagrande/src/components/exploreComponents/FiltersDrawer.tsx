@@ -25,6 +25,7 @@ import {
 import { TriStateComponent } from "./drawerFilters/TriStateComponent";
 import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout";
 import { FourStateComponent } from "./drawerFilters/FourStateComponent";
+import { PetSelect } from "./drawerFilters/PetSelect";
 
 
 
@@ -171,6 +172,8 @@ export function FiltersDrawer({
   const [arregloHabitacion, setArregloHabitacion] = useState<FiltrosState>(arregloHabitacionEstadoInicial);
   const [genero, setGenero] = useState<GeneroTypeState>(generoEstadoInicial);
 
+
+  
   //Este es el state para abrir y cerrar el dropdown
   const [open, setOpen] = useState(false)
 
@@ -266,6 +269,7 @@ export function FiltersDrawer({
 
           <div className="mx-auto w-full max-w-sm">
             <FourStateComponent onClick={onClickGenero} goal={genero} label="GENERO"/>  
+            <PetSelect />
           </div>
 
         </div>       
