@@ -33,18 +33,18 @@ import { PetSelect } from "./drawerFilters/PetSelect";
 //Tipos utilizados en el state del primer filtro ya que sino typescript inferiria que el state inicial es solo un string y no un array
 type FiltrosState = "Todos" | "Si" | "No";
 type GeneroTypeState =  "todos" | "solo-hombres" | "solo-mujeres" | "mixto";
+type PetTypeState = "gatos" | "perros-pequenos" | "perros-grandes" | "sin-mascotas" | null;
 type Direction = "prev" | "next";
 
-//Diferentes tipos de estados que puede tener selectedPets, que es el useState de este componente
-type PetTypeState = "gatos" | "perros-pequenos" | "perros-grandes" | null;
 
 //Constante utilizada para saber los diferentes states y hacer las respectivas comparaciones
 const estados: FiltrosState[] = ["Todos", "Si", "No"];
 const estadosGenero: GeneroTypeState[] = ["todos", "solo-mujeres", "solo-hombres", "mixto"];
+const estadosMascotas: PetTypeState[] = ["gatos", "perros-pequenos", "perros-grandes", "sin-mascotas"];
 
 type FiltersDrawerProps = {
   urlFilters?: string[];
-  paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
+  paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>> & {mascotas?: finalFilters[];};
 };
 
 
@@ -212,9 +212,8 @@ return "todos"; // valor por defecto
 }
 
 
-
 function getPetInicial(slug: string | undefined): PetTypeState {
-if (slug === "gatos" || slug === "perros-pequenos" || slug === "perros-grandes") {
+if (slug === "gatos" || slug === "perros-pequenos" || slug === "perros-grandes" || slug === "sin-mascotas") {
   return slug;
 }
 return null; // valor por defecto
@@ -276,7 +275,7 @@ export function FiltersDrawer({
   const generoEstadoInicial = getGeneroInicial(paramsClasificados?.genero?.slug)
 
   const mascotaEstadoInicial = getPetInicial(paramsClasificados?.mascota?.slug)
-
+consol
   //DEFINICION DE STATES
   const [amoblado, setAmoblado] = useState<FiltrosState>(amobladoEstadoInicial);
   const [alimentacion, setAlimentacion] = useState<FiltrosState>(alimentacionEstadoInicial);
@@ -284,7 +283,7 @@ export function FiltersDrawer({
   const [bañoPrivado, setBañoPrivado] = useState<FiltrosState>(bañoPrivadoEstadoInicial);
   const [arregloHabitacion, setArregloHabitacion] = useState<FiltrosState>(arregloHabitacionEstadoInicial);
   const [genero, setGenero] = useState<GeneroTypeState>(generoEstadoInicial);
-  const [selectedPets, setSelectedPets] = useState<PetTypeState[]>([mascotaEstadoInicial])
+  const [selectedPet, setSelectedPet] = useState<PetTypeState>(mascotaEstadoInicial)
 
   
   //Este es el state para abrir y cerrar el dropdown
@@ -382,7 +381,7 @@ export function FiltersDrawer({
 
           <div className="mx-auto w-full max-w-sm">
             <FourStateComponent onClick={onClickGenero} goal={genero} label="GENERO"/>  
-            <PetSelect />
+            <PetSelect selectedPet={selectedPet} setSelectedPet={setSelectedPet} />
           </div>
 
         </div>       

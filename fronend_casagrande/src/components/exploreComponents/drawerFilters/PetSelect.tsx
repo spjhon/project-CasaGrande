@@ -1,48 +1,42 @@
 "use client"
 
-//Importaciones de react
-import { useState } from "react"
-
-//Importaciones de componentes primitivos de shadcn
+// Importaciones de componentes primitivos de shadcn
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 
-//Diferentes tipos de estados que puede tener selectedPets, que es el useState de este componente
-type PetType = "gatos" | "perros-pequenos" | "perros-grandes";
+// Diferentes tipos de estados que puede tener selectedPet
+export type PetType = "gatos" | "perros-pequenos" | "perros-grandes" | "sin-mascotas"
 
-//Es el tipoado del object options el cual contiene los slugs y los labels, representa un array de objects
-type OptionsTypes = {
-  slug: PetType; 
+// Es el tipoado del object options el cual contiene los slugs y los labels
+type OptionType = {
+  slug: PetType
   label: string
-}[]
+}
 
-
+// Props que recibe el componente
+interface PetSelectProps {
+  selectedPet: PetType | null
+  setSelectedPet: (pet: PetType | null) => void
+}
 
 /**
- * 
- * @returns Retorna tres checkers controlados con el state utilizando el componente de chadcn
+ * Retorna checkboxes controlados con el state utilizando shadcn
+ * Solo permite seleccionar UNA opción a la vez
  */
-export function PetSelect() {
-
-  const [selectedPets, setSelectedPets] = useState<PetType[]>([])
-
-  const options: OptionsTypes  = [
+export function PetSelect({ selectedPet, setSelectedPet }: PetSelectProps) {
+  const options: OptionType[] = [
     { slug: "gatos", label: "GATOS" },
     { slug: "perros-pequenos", label: "PERROS PEQUEÑOS" },
     { slug: "perros-grandes", label: "PERROS GRANDES" },
+    { slug: "sin-mascotas", label: "NO SE ACEPTAN MASCOTAS" },
   ]
 
   /**
-   * Si el usuario marca (checked = true) → añadimos el id al array.
-   * Si el usuario desmarca (checked = false) → quitamos ese id del array.
-   * setSelectedPets se encarga de actualizar el estado.
-   * @param slug 
-   * @param checked 
+   * Si el usuario marca (checked = true) → guardamos solo ese slug.
+   * Si el usuario desmarca (checked = false) → reseteamos a null.
    */
   const togglePet = (slug: PetType, checked: boolean) => {
-    setSelectedPets((prevState) =>
-      checked ? [...prevState, slug] : prevState.filter((pet) => pet !== slug)
-    )
+    setSelectedPet(checked ? slug : null)
   }
 
   return (
@@ -56,7 +50,7 @@ export function PetSelect() {
         >
           <Checkbox
             id={option.slug}
-            checked={selectedPets.includes(option.slug)}
+            checked={selectedPet === option.slug}
             onCheckedChange={(checked) => togglePet(option.slug, checked === true)}
             className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white
               dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"

@@ -78,6 +78,11 @@
     "id": "16",
     "label": "PERROS GRANDES",
     "slug": "perros-grandes"
+  },
+  {
+    "id": "17",
+    "label": "NO SE PERMITEN MASCOTAS",
+    "slug": "sin-mascotas"
   }
 
 ]

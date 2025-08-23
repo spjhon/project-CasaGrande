@@ -54,11 +54,16 @@ import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
 //Los tipes utilizados en la funcion clasificarParams 
 export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota"
 
+
 export type finalFilters = {
   group: categoriesToSearch;
   slug: string;
   label: string;
 }
+
+type finalResultFromClasificarParams = Partial<Record<categoriesToSearch, finalFilters>>
+
+
 
 /**
  * Genera una lista "aplanada" de ciudades colombianas a partir del JSON base.
@@ -121,12 +126,8 @@ const citiesFlatened = colombianCitiesJson.flatMap((dep) =>
  *  }
  * 
 */
-
-
 function clasificarParams(filtros: string[]): Partial<Record<categoriesToSearch, finalFilters>> {
   
-
-
   /**
    * Un Set es una colección de valores únicos. Es como un array, pero:
    * - No permite elementos duplicados.
@@ -137,7 +138,7 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriesToSearch,
   */
   const used = new Set<string>();
 
-  const result: Partial<Record<categoriesToSearch, finalFilters>> = {}
+  const result: finalResultFromClasificarParams = {}
 
   filtros.forEach((urlFilter) => {
 
@@ -232,14 +233,13 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriesToSearch,
       return;
     }
 
-
-    const matchPets = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "GATOS" || u.label === "PERROS PEQUEÑOS" || u.label === "PERROS GRANDES"));
-    if (matchPets && !result.mascota) {
-      result.mascota = { group: "mascota", slug: matchPets.slug, label: matchPets.label };
-      
+    const matchMascota = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "GATOS" || u.label === "PERROS PEQUEÑOS" || u.label === "PERROS GRANDES" || u.label === "NO SE PERMITEN MASCOTAS"));
+    if (matchMascota && !result.genero) {
+      result.genero = { group: "mascota", slug: matchMascota.slug, label: matchMascota.label };
+      used.add(urlFilter);
       return;
     }
-
+    
   });
 
 
@@ -265,7 +265,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
   
 
   const paramsClasificados = (clasificarParams(urlFilters))
-
+  console.log(paramsClasificados)
   /*
   OJO, EL PRIMER RENDER AL MONTAR EL COMPONENTE ES EN EL SERVIDOR, EL RESTO ES EN EL CLIENTE CUANDO SE USA "USE CLIENT"
     if (typeof window !== "undefined") {
