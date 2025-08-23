@@ -1,0 +1,119 @@
+# Algo de teoria
+
+## Typescript
+
+                 ¿Qué quiero describir?
+                          │
+         ┌────────────────┴─────────────────┐
+         │                                   │
+     Una forma de objeto               Un tipo complejo
+   (estructura con propiedades)     (union, intersection, alias)
+         │                                   │
+   ┌─────┴─────┐                       ┌─────┴─────┐
+   │           │                       │           │
+¿Necesito     ¿No necesito        ¿Es una unión   ¿Es un alias simple
+extenderlo o   extenderlo /        de literales?   de otro tipo?
+fusionarlo?    es puntual?         │               │
+   │           │                   │               │
+   │           │                   │               │
+INTERFACE      TYPE             TYPE             TYPE
+
+📌 Regla de oro (sugerida por el equipo de TypeScript):
+
+Prefiere interface para objetos que probablemente crecerán o se extenderán.
+
+Usa type para cosas más “matemáticas” (uniones, alias, intersecciones).
+
+## Diferencia entre union e interseccion
+
+⚡️ Metáfora rápida:
+Unión (|) → menú de opciones → eliges una.
+Intersección (&) → checklist → necesitas todas.
+
+### Ejemplo
+
+```tsx
+type Pet = "gato" | "perro" | "loro";
+
+let myPet: Pet;
+
+myPet = "gato";   // ✅ válido
+myPet = "perro";  // ✅ válido
+myPet = "pez";    // ❌ Error: "pez" no está en la unión
+```
+
+```tsx
+type WithId = { id: string };
+type WithTimestamp = { createdAt: Date; updatedAt: Date };
+
+type User = WithId & WithTimestamp & { name: string };
+
+const user: User = {
+  id: "123",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  name: "Juan"
+}; // ✅ válido porque cumple con todo
+```
+
+## Algot de Teoria de Arquitectura
+
+bueno, vamos a la teoria, entonces un buen componente debe de tener las siguientes caracteristicas:
+
+- Legible.
+- Mantenible.
+- Testeable.
+- UI separada de funciones que hacen calculos de negocio.
+- Bien tipeado.
+- Bien comentado en lo posible con jsdoc.
+- Nombres de variables en ingles (los comentarios pueden ser en espanol).
+- Mapear lo que se pueda para no repetir utilizacion de funciones.
+
+Completame la lista por fa.
+
+Muy buena base la que armaste 💯.
+Te hago una lista más completa con los **principios y buenas prácticas** que suelen aplicarse para considerar un componente “sólido” en React/Next (y en general en frontend moderno):
+
+---
+
+### ✅ Características de un buen componente
+
+* **Legible** → código claro, con nombres autoexplicativos.
+* **Mantenible** → fácil de modificar sin romper otras partes.
+* **Testeable** → diseñado para que sus funciones sean probadas en aislamiento.
+* **UI separada de lógica de negocio** → el componente se encarga de la vista, y la lógica de negocio se abstrae (hooks, utils, servicios).
+* **Bien tipeado** → tipos explícitos (TypeScript) para props, estados y retornos.
+* **Bien comentado** → documentación breve y precisa (JSDoc para funciones/utilidades, comentarios claros cuando sea necesario).
+* **Nombres de variables y funciones en inglés** → estandarización en naming (los comentarios pueden ser en español).
+* **Evitar duplicación de código (DRY)** → mapear/extraer lógica repetida a helpers o hooks reutilizables.
+* **Props claras y tipadas** → evitar "props gigantes" o demasiado genéricas.
+* **Single Responsibility Principle (SRP)** → un componente debe hacer **una cosa bien definida**.
+* **Composición antes que herencia** → combinar componentes pequeños en vez de hacer uno gigante con muchas responsabilidades.
+* **Estados mínimos y necesarios** → no duplicar estados derivados (usar props o `useMemo` cuando corresponda).
+* **Pureza en la UI** → evitar efectos secundarios dentro del render, delegar a hooks/acciones.
+* **Accesibilidad (a11y)** → usar etiquetas correctas, roles, aria-\* si aplica.
+* **Consistencia en el estilo** → seguir la misma convención de formateo y estilo (Prettier/ESLint ayudan).
+* **Performance consciente** → evitar renders innecesarios (`React.memo`, `useMemo`, `useCallback` cuando de verdad hace falta).
+* **Errores y estados de carga manejados** → nunca dejar un fetch sin `loading` y `error handling`.
+* **Facilidad de testing** → estructura que permita probar lógica y UI por separado.
+* **Separación de capas** →
+
+  * UI Components → solo visuales.
+  * Hooks → lógica compartida.
+  * Utils/Services → cálculos y requests externos.
+* **Escalabilidad** → pensado para crecer sin tener que reescribir demasiado.
+* **Consistencia en tipado y datos** → usar enums, unions o constantes en vez de strings mágicos.
+
+---
+
+📌 En pocas palabras: **componente pequeño, claro, consistente, testeable y sin lógica duplicada**.
+
+---
+
+¿Quieres que te arme una **checklist práctica** (con ítems de verificación que puedas usar al revisar cada componente de tu proyecto)?
+
+## Trabajo a seguir con el componete de mascotas
+
+- Tener en cuenta que es un array de opciones y la forma en que funciona el layout para colcar los filtros en categorias, 
+es que solo se escoje uno por categoria, pero las mascotas es un array, falta la opcion de sin mascotas y tener cuadiad o ya que 
+las funciones de obtencion del state inical para los pets no esta funcionando bien

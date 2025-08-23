@@ -1,13 +1,32 @@
 "use client"
 
+//Importaciones de react
 import { useState } from "react"
+
+//Importaciones de componentes primitivos de shadcn
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 
-export function PetSelect() {
-  const [selectedPets, setSelectedPets] = useState<string[]>([])
+//Diferentes tipos de estados que puede tener selectedPets, que es el useState de este componente
+type PetType = "gatos" | "perros-pequenos" | "perros-grandes";
 
-  const options = [
+//Es el tipoado del object options el cual contiene los slugs y los labels, representa un array de objects
+type OptionsTypes = {
+  slug: PetType; 
+  label: string
+}[]
+
+
+
+/**
+ * 
+ * @returns Retorna tres checkers controlados con el state utilizando el componente de chadcn
+ */
+export function PetSelect() {
+
+  const [selectedPets, setSelectedPets] = useState<PetType[]>([])
+
+  const options: OptionsTypes  = [
     { slug: "gatos", label: "GATOS" },
     { slug: "perros-pequenos", label: "PERROS PEQUEÑOS" },
     { slug: "perros-grandes", label: "PERROS GRANDES" },
@@ -20,7 +39,7 @@ export function PetSelect() {
    * @param slug 
    * @param checked 
    */
-  const togglePet = (slug: string, checked: boolean) => {
+  const togglePet = (slug: PetType, checked: boolean) => {
     setSelectedPets((prevState) =>
       checked ? [...prevState, slug] : prevState.filter((pet) => pet !== slug)
     )

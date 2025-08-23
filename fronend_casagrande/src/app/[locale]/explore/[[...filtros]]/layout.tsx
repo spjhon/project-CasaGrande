@@ -1,3 +1,11 @@
+/**
+ * Este va a ser un componente que va a recopilar la url, la va a parsear y enviar los repectivos states a todos los hijos
+ * los 6 niveles de la url es:
+ * explorer(habitaciones)/tipo/ciudad/universidad/barrio
+ * y para las propiedades será explorer(habitaciones)/slug-de-la-habitacion/id
+ * y para los user seria explorer(habitaciones)/guest/id
+*/
+
 
 //Importacion de componentes
 import {SearchCity} from "@/components/exploreComponents/SearchCity";
@@ -36,29 +44,39 @@ import extraFiltersJson from "@/data/filtrosExtra.json"
 
 //Importacion de funciones utilitarias
 import { slugify } from "@/lib/utils";
+
+//Importacion de componentes utilizados en el return
 import { SearchNeightbor } from "@/components/exploreComponents/SearchNeightbor";
 import { SearchType } from "@/components/exploreComponents/SearchType";
 import { SearchUniversity } from "@/components/exploreComponents/SearchUniversity";
 import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
 
+//Los tipes utilizados en la funcion clasificarParams 
+export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota"
+
+export type finalFilters = {
+  group: categoriesToSearch;
+  slug: string;
+  label: string;
+}
+
 /**
- * Este va a ser un componente que va a recopilar la url, la va a parsear y enviar los repectivos states a todos los hijos
- * los 6 niveles de la url es:
- * explorer(habitaciones)/tipo/ciudad/universidad/barrio
- * y para las propiedades será explorer(habitaciones)/slug-de-la-habitacion/id
- * y para los user seria explorer(habitaciones)/guest/id
-*/
-
-
-
-
-/*estraccion de los datos del json
-Explicacion de este flatmap al final de este archivo
-La estructura final es algo asi por cada elemento del array final
-Object { city: "leticia", label: "Leticia", departamento: "Amazonas" }
-Object { city: "puerto nariño", label: "Puerto Nariño", departamento: "Amazonas" }
-como se puede observar el departamento esta repetido con el fin de tener un solo object por ciudad con su respectivo deptarta
-*/
+ * Genera una lista "aplanada" de ciudades colombianas a partir del JSON base.
+ * Cada objeto en el array final representa una ciudad junto con su departamento.
+ * Se añade un `slug` único que combina el nombre de la ciudad y el departamento.
+ * @constant
+ * @example
+ * Ejemplo de objetos en el array resultante:
+ * [
+ *   { slug: "leticia-amazonas", label: "Leticia", department: "Amazonas" },
+ *   { slug: "puerto-narino-amazonas", label: "Puerto Nariño", department: "Amazonas" }
+ * ]
+ *
+ * @remarks
+ * - Se utiliza `flatMap` para recorrer los departamentos y luego mapear sus ciudades.
+ * - El `department` se repite intencionalmente en cada objeto para mantener un formato consistente
+ *   y permitir búsquedas/filtrado más simples a nivel de ciudad.
+ */
 const citiesFlatened = colombianCitiesJson.flatMap((dep) =>
   dep.ciudades.map((city) => ({
     slug: `${slugify(city)}-${slugify(dep.departamento)}`,
@@ -68,7 +86,10 @@ const citiesFlatened = colombianCitiesJson.flatMap((dep) =>
 )
 
 
-/** Este comentario se hizo con chatgpt y la idea es que se describa la mejor forma para crear estos comentarios
+
+
+
+/**
  * Identifica y clasifica los filtros ingresados en la URL según su group correspondiente:
  * tipo de operación, ciudad, barrio o universidad.
  *
@@ -89,18 +110,7 @@ const citiesFlatened = colombianCitiesJson.flatMap((dep) =>
  * 
  * Record quiere decir: Es una utilidad de TypeScript que crea un objeto cuyas claves son del 
  * tipo Clave y cuyos valores son del tipo Valor.
- * 
- * Ejemplo básico:
  *
- * type Rol = "admin" | "editor" | "viewer";
- *
- * const permisos: Record<Rol, boolean> = {
- * admin: true,
- * editor: true,
- * viewer: false,
- *};
- *
- * → Aquí, TypeScript exige que existan todas las claves "admin", "editor", y "viewer" con valores boolean.
  * 
  * @example
  * identificarFiltros(["manizales", "arriendo", "palogrande"])
@@ -111,24 +121,19 @@ const citiesFlatened = colombianCitiesJson.flatMap((dep) =>
  *  }
  * 
 */
-export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero"
 
-export type finalFilters = {
-  group: categoriesToSearch;
-  slug: string;
-  label: string;
-}
+
 function clasificarParams(filtros: string[]): Partial<Record<categoriesToSearch, finalFilters>> {
   
 
 
   /**
    * Un Set es una colección de valores únicos. Es como un array, pero:
-    - No permite elementos duplicados.
-    - Tiene métodos como .add(), .has(), .delete().
-    - Su propósito es verificar presencia o ausencia rápida de valores.
-    Le estás diciendo a TypeScript que este Set solo va a contener valores de tipo string.
-  (Ej: "manizales", "arriendo", "palogrande"... etc.
+   * - No permite elementos duplicados.
+   * - Tiene métodos como .add(), .has(), .delete().
+   * - Su propósito es verificar presencia o ausencia rápida de valores.
+   * Le estás diciendo a TypeScript que este Set solo va a contener valores de tipo string.
+   * (Ej: "manizales", "arriendo", "palogrande"... etc.
   */
   const used = new Set<string>();
 
@@ -220,10 +225,18 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriesToSearch,
       return;
     }
 
-        const matchGenero = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "Solo Hombres" || u.label === "Solo Mujeres" || u.label === "Mixto"));
+    const matchGenero = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "Solo Hombres" || u.label === "Solo Mujeres" || u.label === "Mixto"));
     if (matchGenero && !result.genero) {
       result.genero = { group: "genero", slug: matchGenero.slug, label: matchGenero.label };
       used.add(urlFilter);
+      return;
+    }
+
+
+    const matchPets = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "GATOS" || u.label === "PERROS PEQUEÑOS" || u.label === "PERROS GRANDES"));
+    if (matchPets && !result.mascota) {
+      result.mascota = { group: "mascota", slug: matchPets.slug, label: matchPets.label };
+      
       return;
     }
 
