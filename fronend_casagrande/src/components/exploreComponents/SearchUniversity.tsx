@@ -26,7 +26,9 @@ import { cn } from "@/lib/utils"
 
 //Importacion del router para la navegacion desde i18n
 import { useRouter } from "@/i18n/navigation"
-import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout"
+
+//Importacion de types
+import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 
 //Types
@@ -45,7 +47,7 @@ type UniversidadesdeColombiaJson = {
 
 type UniversidadSearchProps = {
   urlFilters?: string[];
-  paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
+  paramsClasificados?: finalResultFromClasificarParams;
   universidadesdeColombiaJson?: UniversidadesdeColombiaJson[]
 };
 

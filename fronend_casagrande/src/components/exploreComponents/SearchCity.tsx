@@ -33,7 +33,7 @@ import { cn } from "@/lib/utils"
 import { useRouter } from "@/i18n/navigation"
 
 //Importacion de los types desde el layout donde esta la funcion
-import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout"
+import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 //Types
 
@@ -45,7 +45,7 @@ type CiudadOption = {
 
 type CitySearchProps = {
   urlFilters?: string[];
-  paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
+  paramsClasificados?: finalResultFromClasificarParams;
   ciudades?: CiudadOption[];
 };
 

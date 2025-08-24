@@ -1,14 +1,11 @@
 import { Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Direction, GeneroTypeState } from "../FiltersDrawer";
 
-type generoLabels =  "todos" | "solo-hombres" | "solo-mujeres" | "mixto";
-
-
-type Direction = "prev" | "next";
 
 type FiltroProps = {
   onClick: (direction: Direction) => void; // función que recibe la dirección
-  goal: generoLabels
+  goal: GeneroTypeState
   label: string; // etiqueta para mostrar (ej: "Amoblado")
 };
 

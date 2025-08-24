@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils"
 
 //Importacion del router para la navegacion desde i18n
 import { useRouter } from "@/i18n/navigation"
-import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout"
+import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 
 //Types
@@ -43,7 +43,7 @@ type barriosdeColombiaJson = {
 
 type NeightborSearchProps = {
   urlFilters?: string[];
-  paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
+  paramsClasificados?: finalResultFromClasificarParams;
   barriosdeColombiaJson?: barriosdeColombiaJson[]
 };
 

@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils"
 import { useRouter } from "@/i18n/navigation"
 
 //Importacion de los types de los parametros ya clasificados desde el layout donde esta la funcion
-import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout"
+import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 //Types
 
@@ -43,7 +43,7 @@ type tipodeArriendoOption = {
 
 type TipodeArriendoSearchProps = {
     urlFilters?: string[];
-    paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
+    paramsClasificados?: finalResultFromClasificarParams;
     tipodeArriendo?: tipodeArriendoOption[];
 };
 

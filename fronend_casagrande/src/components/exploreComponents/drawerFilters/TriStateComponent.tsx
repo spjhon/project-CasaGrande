@@ -1,10 +1,7 @@
 import { Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Direction, FiltrosState } from "../FiltersDrawer";
 
-type FiltrosState = "Todos" | "Si" | "No";
-
-
-type Direction = "prev" | "next";
 
 type FiltroProps = {
   onClick: (direction: Direction) => void; // función que recibe la dirección

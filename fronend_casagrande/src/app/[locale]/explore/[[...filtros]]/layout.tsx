@@ -54,14 +54,35 @@ import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
 //Los tipes utilizados en la funcion clasificarParams 
 export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota"
 
-
+//Estos son los tipos de cada una de las keys del object que retorna la funcion clasificarParams
 export type finalFilters = {
   group: categoriesToSearch;
   slug: string;
   label: string;
 }
 
-type finalResultFromClasificarParams = Partial<Record<categoriesToSearch, finalFilters>>
+
+/**
+ * 📌 finalResultFromClasificarParams
+ * 
+ * Representa el **objeto completo** que retorna la función `clasificarParams`.
+ * 
+ * - Es un `Record` donde:
+ *   - Las **keys** corresponden a cada una de las categorías definidas en `categoriesToSearch`.
+ *   - Los **values** son de tipo `finalFilters` (es decir, un objeto con `group`, `slug` y `label`).
+ * 
+ * - Se usa `Partial<Record<...>>` porque no siempre van a estar presentes todas las categorías.
+ *   Por ejemplo:
+ *   {
+ *     ciudad: { group: "ciudad", slug: "bogota", label: "Bogotá" },
+ *     tipo: { group: "tipo", slug: "apartamento", label: "Apartamento" }
+ *     ... las demás categorías pueden faltar si no se clasificaron
+ *   }
+ * 
+ * ➡️ En resumen: es un mapa flexible donde cada categoría, si está presente, 
+ * contiene la información tipada del filtro correspondiente.
+ */
+export type finalResultFromClasificarParams = Partial<Record<categoriesToSearch, finalFilters>>
 
 
 
@@ -126,7 +147,7 @@ const citiesFlatened = colombianCitiesJson.flatMap((dep) =>
  *  }
  * 
 */
-function clasificarParams(filtros: string[]): Partial<Record<categoriesToSearch, finalFilters>> {
+function clasificarParams(filtros: string[]): finalResultFromClasificarParams {
   
   /**
    * Un Set es una colección de valores únicos. Es como un array, pero:
@@ -234,8 +255,8 @@ function clasificarParams(filtros: string[]): Partial<Record<categoriesToSearch,
     }
 
     const matchMascota = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "GATOS" || u.label === "PERROS PEQUEÑOS" || u.label === "PERROS GRANDES" || u.label === "NO SE PERMITEN MASCOTAS"));
-    if (matchMascota && !result.genero) {
-      result.genero = { group: "mascota", slug: matchMascota.slug, label: matchMascota.label };
+    if (matchMascota && !result.mascota) {
+      result.mascota = { group: "mascota", slug: matchMascota.slug, label: matchMascota.label };
       used.add(urlFilter);
       return;
     }
@@ -265,7 +286,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
   
 
   const paramsClasificados = (clasificarParams(urlFilters))
-  console.log(paramsClasificados)
+  
   /*
   OJO, EL PRIMER RENDER AL MONTAR EL COMPONENTE ES EN EL SERVIDOR, EL RESTO ES EN EL CLIENTE CUANDO SE USA "USE CLIENT"
     if (typeof window !== "undefined") {

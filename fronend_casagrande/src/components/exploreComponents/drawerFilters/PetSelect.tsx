@@ -3,20 +3,12 @@
 // Importaciones de componentes primitivos de shadcn
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
-
-// Diferentes tipos de estados que puede tener selectedPet
-export type PetType = "gatos" | "perros-pequenos" | "perros-grandes" | "sin-mascotas"
-
-// Es el tipoado del object options el cual contiene los slugs y los labels
-type OptionType = {
-  slug: PetType
-  label: string
-}
+import { FILTERS_CONFIG, PetTypeState } from "../FiltersDrawer"
 
 // Props que recibe el componente
 interface PetSelectProps {
-  selectedPet: PetType | null
-  setSelectedPet: (pet: PetType | null) => void
+  selectedPet: PetTypeState
+  setSelectedPet: (pet: PetTypeState) => void
 }
 
 /**
@@ -24,24 +16,19 @@ interface PetSelectProps {
  * Solo permite seleccionar UNA opción a la vez
  */
 export function PetSelect({ selectedPet, setSelectedPet }: PetSelectProps) {
-  const options: OptionType[] = [
-    { slug: "gatos", label: "GATOS" },
-    { slug: "perros-pequenos", label: "PERROS PEQUEÑOS" },
-    { slug: "perros-grandes", label: "PERROS GRANDES" },
-    { slug: "sin-mascotas", label: "NO SE ACEPTAN MASCOTAS" },
-  ]
+  
 
   /**
    * Si el usuario marca (checked = true) → guardamos solo ese slug.
    * Si el usuario desmarca (checked = false) → reseteamos a null.
    */
-  const togglePet = (slug: PetType, checked: boolean) => {
+  const togglePet = (slug: PetTypeState, checked: boolean) => {
     setSelectedPet(checked ? slug : null)
   }
 
   return (
     <div className="flex flex-col gap-4 my-6">
-      {options.map((option) => (
+      {FILTERS_CONFIG.petOptions.map((option) => (
         <Label
           key={option.slug}
           className="hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 cursor-pointer
@@ -49,7 +36,7 @@ export function PetSelect({ selectedPet, setSelectedPet }: PetSelectProps) {
             dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950"
         >
           <Checkbox
-            id={option.slug}
+            id={option.slug === null? undefined : option.slug}
             checked={selectedPet === option.slug}
             onCheckedChange={(checked) => togglePet(option.slug, checked === true)}
             className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white
