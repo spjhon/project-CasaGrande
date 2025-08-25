@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useRouter } from "@/i18n/navigation"
 
 //Importacion de funciones utilitarias
-import {updateURLFromFilters, actualizarFiltrosGenero, actualizarFiltrosMascota, onClickEstado, onClickEstadoGenero, getEstadoInicial, getGeneroInicial, getPetInicial, getContratoInicial, actualizarFiltrosContratos} from "@/lib/utilsFiltersDrawer"
+import {updateURLFromFilters, actualizarFiltrosGenero, actualizarFiltrosMascota, onClickEstado, onClickEstadoGenero, getEstadoInicial, getGeneroInicial, getPetInicial, getContratoInicial, actualizarFiltrosContratos, getEstratoInicial} from "@/lib/utilsFiltersDrawer"
 
 //importe de primitivos
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ import { MinTimeSelect } from './drawerFilters/MinTimeSelect';
 
 //Importaciones de types que vienen desde layout
 import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout";
+import { EstratoSelect } from "./drawerFilters/EstratoSelect";
 
 
 //Tipos utilizados en el state del primer filtro ya que sino typescript inferiria que el state inicial es solo un string y no un array
@@ -38,6 +39,9 @@ export type Direction = "prev" | "next";
 export type GeneroTypeState =  "todos" | "solo-hombres" | "solo-mujeres" | "mixto";
 export type PetTypeState = "gatos" | "perros-pequenos" | "perros-grandes" | "sin-mascotas" | null;
 export type ContractTypeState = "tiempo-minimo-1-mes" | "tiempo-minimo-3-meses" | "tiempo-minimo-6-meses" | "tiempo-minimo-1-ano" | null;
+export type EstratoTypeState = "estrato-1" | "estrato-2" | "estrato-3" | "estrato-4" | "estrato-5" | "estrato-6" | null;
+
+
 
 type FiltersDrawerProps = {
   urlFilters?: string[];
@@ -70,6 +74,14 @@ export const FILTERS_CONFIG = {
     {slug: "tiempo-minimo-3-meses", label: "3 Meses"},
     {slug: "tiempo-minimo-6-meses", label: "6 Meses"},
     {slug: "tiempo-minimo-1-ano", label: "1 Año"},
+  ],
+  estratoOptions: [
+    {slug: "estrato-1", label: "Estrato 1"},
+    {slug: "estrato-2", label: "Estrato 2"},
+    {slug: "estrato-3", label: "Estrato 3"},
+    {slug: "estrato-4", label: "Estrato 4"},
+    {slug: "estrato-5", label: "Estrato 5"},
+    {slug: "estrato-6", label: "Estrato 6"},
   ]
 } as const;
 
@@ -120,6 +132,7 @@ export function FiltersDrawer({
 
   const contratoMinimoEstadoInicial = getContratoInicial(paramsClasificados?.tiempoContratoMinimo?.slug)
 
+  const estratoEstadoInicial = getEstratoInicial(paramsClasificados?.estrato?.slug)
 
   //DEFINICION DE STATES
   const [amoblado, setAmoblado] = useState<FiltrosState>(amobladoEstadoInicial);
@@ -130,6 +143,7 @@ export function FiltersDrawer({
   const [genero, setGenero] = useState<GeneroTypeState>(generoEstadoInicial);
   const [selectedPet, setSelectedPet] = useState<PetTypeState>(mascotaEstadoInicial)
   const [contract, setContract] = useState(contratoMinimoEstadoInicial)
+  const [estrato, setEstrato] = useState(estratoEstadoInicial)
   
   //Este es el state para abrir y cerrar el dropdown
   const [open, setOpen] = useState(false)
@@ -220,7 +234,8 @@ export function FiltersDrawer({
         <div className="flex overflow-y-auto flex-wrap">
 
           <div className="mx-auto w-full max-w-sm">
-            <MinTimeSelect contract={contract} setContract={setContract}/>  
+            <MinTimeSelect contract={contract} setContract={setContract}/>
+            <EstratoSelect estrato={estrato} setEstrato={setEstrato} /> 
           </div>
 
           <div className="mx-auto w-full max-w-sm">
@@ -234,6 +249,8 @@ export function FiltersDrawer({
           <div className="mx-auto w-full max-w-sm">
             <GenreSelect onClick={onClickGenero} goal={genero} label="GENERO"/>  
             <PetSelect selectedPet={selectedPet} setSelectedPet={setSelectedPet} />
+            
+
           </div>
 
         </div>       

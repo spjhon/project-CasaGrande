@@ -1,4 +1,4 @@
-import { ContractTypeState, Direction, FiltrosState, GeneroTypeState, PetTypeState } from "@/components/exploreComponents/FiltersDrawer";
+import { ContractTypeState, Direction, EstratoTypeState, FiltrosState, GeneroTypeState, PetTypeState } from "@/components/exploreComponents/FiltersDrawer";
 
 
 
@@ -98,6 +98,13 @@ return null; // valor por defecto
 
 export function getContratoInicial(slug: string | undefined): ContractTypeState {
 if (slug === "tiempo-minimo-1-mes" || slug === "tiempo-minimo-3-meses" || slug === "tiempo-minimo-6-meses" || slug === "tiempo-minimo-1-ano") {
+  return slug;
+}
+return null; // valor por defecto
+}
+
+export function getEstratoInicial(slug: string | undefined): EstratoTypeState {
+if (slug === "estrato-1" || slug === "estrato-2" || slug === "estrato-3" || slug === "estrato-4" || slug === "estrato-5" || slug === "estrato-6") {
   return slug;
 }
 return null; // valor por defecto

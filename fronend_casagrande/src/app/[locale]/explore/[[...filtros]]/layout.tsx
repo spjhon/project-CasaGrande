@@ -52,7 +52,7 @@ import { SearchUniversity } from "@/components/exploreComponents/SearchUniversit
 import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
 
 //Los tipes utilizados en la funcion clasificarParams 
-export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo"
+export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo" | "estrato"
 
 //Estos son los tipos de cada una de las keys del object que retorna la funcion clasificarParams
 export type finalFilters = {
@@ -264,6 +264,13 @@ function clasificarParams(filtros: string[]): finalResultFromClasificarParams {
     const matchContratoMinimo = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "1 Mes" || u.label === "3 Meses" || u.label === "6 Meses" || u.label === "1 Año"));
     if (matchContratoMinimo && !result.tiempoContratoMinimo) {
       result.tiempoContratoMinimo = { group: "tiempoContratoMinimo", slug: matchContratoMinimo.slug, label: matchContratoMinimo.label };
+      used.add(urlFilter);
+      return;
+    }
+
+        const matchEstrato = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "Estrato 1" || u.label === "Estrato 2" || u.label === "Estrato 3" || u.label === "Estrato 4" || u.label === "Estrato 5" || u.label === "Estrato 6"));
+    if (matchEstrato && !result.estrato) {
+      result.estrato = { group: "estrato", slug: matchEstrato.slug, label: matchEstrato.label };
       used.add(urlFilter);
       return;
     }
