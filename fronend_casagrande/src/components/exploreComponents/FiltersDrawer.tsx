@@ -23,12 +23,14 @@ import {
 } from "@/components/ui/drawer";
 
 //Importe de componentes que son los diferentes filtros extra
-import { TriStateComponent } from "./drawerFilters/TriStateComponent";
-import { FourStateComponent } from "./drawerFilters/FourStateComponent";
+import { YesNoSelect } from "./drawerFilters/YesNoSelect";
+import { GenreSelect } from "./drawerFilters/GenreSelect";
 import { PetSelect } from "./drawerFilters/PetSelect";
+import { MinTimeSelect } from "./drawerFilters/MinTimeSelect";
 
 //Importaciones de types que vienen desde layout
 import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout";
+
 
 //Tipos utilizados en el state del primer filtro ya que sino typescript inferiria que el state inicial es solo un string y no un array
 export type FiltrosState = "Todos" | "Si" | "No";
@@ -199,19 +201,19 @@ export function FiltersDrawer({
         <div className="flex overflow-y-auto flex-wrap">
 
           <div className="mx-auto w-full max-w-sm">
-            <FourStateComponent onClick={onClickGenero} goal={genero} label="GENERO"/>  
+            <MinTimeSelect />  
           </div>
 
           <div className="mx-auto w-full max-w-sm">
-            <TriStateComponent onClick={onClickAmoblado} goal={amoblado} label="CUARTO AMOBLADO"/>  
-            <TriStateComponent onClick={onClickAlimentacion} goal={alimentacion} label="ALIMENTACION"/>  
-            <TriStateComponent onClick={onClickArregloRopa} goal={arregloRopa} label="ARREGLO DE ROPA"/>  
-            <TriStateComponent onClick={onClickBañoPrivado} goal={bañoPrivado} label="BAÑO PRIVADO"/>  
-            <TriStateComponent onClick={onClickArregloHabitacion} goal={arregloHabitacion} label="ARREGLO DE HABITACION"/>  
+            <YesNoSelect onClick={onClickAmoblado} goal={amoblado} label="CUARTO AMOBLADO"/>  
+            <YesNoSelect onClick={onClickAlimentacion} goal={alimentacion} label="ALIMENTACION"/>  
+            <YesNoSelect onClick={onClickArregloRopa} goal={arregloRopa} label="ARREGLO DE ROPA"/>  
+            <YesNoSelect onClick={onClickBañoPrivado} goal={bañoPrivado} label="BAÑO PRIVADO"/>  
+            <YesNoSelect onClick={onClickArregloHabitacion} goal={arregloHabitacion} label="ARREGLO DE HABITACION"/>  
           </div> 
 
           <div className="mx-auto w-full max-w-sm">
-            <FourStateComponent onClick={onClickGenero} goal={genero} label="GENERO"/>  
+            <GenreSelect onClick={onClickGenero} goal={genero} label="GENERO"/>  
             <PetSelect selectedPet={selectedPet} setSelectedPet={setSelectedPet} />
           </div>
 

@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/drawer";
 
 //Importe de componentes que son los diferentes filtros extra
-import { TriStateComponent } from "./drawerFilters/TriStateComponent";
+import { TriStateComponent } from "./drawerFilters/YesNoSelect";
 import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout";
 
 //Tipos utilizados en el state del primer filtro ya que sino typescript inferiria que el state inicial es solo un string y no un array

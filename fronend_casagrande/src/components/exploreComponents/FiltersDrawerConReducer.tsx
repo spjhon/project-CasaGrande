@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/drawer";
 
 //Importe de componentes que son los diferentes filtros extra
-import { TriStateComponent } from "./drawerFilters/TriStateComponent";
+import { TriStateComponent } from "./drawerFilters/YesNoSelect";
 import { categoriasAbuscar, ResultadoFiltro } from "@/app/[locale]/explore/[[...filtros]]/layout";
 
 //Tipos utilizados para el estado de los filtros y direcciones de navegación
