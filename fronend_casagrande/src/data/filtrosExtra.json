@@ -83,6 +83,31 @@
     "id": "17",
     "label": "NO SE PERMITEN MASCOTAS",
     "slug": "sin-mascotas"
+  },
+  {
+    "id": "18",
+    "label": "1 Mes",
+    "slug": "tiempo-minimo-1-mes"
+  },
+  {
+    "id": "19",
+    "label": "2 Meses",
+    "slug": "tiempo-minimo-2-meses"
+  },
+  {
+    "id": "20",
+    "label": "3 Meses",
+    "slug": "tiempo-minimo-3-meses"
+  },
+  {
+    "id": "21",
+    "label": "6 Meses",
+    "slug": "tiempo-minimo-6-meses"
+  },
+  {
+    "id": "22",
+    "label": "1 Año",
+    "slug": "tiempo-minimo-1-ano"
   }
 
 ]

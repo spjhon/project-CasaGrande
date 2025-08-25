@@ -1,22 +1,47 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { useState } from "react"
+import { ContractTypeState, FILTERS_CONFIG } from "../FiltersDrawer"
 
-export function MinTimeSelect({ }) {
 
-    const [contract, setContract] = useState("")
+
+
+// Props que recibe el componente
+interface MinTimeSelectProps {
+  contract: ContractTypeState
+  setContract: (valor: ContractTypeState) => void
+}
+
+
+export function MinTimeSelect({contract, setContract}: MinTimeSelectProps) {
+  
+
+
+
   return (
     <div className="flex flex-col gap-2 my-6">
+
       <span className="text-sm text-muted-foreground">Contrato mínimo</span>
+
       <ToggleGroup
         type="single"
-        value={contract}
-        onValueChange={(val) => setContract(val || "1")}
+        value={contract ?? ""} // ToggleGroup necesita un string
+        onValueChange={(val) => {
+          if (val === contract) {
+            setContract(null) // limpiamos con null
+          } else {
+            setContract(val as ContractTypeState)
+          }
+        }}
         className="justify-center"
       >
-        <ToggleGroupItem value="1" className="px-4">1 mes</ToggleGroupItem>
-        <ToggleGroupItem value="3" className="px-4">3 meses</ToggleGroupItem>
-        <ToggleGroupItem value="6" className="px-4">6 meses</ToggleGroupItem>
-        <ToggleGroupItem value="12" className="px-4">1 año</ToggleGroupItem>
+        {FILTERS_CONFIG.contractOptions.map((option) => (
+          <ToggleGroupItem
+            key={option.slug}
+            value={option.slug}
+            className="px-4"
+          >
+            {option.label}
+          </ToggleGroupItem>
+        ))}
       </ToggleGroup>
     </div>
   )

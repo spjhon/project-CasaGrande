@@ -1,4 +1,4 @@
-import { Direction, FiltrosState, GeneroTypeState, PetTypeState } from "@/components/exploreComponents/FiltersDrawer";
+import { ContractTypeState, Direction, FiltrosState, GeneroTypeState, PetTypeState } from "@/components/exploreComponents/FiltersDrawer";
 
 
 
@@ -96,7 +96,12 @@ if (slug === "gatos" || slug === "perros-pequenos" || slug === "perros-grandes" 
 return null; // valor por defecto
 }
 
-
+export function getContratoInicial(slug: string | undefined): ContractTypeState {
+if (slug === "tiempo-minimo-1-mes" || slug === "tiempo-minimo-3-meses" || slug === "tiempo-minimo-6-meses" || slug === "tiempo-minimo-1-ano") {
+  return slug;
+}
+return null; // valor por defecto
+}
 
 
 
@@ -303,6 +308,38 @@ export function actualizarFiltrosMascota(
       }
     } else {
       filtros.push(nuevaMascota); // agregar
+    }
+  }
+
+  return filtros;
+}
+
+
+// ---- función utilitaria ---- para el componente FiltersDrawer.tsx
+export function actualizarFiltrosContratos(
+  nuevoContrato: "tiempo-minimo-1-mes" | "tiempo-minimo-3-meses" | "tiempo-minimo-6-meses" | "tiempo-minimo-1-ano" | null,
+  slugActual: string | undefined,
+  filtros: string[]
+): string[] {
+  if (nuevoContrato === null) {
+    // si selecciona "todos", se elimina el slug actual si existe
+    if (slugActual) {
+      const index = filtros.indexOf(slugActual);
+      if (index !== -1) {
+        filtros.splice(index, 1);
+      }
+    }
+  } else {
+    // si selecciona otro género distinto de "todos"
+    if (slugActual) {
+      const index = filtros.indexOf(slugActual);
+      if (index !== -1) {
+        filtros[index] = nuevoContrato; // reemplazar
+      } else {
+        filtros.push(nuevoContrato); // agregar
+      }
+    } else {
+      filtros.push(nuevoContrato); // agregar
     }
   }
 

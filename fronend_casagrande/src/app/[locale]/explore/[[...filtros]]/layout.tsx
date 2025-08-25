@@ -52,7 +52,7 @@ import { SearchUniversity } from "@/components/exploreComponents/SearchUniversit
 import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
 
 //Los tipes utilizados en la funcion clasificarParams 
-export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota"
+export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo"
 
 //Estos son los tipos de cada una de las keys del object que retorna la funcion clasificarParams
 export type finalFilters = {
@@ -257,6 +257,13 @@ function clasificarParams(filtros: string[]): finalResultFromClasificarParams {
     const matchMascota = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "GATOS" || u.label === "PERROS PEQUEÑOS" || u.label === "PERROS GRANDES" || u.label === "NO SE PERMITEN MASCOTAS"));
     if (matchMascota && !result.mascota) {
       result.mascota = { group: "mascota", slug: matchMascota.slug, label: matchMascota.label };
+      used.add(urlFilter);
+      return;
+    }
+
+    const matchContratoMinimo = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "1 Mes" || u.label === "3 Meses" || u.label === "6 Meses" || u.label === "1 Año"));
+    if (matchContratoMinimo && !result.tiempoContratoMinimo) {
+      result.tiempoContratoMinimo = { group: "tiempoContratoMinimo", slug: matchContratoMinimo.slug, label: matchContratoMinimo.label };
       used.add(urlFilter);
       return;
     }

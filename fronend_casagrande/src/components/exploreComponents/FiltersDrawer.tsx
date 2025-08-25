@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useRouter } from "@/i18n/navigation"
 
 //Importacion de funciones utilitarias
-import {updateURLFromFilters, actualizarFiltrosGenero, actualizarFiltrosMascota, onClickEstado, onClickEstadoGenero, getEstadoInicial, getGeneroInicial, getPetInicial} from "@/lib/utilsFiltersDrawer"
+import {updateURLFromFilters, actualizarFiltrosGenero, actualizarFiltrosMascota, onClickEstado, onClickEstadoGenero, getEstadoInicial, getGeneroInicial, getPetInicial, getContratoInicial, actualizarFiltrosContratos} from "@/lib/utilsFiltersDrawer"
 
 //importe de primitivos
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,7 @@ import {
 import { YesNoSelect } from "./drawerFilters/YesNoSelect";
 import { GenreSelect } from "./drawerFilters/GenreSelect";
 import { PetSelect } from "./drawerFilters/PetSelect";
-import { MinTimeSelect } from "./drawerFilters/MinTimeSelect";
+import { MinTimeSelect } from './drawerFilters/MinTimeSelect';
 
 //Importaciones de types que vienen desde layout
 import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout";
@@ -37,7 +37,7 @@ export type FiltrosState = "Todos" | "Si" | "No";
 export type Direction = "prev" | "next";
 export type GeneroTypeState =  "todos" | "solo-hombres" | "solo-mujeres" | "mixto";
 export type PetTypeState = "gatos" | "perros-pequenos" | "perros-grandes" | "sin-mascotas" | null;
-
+export type ContractTypeState = "tiempo-minimo-1-mes" | "tiempo-minimo-3-meses" | "tiempo-minimo-6-meses" | "tiempo-minimo-1-ano" | null;
 
 type FiltersDrawerProps = {
   urlFilters?: string[];
@@ -52,11 +52,24 @@ export const FILTERS_CONFIG = {
   arregloRopa: { Si: "con-arreglo-ropa", No: "sin-arreglo-ropa", Todos: null },
   bañoPrivado: { Si: "con-bano-privado", No: "sin-bano-privado", Todos: null },
   arregloHabitacion: { Si: "arreglo-habitacion", No: "sin-arreglo-habitacion", Todos: null },
+  generoOptions: [
+    { slug: "todos", label: "Todos" },
+    { slug: "solo-mujeres", label: "Solo Mujeres" },
+    { slug: "solo-hombres", label: "Solo Hombres" },
+    { slug: "mixto", label: "Mixto" },
+    
+  ],
   petOptions: [
     { slug: "gatos", label: "GATOS" },
     { slug: "perros-pequenos", label: "PERROS PEQUEÑOS" },
     { slug: "perros-grandes", label: "PERROS GRANDES" },
     { slug: "sin-mascotas", label: "NO SE ACEPTAN MASCOTAS" },
+  ],
+  contractOptions: [
+    {slug: "tiempo-minimo-1-mes", label: "1 Mes"},
+    {slug: "tiempo-minimo-3-meses", label: "3 Meses"},
+    {slug: "tiempo-minimo-6-meses", label: "6 Meses"},
+    {slug: "tiempo-minimo-1-ano", label: "1 Año"},
   ]
 } as const;
 
@@ -105,6 +118,9 @@ export function FiltersDrawer({
 
   const mascotaEstadoInicial = getPetInicial(paramsClasificados?.mascota?.slug)
 
+  const contratoMinimoEstadoInicial = getContratoInicial(paramsClasificados?.tiempoContratoMinimo?.slug)
+
+
   //DEFINICION DE STATES
   const [amoblado, setAmoblado] = useState<FiltrosState>(amobladoEstadoInicial);
   const [alimentacion, setAlimentacion] = useState<FiltrosState>(alimentacionEstadoInicial);
@@ -113,7 +129,7 @@ export function FiltersDrawer({
   const [arregloHabitacion, setArregloHabitacion] = useState<FiltrosState>(arregloHabitacionEstadoInicial);
   const [genero, setGenero] = useState<GeneroTypeState>(generoEstadoInicial);
   const [selectedPet, setSelectedPet] = useState<PetTypeState>(mascotaEstadoInicial)
-
+  const [contract, setContract] = useState(contratoMinimoEstadoInicial)
   
   //Este es el state para abrir y cerrar el dropdown
   const [open, setOpen] = useState(false)
@@ -170,6 +186,9 @@ export function FiltersDrawer({
     // Filtro especial para las mascotas
     newFiltros = actualizarFiltrosMascota(selectedPet, paramsClasificados?.mascota?.slug, newFiltros);
 
+    // Filtro especial para los tiempos minimos de contratos
+    newFiltros = actualizarFiltrosContratos(contract, paramsClasificados?.tiempoContratoMinimo?.slug, newFiltros);
+
     setOpen(false);
     // @ts-expect-error es necesario
     router.push(`/explore/${newFiltros.join("/")}`);
@@ -201,7 +220,7 @@ export function FiltersDrawer({
         <div className="flex overflow-y-auto flex-wrap">
 
           <div className="mx-auto w-full max-w-sm">
-            <MinTimeSelect />  
+            <MinTimeSelect contract={contract} setContract={setContract}/>  
           </div>
 
           <div className="mx-auto w-full max-w-sm">
