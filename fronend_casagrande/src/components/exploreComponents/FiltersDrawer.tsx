@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useRouter } from "@/i18n/navigation"
 
 //Importacion de funciones utilitarias
-import {updateURLFromFilters, actualizarFiltrosGenero, actualizarFiltrosMascota, onClickEstado, onClickEstadoGenero, getEstadoInicial, getGeneroInicial, getPetInicial, getContratoInicial, actualizarFiltrosContratos, getEstratoInicial} from "@/lib/utilsFiltersDrawer"
+import {updateURLFromFilters, actualizarFiltrosGenero, actualizarFiltrosMascota, onClickEstado, onClickEstadoGenero, getEstadoInicial, getGeneroInicial, getPetInicial, getContratoInicial, actualizarFiltrosContratos, getEstratoInicial, actualizarFiltrosEstrato} from "@/lib/utilsFiltersDrawer"
 
 //importe de primitivos
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,7 @@ import { MinTimeSelect } from './drawerFilters/MinTimeSelect';
 //Importaciones de types que vienen desde layout
 import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout";
 import { EstratoSelect } from "./drawerFilters/EstratoSelect";
+import { PriceRangeSelect } from "./drawerFilters/PriceRangeSelect";
 
 
 //Tipos utilizados en el state del primer filtro ya que sino typescript inferiria que el state inicial es solo un string y no un array
@@ -203,6 +204,8 @@ export function FiltersDrawer({
     // Filtro especial para los tiempos minimos de contratos
     newFiltros = actualizarFiltrosContratos(contract, paramsClasificados?.tiempoContratoMinimo?.slug, newFiltros);
 
+    // Filtro especial para los tiempos minimos de contratos
+    newFiltros = actualizarFiltrosEstrato(estrato, paramsClasificados?.estrato?.slug, newFiltros);
     setOpen(false);
     // @ts-expect-error es necesario
     router.push(`/explore/${newFiltros.join("/")}`);
@@ -236,6 +239,8 @@ export function FiltersDrawer({
           <div className="mx-auto w-full max-w-sm">
             <MinTimeSelect contract={contract} setContract={setContract}/>
             <EstratoSelect estrato={estrato} setEstrato={setEstrato} /> 
+            <PriceRangeSelect /> 
+
           </div>
 
           <div className="mx-auto w-full max-w-sm">

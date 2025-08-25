@@ -352,3 +352,34 @@ export function actualizarFiltrosContratos(
 
   return filtros;
 }
+
+// ---- función utilitaria ---- para el componente FiltersDrawer.tsx
+export function actualizarFiltrosEstrato(
+  nuevoEstrato: "estrato-1" | "estrato-2" | "estrato-3" | "estrato-4" | "estrato-5" | "estrato-6" | null,
+  slugActual: string | undefined,
+  filtros: string[]
+): string[] {
+  if (nuevoEstrato === null) {
+    // si selecciona "todos", se elimina el slug actual si existe
+    if (slugActual) {
+      const index = filtros.indexOf(slugActual);
+      if (index !== -1) {
+        filtros.splice(index, 1);
+      }
+    }
+  } else {
+    // si selecciona otro género distinto de "todos"
+    if (slugActual) {
+      const index = filtros.indexOf(slugActual);
+      if (index !== -1) {
+        filtros[index] = nuevoEstrato; // reemplazar
+      } else {
+        filtros.push(nuevoEstrato); // agregar
+      }
+    } else {
+      filtros.push(nuevoEstrato); // agregar
+    }
+  }
+
+  return filtros;
+}
