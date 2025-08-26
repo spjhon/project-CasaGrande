@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useRouter } from "@/i18n/navigation"
 
 //Importacion de funciones utilitarias
-import {updateURLFromFilters, actualizarFiltrosGenero, actualizarFiltrosMascota, onClickEstado, onClickEstadoGenero, getEstadoInicial, getGeneroInicial, getPetInicial, getContratoInicial, actualizarFiltrosContratos, getEstratoInicial, actualizarFiltrosEstrato} from "@/lib/utilsFiltersDrawer"
+import {updateURLFromFilters, actualizarFiltrosGenero, actualizarFiltrosMascota, onClickEstado, onClickEstadoGenero, getEstadoInicial, getGeneroInicial, getPetInicial, getContratoInicial, actualizarFiltrosContratos, getEstratoInicial, actualizarFiltrosEstrato, actualizarFiltrosPrecioMinimo, actualizarFiltrosPrecioMaximo} from "@/lib/utilsFiltersDrawer"
 
 //importe de primitivos
 import { Button } from "@/components/ui/button";
@@ -137,8 +137,19 @@ export function FiltersDrawer({
 
   const estratoEstadoInicial = getEstratoInicial(paramsClasificados?.estrato?.slug)
 
-  const precioMinimoInicial = paramsClasificados?.minPrice?.value
-  const precioMaximoInicial = paramsClasificados?.maxPrice?.value
+  let precioMinimoInicial = paramsClasificados?.minPrice?.value ?? null
+  let precioMaximoInicial = paramsClasificados?.maxPrice?.value ?? null
+
+  if (
+    precioMinimoInicial !== null &&
+    precioMaximoInicial !== null &&
+    precioMinimoInicial > precioMaximoInicial
+  ) {
+    // Intercambiar valores si min es mayor que max
+    const temp = precioMinimoInicial
+    precioMinimoInicial = precioMaximoInicial
+    precioMaximoInicial = temp
+  }
 
 
   //DEFINICION DE STATES
@@ -213,8 +224,13 @@ export function FiltersDrawer({
     // Filtro especial para los tiempos minimos de contratos
     newFiltros = actualizarFiltrosContratos(contract, paramsClasificados?.tiempoContratoMinimo?.slug, newFiltros);
 
-    // Filtro especial para los tiempos minimos de contratos
+    // Filtro especial para la seleccion de los estratos
     newFiltros = actualizarFiltrosEstrato(estrato, paramsClasificados?.estrato?.slug, newFiltros);
+
+    // Filtro especial para la seleccion de los precios
+    newFiltros = actualizarFiltrosPrecioMinimo(minPrice, newFiltros);
+    newFiltros = actualizarFiltrosPrecioMaximo(maxPrice, newFiltros);
+
     setOpen(false);
     // @ts-expect-error es necesario
     router.push(`/explore/${newFiltros.join("/")}`);
@@ -269,10 +285,11 @@ export function FiltersDrawer({
         </div>       
 
 
-        <DrawerFooter className="mx-auto w-full max-w-sm">
-          <Button onClick={handleSubmit}>Aplicar Filtros</Button>
+        <DrawerFooter className="mx-auto w-full mb-3 justify-center flex-wrap">
+          <Button className="w-100" onClick={handleSubmit}>Aplicar Filtros</Button>
+          <Button className="w-100" onClick={handleSubmit}>Aplicar Filtros</Button>
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button className="w-100" variant="outline">Cancel</Button>
           </DrawerClose>
         </DrawerFooter>
         

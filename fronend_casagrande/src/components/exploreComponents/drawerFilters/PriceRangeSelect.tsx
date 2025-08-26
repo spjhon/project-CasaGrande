@@ -2,7 +2,15 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export function PriceRangeSelect({minPrice, setMinPrice, maxPrice, setMaxPrice}) {
+
+type PriceRangeSelectProps = {
+  minPrice: number | null
+  setMinPrice: (value: number | null) => void
+  maxPrice: number | null
+  setMaxPrice: (value: number | null) => void
+}
+
+export function PriceRangeSelect({minPrice, setMinPrice, maxPrice, setMaxPrice}:PriceRangeSelectProps) {
   
 
   const formatCurrency = (value: number | null) => {

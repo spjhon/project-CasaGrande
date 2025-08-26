@@ -3,14 +3,11 @@ import { ContractTypeState, Direction, EstratoTypeState, FiltrosState, GeneroTyp
 
 
 
-
+/**------------------------------------------------------------------------------------------------------------------------------ */
 
 /**
  * Aqui se encuentran las funciones que obtienen los states iniciales de acuerdo a las urls extraidas
  */
-
-
-
 
 
 
@@ -112,6 +109,7 @@ return null; // valor por defecto
 
 
 
+/**------------------------------------------------------------------------------------------------------------------------ */
 
 /**
  * Aqui se encuentran las funciones que actualizan los diferentes states de acuerdo a la informacion que llega desde los 
@@ -170,8 +168,6 @@ export function onClickEstado(
 
 
 
-
-
 /**
  * Cambia el estado actual del filtro de género según la dirección indicada.
  *
@@ -215,6 +211,8 @@ export function onClickEstadoGenero(
 
 
 
+
+/**---------------------------------------------------------------------------------------------------------------------------- */
 
 
 
@@ -378,6 +376,59 @@ export function actualizarFiltrosEstrato(
       }
     } else {
       filtros.push(nuevoEstrato); // agregar
+    }
+  }
+
+  return filtros;
+}
+
+// ---- función utilitaria ---- para el componente FiltersDrawer.tsx
+export function actualizarFiltrosPrecioMinimo(
+  nuevoPrecio: number | null,
+  filtros: string[]
+): string[] {
+  // siempre buscamos si ya existe un slug que empiece con "precio-minimo-"
+  const index = filtros.findIndex(f => f.startsWith("precio-minimo-"));
+
+  if (nuevoPrecio === null) {
+    // si se limpia el precio, eliminar cualquier slug que empiece por "precio-minimo-"
+    if (index !== -1) {
+      filtros.splice(index, 1);
+    }
+  } else {
+    const nuevoSlug = `precio-minimo-${nuevoPrecio}`;
+
+    if (index !== -1) {
+      filtros[index] = nuevoSlug; // reemplazar el existente
+    } else {
+      filtros.push(nuevoSlug); // agregar nuevo
+    }
+  }
+
+  return filtros;
+}
+
+
+// ---- función utilitaria ---- para el componente FiltersDrawer.tsx
+export function actualizarFiltrosPrecioMaximo(
+  nuevoPrecio: number | null,
+  filtros: string[]
+): string[] {
+  // siempre buscamos si ya existe un slug que empiece con "precio-maximo-"
+  const index = filtros.findIndex(f => f.startsWith("precio-maximo-"));
+
+  if (nuevoPrecio === null) {
+    // si se limpia el precio, eliminar cualquier slug que empiece por "precio-maximo-"
+    if (index !== -1) {
+      filtros.splice(index, 1);
+    }
+  } else {
+    const nuevoSlug = `precio-maximo-${nuevoPrecio}`;
+
+    if (index !== -1) {
+      filtros[index] = nuevoSlug; // reemplazar el existente
+    } else {
+      filtros.push(nuevoSlug); // agregar nuevo
     }
   }
 
