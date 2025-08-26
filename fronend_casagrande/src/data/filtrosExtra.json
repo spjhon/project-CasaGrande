@@ -138,6 +138,16 @@
     "id": "28",
     "label": "Estrato 6",
     "slug": "estrato-6"
+  },
+  {
+    "id": "29",
+    "label": "Precio Minimo",
+    "slug": "precio-minimo-"
+  },
+  {
+    "id": "30",
+    "label": "Precio Maximo",
+    "slug": "precio-maximo-"
   }
 
 ]

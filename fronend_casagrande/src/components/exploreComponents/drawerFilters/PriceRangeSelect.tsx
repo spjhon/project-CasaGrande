@@ -1,10 +1,9 @@
-import { useState } from "react"
+
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export function PriceRangeSelect() {
-  const [minPrice, setMinPrice] = useState<number | null>(null)
-  const [maxPrice, setMaxPrice] = useState<number | null>(null)
+export function PriceRangeSelect({minPrice, setMinPrice, maxPrice, setMaxPrice}) {
+  
 
   const formatCurrency = (value: number | null) => {
     if (value === null) return ""

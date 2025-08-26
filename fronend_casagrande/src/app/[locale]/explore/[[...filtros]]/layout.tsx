@@ -52,13 +52,14 @@ import { SearchUniversity } from "@/components/exploreComponents/SearchUniversit
 import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
 
 //Los tipes utilizados en la funcion clasificarParams 
-export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo" | "estrato"
+export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo" | "estrato" | "minPrice" | "maxPrice"
 
 //Estos son los tipos de cada una de las keys del object que retorna la funcion clasificarParams
 export type finalFilters = {
   group: categoriesToSearch;
   slug: string;
   label: string;
+  value?: number;
 }
 
 
@@ -149,6 +150,13 @@ const citiesFlatened = colombianCitiesJson.flatMap((dep) =>
 */
 function clasificarParams(filtros: string[]): finalResultFromClasificarParams {
   
+
+  // Aceptar solo slugs con letras minúsculas, números y guiones, esto es una proteccion basica para el llamado a la base de datos
+  const safeRegex = /^[a-z0-9-]+$/;
+  const filtrosSanitizados = filtros.filter(f => safeRegex.test(f));
+
+
+
   /**
    * Un Set es una colección de valores únicos. Es como un array, pero:
    * - No permite elementos duplicados.
@@ -161,7 +169,7 @@ function clasificarParams(filtros: string[]): finalResultFromClasificarParams {
 
   const result: finalResultFromClasificarParams = {}
 
-  filtros.forEach((urlFilter) => {
+  filtrosSanitizados.forEach((urlFilter) => {
 
     if (used.has(urlFilter)) return;
 
@@ -268,10 +276,30 @@ function clasificarParams(filtros: string[]): finalResultFromClasificarParams {
       return;
     }
 
-        const matchEstrato = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "Estrato 1" || u.label === "Estrato 2" || u.label === "Estrato 3" || u.label === "Estrato 4" || u.label === "Estrato 5" || u.label === "Estrato 6"));
+    const matchEstrato = extraFiltersJson.find(u => u.slug === urlFilter && (u.label === "Estrato 1" || u.label === "Estrato 2" || u.label === "Estrato 3" || u.label === "Estrato 4" || u.label === "Estrato 5" || u.label === "Estrato 6"));
     if (matchEstrato && !result.estrato) {
       result.estrato = { group: "estrato", slug: matchEstrato.slug, label: matchEstrato.label };
       used.add(urlFilter);
+      return;
+    }
+
+    
+    // ---------------- PRECIOS ESPECIALES ----------------
+    if (urlFilter.startsWith("precio-minimo-")) {
+      const value = parseInt(urlFilter.replace("precio-minimo-", ""), 10);
+      if (!isNaN(value)) {
+        result.minPrice = { group: "minPrice", slug: "precio-minimo-", label: "Precio Minimo", value };
+        used.add(urlFilter);
+      }
+      return;
+    }
+
+    if (urlFilter.startsWith("precio-maximo-")) {
+      const value = parseInt(urlFilter.replace("precio-maximo-", ""), 10);
+      if (!isNaN(value)) {
+        result.maxPrice = { group: "maxPrice", slug: "precio-maximo-", label: "Precio Maximo", value };
+        used.add(urlFilter);
+      }
       return;
     }
     
@@ -300,7 +328,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
   
 
   const paramsClasificados = (clasificarParams(urlFilters))
-  
+  console.log(paramsClasificados)
   /*
   OJO, EL PRIMER RENDER AL MONTAR EL COMPONENTE ES EN EL SERVIDOR, EL RESTO ES EN EL CLIENTE CUANDO SE USA "USE CLIENT"
     if (typeof window !== "undefined") {

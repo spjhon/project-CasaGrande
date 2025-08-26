@@ -15,7 +15,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
+ 
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -41,6 +41,8 @@ export type GeneroTypeState =  "todos" | "solo-hombres" | "solo-mujeres" | "mixt
 export type PetTypeState = "gatos" | "perros-pequenos" | "perros-grandes" | "sin-mascotas" | null;
 export type ContractTypeState = "tiempo-minimo-1-mes" | "tiempo-minimo-3-meses" | "tiempo-minimo-6-meses" | "tiempo-minimo-1-ano" | null;
 export type EstratoTypeState = "estrato-1" | "estrato-2" | "estrato-3" | "estrato-4" | "estrato-5" | "estrato-6" | null;
+export type PrecioMinimoTypeState = "precio-minimo-" |  null;
+export type PrecioMaximoTypeState = "precio-maximo-" |  null;
 
 
 
@@ -135,6 +137,10 @@ export function FiltersDrawer({
 
   const estratoEstadoInicial = getEstratoInicial(paramsClasificados?.estrato?.slug)
 
+  const precioMinimoInicial = paramsClasificados?.minPrice?.value
+  const precioMaximoInicial = paramsClasificados?.maxPrice?.value
+
+
   //DEFINICION DE STATES
   const [amoblado, setAmoblado] = useState<FiltrosState>(amobladoEstadoInicial);
   const [alimentacion, setAlimentacion] = useState<FiltrosState>(alimentacionEstadoInicial);
@@ -145,7 +151,10 @@ export function FiltersDrawer({
   const [selectedPet, setSelectedPet] = useState<PetTypeState>(mascotaEstadoInicial)
   const [contract, setContract] = useState(contratoMinimoEstadoInicial)
   const [estrato, setEstrato] = useState(estratoEstadoInicial)
-  
+  const [minPrice, setMinPrice] = useState<number | null>(precioMinimoInicial ?? 0)
+  const [maxPrice, setMaxPrice] = useState<number | null>(precioMaximoInicial ?? 0)
+
+
   //Este es el state para abrir y cerrar el dropdown
   const [open, setOpen] = useState(false)
 
@@ -229,17 +238,17 @@ export function FiltersDrawer({
         
 
         <DrawerHeader>
-          <DrawerTitle>Filtros</DrawerTitle>
-          <DrawerDescription>Personaliza tu búsqueda.</DrawerDescription>
+          <DrawerTitle>Personaliza tu búsqueda.</DrawerTitle>
         </DrawerHeader>
 
 
         <div className="flex overflow-y-auto flex-wrap">
 
           <div className="mx-auto w-full max-w-sm">
+            <YesNoSelect onClick={onClickBañoPrivado} goal={bañoPrivado} label="BAÑO PRIVADO"/> 
             <MinTimeSelect contract={contract} setContract={setContract}/>
             <EstratoSelect estrato={estrato} setEstrato={setEstrato} /> 
-            <PriceRangeSelect /> 
+            <PriceRangeSelect minPrice={minPrice} setMinPrice={setMinPrice} maxPrice={maxPrice} setMaxPrice={setMaxPrice} /> 
 
           </div>
 
@@ -247,7 +256,6 @@ export function FiltersDrawer({
             <YesNoSelect onClick={onClickAmoblado} goal={amoblado} label="CUARTO AMOBLADO"/>  
             <YesNoSelect onClick={onClickAlimentacion} goal={alimentacion} label="ALIMENTACION"/>  
             <YesNoSelect onClick={onClickArregloRopa} goal={arregloRopa} label="ARREGLO DE ROPA"/>  
-            <YesNoSelect onClick={onClickBañoPrivado} goal={bañoPrivado} label="BAÑO PRIVADO"/>  
             <YesNoSelect onClick={onClickArregloHabitacion} goal={arregloHabitacion} label="ARREGLO DE HABITACION"/>  
           </div> 
 
