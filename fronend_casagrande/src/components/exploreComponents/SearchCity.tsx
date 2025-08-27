@@ -149,14 +149,14 @@ export function SearchCity({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[250px] justify-between"
+          className="w-[16rem] justify-between my-2"
           >
             {selected ? `${selected.label}, ${selected.department}` : "Selecciona una ciudad..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[250px] p-0" >
+      <PopoverContent className="w-[16rem] p-0" >
         <Command>
           <CommandInput
             placeholder="Buscar ciudad..."

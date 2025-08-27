@@ -239,7 +239,22 @@ export function FiltersDrawer({
 
 
 
+const handleReset = () => {
 
+  // Reset de todos los filtros al estado inicial
+  setAmoblado("Todos");
+  setAlimentacion("Todos");
+  setArregloRopa("Todos");
+  setBañoPrivado("Todos");
+  setArregloHabitacion("Todos");
+  setGenero("todos");
+  setSelectedPet(null);
+  setContract(null);
+  setEstrato(null);
+  setMinPrice(0);
+  setMaxPrice(0);
+
+};
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
@@ -250,7 +265,7 @@ export function FiltersDrawer({
       </DrawerTrigger>
 
 
-      <DrawerContent>
+      <DrawerContent className="min-h-screen md:min-h-[80%]">
         
 
         <DrawerHeader>
@@ -260,33 +275,30 @@ export function FiltersDrawer({
 
         <div className="flex overflow-y-auto flex-wrap">
 
-          <div className="mx-auto w-full max-w-sm">
-            <YesNoSelect onClick={onClickBañoPrivado} goal={bañoPrivado} label="BAÑO PRIVADO"/> 
+          <div className="mx-auto w-full max-w-sm order-2 md:order-1"> 
             <MinTimeSelect contract={contract} setContract={setContract}/>
             <EstratoSelect estrato={estrato} setEstrato={setEstrato} /> 
             <PriceRangeSelect minPrice={minPrice} setMinPrice={setMinPrice} maxPrice={maxPrice} setMaxPrice={setMaxPrice} /> 
-
           </div>
 
-          <div className="mx-auto w-full max-w-sm">
+          <div className="mx-auto w-full max-w-sm order-1 md:order-2">
             <YesNoSelect onClick={onClickAmoblado} goal={amoblado} label="CUARTO AMOBLADO"/>  
-            <YesNoSelect onClick={onClickAlimentacion} goal={alimentacion} label="ALIMENTACION"/>  
+            <YesNoSelect onClick={onClickAlimentacion} goal={alimentacion} label="ALIMENTACION"/> 
+            <YesNoSelect onClick={onClickBañoPrivado} goal={bañoPrivado} label="BAÑO PRIVADO"/> 
             <YesNoSelect onClick={onClickArregloRopa} goal={arregloRopa} label="ARREGLO DE ROPA"/>  
             <YesNoSelect onClick={onClickArregloHabitacion} goal={arregloHabitacion} label="ARREGLO DE HABITACION"/>  
           </div> 
 
-          <div className="mx-auto w-full max-w-sm">
+          <div className="mx-auto w-full max-w-sm order-3 md:order-3">
             <GenreSelect onClick={onClickGenero} goal={genero} label="GENERO"/>  
             <PetSelect selectedPet={selectedPet} setSelectedPet={setSelectedPet} />
-            
-
           </div>
+        </div>
+      
 
-        </div>       
 
-
-        <DrawerFooter className="mx-auto w-full mb-3 justify-center flex-wrap">
-          <Button className="w-100" onClick={handleSubmit}>Aplicar Filtros</Button>
+        <DrawerFooter className="mx-auto w-full justify-center my-auto flex-wrap">
+          <Button className="w-100" onClick={handleReset}>Resetear Filtros</Button>
           <Button className="w-100" onClick={handleSubmit}>Aplicar Filtros</Button>
           <DrawerClose asChild>
             <Button className="w-100" variant="outline">Cancel</Button>

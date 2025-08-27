@@ -56,7 +56,7 @@ export const Navbar = () => {
   
   return (
     <header className="sticky border-b-[1px] top-0 z-40 bg-white dark:border-b-slate-700 dark:bg-background">
-      <div className="container flex flex-row justify-between items-center mx-auto px-5 relative">
+      <div className="container flex flex-row justify-between items-center mx-auto relative">
 
         <Link
           rel="noreferrer noopener"

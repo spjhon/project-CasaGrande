@@ -390,8 +390,8 @@ export function actualizarFiltrosPrecioMinimo(
   // siempre buscamos si ya existe un slug que empiece con "precio-minimo-"
   const index = filtros.findIndex(f => f.startsWith("precio-minimo-"));
 
-  if (nuevoPrecio === null) {
-    // si se limpia el precio, eliminar cualquier slug que empiece por "precio-minimo-"
+  if (nuevoPrecio === null || nuevoPrecio === 0) {
+    // si se limpia el precio o es 0, eliminar cualquier slug que empiece por "precio-minimo-"
     if (index !== -1) {
       filtros.splice(index, 1);
     }
@@ -409,6 +409,7 @@ export function actualizarFiltrosPrecioMinimo(
 }
 
 
+
 // ---- función utilitaria ---- para el componente FiltersDrawer.tsx
 export function actualizarFiltrosPrecioMaximo(
   nuevoPrecio: number | null,
@@ -417,8 +418,8 @@ export function actualizarFiltrosPrecioMaximo(
   // siempre buscamos si ya existe un slug que empiece con "precio-maximo-"
   const index = filtros.findIndex(f => f.startsWith("precio-maximo-"));
 
-  if (nuevoPrecio === null) {
-    // si se limpia el precio, eliminar cualquier slug que empiece por "precio-maximo-"
+  if (nuevoPrecio === null || nuevoPrecio === 0) {
+    // si se limpia el precio o es 0, eliminar cualquier slug que empiece por "precio-maximo-"
     if (index !== -1) {
       filtros.splice(index, 1);
     }

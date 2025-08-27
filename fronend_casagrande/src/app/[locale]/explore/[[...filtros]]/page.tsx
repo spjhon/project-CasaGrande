@@ -19,7 +19,7 @@ const paramURLFilters = (await params).filtros || [];
 
 
   return (
-    <div className="h-100 border-2 border-amber-300">
+    <div className="h-100 mx-20 border-2 border-amber-300">
       <h1>Parámetros de la URL:</h1>
       <ul>
         

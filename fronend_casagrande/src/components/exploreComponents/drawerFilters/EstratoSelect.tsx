@@ -31,13 +31,13 @@ export function EstratoSelect({estrato, setEstrato}: EstratoSelectProps) {
             setEstrato(val as EstratoTypeState)
           }
         }}
-        className="justify-center"
+        className="justify-center flex-wrap"
       >
         {FILTERS_CONFIG.estratoOptions.map((option) => (
           <ToggleGroupItem
             key={option.slug}
             value={option.slug}
-            className="px-4"
+            className="px-4 min-w-30"
           >
             {option.label}
           </ToggleGroupItem>

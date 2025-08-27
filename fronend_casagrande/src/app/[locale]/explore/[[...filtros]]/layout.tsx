@@ -50,6 +50,7 @@ import { SearchNeightbor } from "@/components/exploreComponents/SearchNeightbor"
 import { SearchType } from "@/components/exploreComponents/SearchType";
 import { SearchUniversity } from "@/components/exploreComponents/SearchUniversity";
 import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
+import { construirMensajeBusqueda } from "@/lib/utilsFiltersLayoutExplorer";
 
 //Los tipes utilizados en la funcion clasificarParams 
 export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo" | "estrato" | "minPrice" | "maxPrice"
@@ -328,7 +329,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
   
 
   const paramsClasificados = (clasificarParams(urlFilters))
-  console.log(paramsClasificados)
+  
   /*
   OJO, EL PRIMER RENDER AL MONTAR EL COMPONENTE ES EN EL SERVIDOR, EL RESTO ES EN EL CLIENTE CUANDO SE USA "USE CLIENT"
     if (typeof window !== "undefined") {
@@ -341,26 +342,29 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
   return (
     <section>
-      <div className="flex items-center justify-between border-2 border-amber-800 h-60">
+      <div className="flex justify-between mx-10 my-10">
 
         <div>
+
           <BreadcrumbWithCustomSeparator paramsClasificados={paramsClasificados} />
+
+          <div className="mt-2">
           
-          <div>
-            este es el div del mensaje de donde esta la busqueda actualmente
+            <div>
+              Estas buscando:
+            </div>
+
+            <div>
+              {construirMensajeBusqueda(paramsClasificados)}
+            </div>
+
+            
+
           </div>
 
-          <h1>Parámetros de la URL:</h1>
-          <ul>
-            {Object.values(paramsClasificados).map((item, index) => (
-              <li key={index}>
-                {index + 1}. {item.label}
-              </li>
-            ))}
-          </ul>
         </div>
 
-        <div className="flex gap-10 items-center">
+        <div className="flex gap-10">
 
           <div>
 
