@@ -51,6 +51,7 @@ import { SearchType } from "@/components/exploreComponents/SearchType";
 import { SearchUniversity } from "@/components/exploreComponents/SearchUniversity";
 import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
 import { construirMensajeBusqueda } from "@/lib/utilsFiltersLayoutExplorer";
+import { Button } from "@/components/ui/button";
 
 //Los tipes utilizados en la funcion clasificarParams 
 export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo" | "estrato" | "minPrice" | "maxPrice"
@@ -313,6 +314,14 @@ function clasificarParams(filtros: string[]): finalResultFromClasificarParams {
 
 
 
+const handleReset = (paramsClasificados, urlFilter) => {
+  
+if (paramsClasificados.ciudad || paramsClasificados.tipo || paramsClasificados.ciudad || paramsClasificados.barrio) {
+  const newFilters = urlFilter.filter((item) => item)
+}
+  
+}
+
 
 /**
  * 
@@ -342,9 +351,9 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
   return (
     <section>
-      <div className="flex justify-between mx-10 my-10">
+      <div className="flex justify-between my-5 mx-10 gap-10">
 
-        <div>
+        <div className="py-5">
 
           <BreadcrumbWithCustomSeparator paramsClasificados={paramsClasificados} />
 
@@ -364,7 +373,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
         </div>
 
-        <div className="flex gap-10">
+        <div className="flex gap-10 p-5 border-1 border-amber-200 rounded-2xl">
 
           <div>
 
@@ -402,11 +411,12 @@ export default async function ExploreLayout({children, params}:{params: Promise<
           <FiltersDrawer
             urlFilters={urlFilters}
             paramsClasificados = {paramsClasificados}
-            
             >
           </FiltersDrawer>
           
+          <Button variant="outline" onClick={handleReset(paramsClasificados, urlFilters)}>Resetear Filtros</Button>
           
+          <Button variant="outline">Caracteristicas extra</Button>
 
         </div>
 
