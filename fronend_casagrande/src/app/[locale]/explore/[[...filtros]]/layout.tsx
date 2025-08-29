@@ -52,6 +52,7 @@ import { SearchUniversity } from "@/components/exploreComponents/SearchUniversit
 import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
 import { construirMensajeBusqueda } from "@/lib/utilsFiltersLayoutExplorer";
 import { Button } from "@/components/ui/button";
+import ResetButton from "@/components/exploreComponents/ResetButton";
 
 //Los tipes utilizados en la funcion clasificarParams 
 export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo" | "estrato" | "minPrice" | "maxPrice"
@@ -314,21 +315,7 @@ function clasificarParams(filtros: string[]): finalResultFromClasificarParams {
 
 
 
-const handleReset = (paramsClasificados, urlFilters) => {
-  
-/*if (paramsClasificados.ciudad || paramsClasificados.tipo || paramsClasificados.ciudad || paramsClasificados.barrio) {
-  const newFilters = urlFilters.filter((item) => item)
-}*/
 
-let newFilters
-
-if (paramsClasificados.ciudad) {
-  newFilters = urlFilters.filter((item) => item !== paramsClasificados.ciudad.slug)
-}
-
-
-return newFilters
-}
 
 
 /**
@@ -347,6 +334,9 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
   const paramsClasificados = (clasificarParams(urlFilters))
   
+
+
+
   /*
   OJO, EL PRIMER RENDER AL MONTAR EL COMPONENTE ES EN EL SERVIDOR, EL RESTO ES EN EL CLIENTE CUANDO SE USA "USE CLIENT"
     if (typeof window !== "undefined") {
@@ -422,7 +412,10 @@ export default async function ExploreLayout({children, params}:{params: Promise<
             >
           </FiltersDrawer>
           
-          <Button variant="outline" onClick={handleReset(paramsClasificados, urlFilters)}>Resetear Filtros</Button>
+          <ResetButton 
+            urlFilters={urlFilters} 
+            paramsClasificados = {paramsClasificados}>
+          </ResetButton>
           
           <Button variant="outline">Caracteristicas extra</Button>
 

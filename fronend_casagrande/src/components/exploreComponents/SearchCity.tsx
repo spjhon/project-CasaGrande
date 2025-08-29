@@ -49,6 +49,21 @@ type CitySearchProps = {
   ciudades?: CiudadOption[];
 };
 
+function limitCharactersVisibleLenght (ciudadLabel: string, ciudadDepartment: string) {
+  
+  const fullLabel = ciudadLabel + ", " + ciudadDepartment
+
+  if (fullLabel.length > 12) {
+    const cuttedLabel = fullLabel.slice(0, 12).trim() + "..."
+    console.log(fullLabel)
+    console.log(cuttedLabel)
+    return cuttedLabel
+  }
+
+return fullLabel
+  
+}
+
 /**
  * 
  * @param filtros Es un array de filtros que son de la url desde layout
@@ -151,7 +166,7 @@ export function SearchCity({
           aria-expanded={open}
           className="w-[16rem] justify-between my-2"
           >
-            {selected ? `${selected.label}, ${selected.department}` : "Selecciona una ciudad..."}
+            {selected ? limitCharactersVisibleLenght(selected.label, selected.department) : "Selecciona una ciudad..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
