@@ -314,12 +314,20 @@ function clasificarParams(filtros: string[]): finalResultFromClasificarParams {
 
 
 
-const handleReset = (paramsClasificados, urlFilter) => {
+const handleReset = (paramsClasificados, urlFilters) => {
   
-if (paramsClasificados.ciudad || paramsClasificados.tipo || paramsClasificados.ciudad || paramsClasificados.barrio) {
-  const newFilters = urlFilter.filter((item) => item)
+/*if (paramsClasificados.ciudad || paramsClasificados.tipo || paramsClasificados.ciudad || paramsClasificados.barrio) {
+  const newFilters = urlFilters.filter((item) => item)
+}*/
+
+let newFilters
+
+if (paramsClasificados.ciudad) {
+  newFilters = urlFilters.filter((item) => item !== paramsClasificados.ciudad.slug)
 }
-  
+
+
+return newFilters
 }
 
 

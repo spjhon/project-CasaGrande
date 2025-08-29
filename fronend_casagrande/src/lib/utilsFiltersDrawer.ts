@@ -358,7 +358,7 @@ export function actualizarFiltrosEstrato(
   filtros: string[]
 ): string[] {
   if (nuevoEstrato === null) {
-    // si selecciona "todos", se elimina el slug actual si existe
+    
     if (slugActual) {
       const index = filtros.indexOf(slugActual);
       if (index !== -1) {
