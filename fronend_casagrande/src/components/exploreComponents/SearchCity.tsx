@@ -53,10 +53,8 @@ function limitCharactersVisibleLenght (ciudadLabel: string, ciudadDepartment: st
   
   const fullLabel = ciudadLabel + ", " + ciudadDepartment
 
-  if (fullLabel.length > 12) {
-    const cuttedLabel = fullLabel.slice(0, 12).trim() + "..."
-    console.log(fullLabel)
-    console.log(cuttedLabel)
+  if (fullLabel.length > 20) {
+    const cuttedLabel = fullLabel.slice(0, 20).trim() + "..."
     return cuttedLabel
   }
 
@@ -164,14 +162,14 @@ export function SearchCity({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[16rem] justify-between my-2"
+          className="w-[20rem] justify-between"
           >
             {selected ? limitCharactersVisibleLenght(selected.label, selected.department) : "Selecciona una ciudad..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[16rem] p-0" >
+      <PopoverContent className="w-[20rem]" >
         <Command>
           <CommandInput
             placeholder="Buscar ciudad..."

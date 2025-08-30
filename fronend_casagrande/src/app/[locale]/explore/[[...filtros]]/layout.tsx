@@ -349,31 +349,11 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
   return (
     <section>
-      <div className="flex justify-between my-5 mx-10 gap-10">
+      <div className="my-5 mx-10 gap-10">
 
-        <div className="py-5">
+        <div className="border-1 border-amber-200 rounded-2xl">
 
-          <BreadcrumbWithCustomSeparator paramsClasificados={paramsClasificados} />
-
-          <div className="mt-2">
-          
-            <div>
-              Estas buscando:
-            </div>
-
-            <div>
-              {construirMensajeBusqueda(paramsClasificados)}
-            </div>
-
-            
-
-          </div>
-
-        </div>
-
-        <div className="flex gap-10 p-5 border-1 border-amber-200 rounded-2xl">
-
-          <div>
+          <div className="flex gap-5 justify-center my-5 flex-wrap">
 
             <SearchType
               urlFilters={urlFilters} 
@@ -381,22 +361,18 @@ export default async function ExploreLayout({children, params}:{params: Promise<
               tipodeArriendo={typeOperationJson}>
             </SearchType>
 
-            <div className="flex">
+            <SearchCity 
+              urlFilters={urlFilters} 
+              paramsClasificados = {paramsClasificados} 
+              ciudades={citiesFlatened}>
+            </SearchCity>
 
-              <SearchCity 
-                urlFilters={urlFilters} 
-                paramsClasificados = {paramsClasificados} 
-                ciudades={citiesFlatened}>
-              </SearchCity>
-
-              <SearchNeightbor 
-                urlFilters={urlFilters} 
-                paramsClasificados = {paramsClasificados} 
-                barriosdeColombiaJson={neighborhoodJson}>
-              </SearchNeightbor>
-
-            </div>
-
+            <SearchNeightbor 
+              urlFilters={urlFilters} 
+              paramsClasificados = {paramsClasificados} 
+              barriosdeColombiaJson={neighborhoodJson}>
+            </SearchNeightbor>
+            
             <SearchUniversity
               urlFilters={urlFilters} 
               paramsClasificados = {paramsClasificados} 
@@ -405,19 +381,40 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
           </div>
 
+          <div className="my-5 flex flex-wrap gap-5 justify-center">
+
+            <FiltersDrawer
+              urlFilters={urlFilters}
+              paramsClasificados = {paramsClasificados}
+              >
+            </FiltersDrawer>
+            
+            <ResetButton 
+              urlFilters={urlFilters} 
+              paramsClasificados = {paramsClasificados}>
+            </ResetButton>
+            
+            <Button variant="outline">Caracteristicas extra</Button>
+
+          </div>
+
+        </div>
+
+        <div className="pt-5">
+
+          <BreadcrumbWithCustomSeparator paramsClasificados={paramsClasificados} />
+
+          <div className="mt-2">
           
-          <FiltersDrawer
-            urlFilters={urlFilters}
-            paramsClasificados = {paramsClasificados}
-            >
-          </FiltersDrawer>
-          
-          <ResetButton 
-            urlFilters={urlFilters} 
-            paramsClasificados = {paramsClasificados}>
-          </ResetButton>
-          
-          <Button variant="outline">Caracteristicas extra</Button>
+            
+
+            <div>
+              {construirMensajeBusqueda(paramsClasificados)}
+            </div>
+
+            
+
+          </div>
 
         </div>
 

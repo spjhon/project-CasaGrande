@@ -144,14 +144,14 @@ if (ciudadSlug) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[32.5rem] justify-between"
+          className="w-[20rem] justify-between"
           >
             {selected ? `${selected.label}, ${selected.ciudad}` : "Selecciona una Universidad..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[32.5rem] p-0" >
+      <PopoverContent className="w-[20rem]" >
         <Command>
           <CommandInput
             placeholder="Buscar Universidad..."
