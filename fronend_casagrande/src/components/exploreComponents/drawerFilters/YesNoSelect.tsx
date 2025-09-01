@@ -29,7 +29,7 @@ export function YesNoSelect({ onClick, goal, label }: FiltroProps) {
 
         <div className="flex-1 text-center">
           <div className="text-4xl font-bold tracking-tighter">{goal}</div>
-          <div className="text-muted-foreground text-[0.70rem] uppercase">
+          <div className="text-muted-foreground text-[0.70rem] uppercase font-bold">
             {label}
           </div>
         </div>

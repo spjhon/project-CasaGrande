@@ -24,7 +24,7 @@ import {
   //CommandSeparator,
   CommandGroup,
 } from "@/components/ui/command"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronsUpDown, MapPinHouse } from "lucide-react"
 
 //Importacion de utilidades
 import { cn } from "@/lib/utils"
@@ -53,8 +53,8 @@ function limitCharactersVisibleLenght (ciudadLabel: string, ciudadDepartment: st
   
   const fullLabel = ciudadLabel + ", " + ciudadDepartment
 
-  if (fullLabel.length > 20) {
-    const cuttedLabel = fullLabel.slice(0, 20).trim() + "..."
+  if (fullLabel.length > 35) {
+    const cuttedLabel = fullLabel.slice(0, 35).trim() + "..."
     return cuttedLabel
   }
 
@@ -159,11 +159,12 @@ export function SearchCity({
 
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
+          variant="default"
           role="combobox"
           aria-expanded={open}
-          className="w-[20rem] justify-between"
+          className="w-[20rem] justify-between font-bold"
           >
+            <MapPinHouse></MapPinHouse>
             {selected ? limitCharactersVisibleLenght(selected.label, selected.department) : "Selecciona una ciudad..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>

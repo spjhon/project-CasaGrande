@@ -20,7 +20,8 @@ import {
   //CommandSeparator,
   CommandGroup,
 } from "@/components/ui/command"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronsUpDown, Lamp } from "lucide-react"
+
 
 //Importacion de utilidades
 import { cn } from "@/lib/utils"
@@ -46,6 +47,21 @@ type TipodeArriendoSearchProps = {
     paramsClasificados?: finalResultFromClasificarParams;
     tipodeArriendo?: tipodeArriendoOption[];
 };
+
+
+
+function limitCharactersVisibleLenght (label: string) {
+  
+  const fullLabel = label
+
+  if (fullLabel.length > 35) {
+    const cuttedLabel = fullLabel.slice(0, 35).trim() + "..."
+    return cuttedLabel
+  }
+
+return fullLabel
+  
+}
 
 /**
  * 
@@ -134,12 +150,13 @@ export function SearchType({
 
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
+          variant="default"
           role="combobox"
           aria-expanded={open}
-          className="w-[20rem] justify-between"
+          className="w-[20rem] justify-between font-bold"
           >
-            {selected ? `${selected.label}` : "Selecciona un tipo..."}
+            <Lamp></Lamp>
+            {selected ? limitCharactersVisibleLenght(selected.label) : "Selecciona un tipo..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>

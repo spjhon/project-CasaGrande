@@ -19,7 +19,7 @@ import {
   //CommandSeparator,
   CommandGroup,
 } from "@/components/ui/command"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronsUpDown, Building2 } from "lucide-react"
 
 //Importacion de utilidades
 import { cn } from "@/lib/utils"
@@ -48,6 +48,19 @@ type NeightborSearchProps = {
 };
 
 let barriosdeColombiaJsonARenderizar = []
+
+function limitCharactersVisibleLenght (barrioLabel: string, ciudadLabel: string) {
+  
+  const fullLabel = barrioLabel + ", " + ciudadLabel
+
+  if (fullLabel.length > 35) {
+    const cuttedLabel = fullLabel.slice(0, 35).trim() + "..."
+    return cuttedLabel
+  }
+
+return fullLabel
+  
+}
 
 export function SearchNeightbor({ urlFilters = []/*Valor por defecto para un array vacio en caso de ser undefined */,
   paramsClasificados,
@@ -137,12 +150,13 @@ if (ciudadSlug) {
 
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
+          variant="default"
           role="combobox"
           aria-expanded={open}
-          className="w-[20rem] justify-between"
+          className="w-[20rem] justify-between font-bold"
           >
-            {selected ? `${selected.nombre}, ${selected.ciudad}` : "Selecciona un barrio..."}
+            <Building2></Building2>
+            {selected ? limitCharactersVisibleLenght(selected.nombre, selected.ciudad) : "Selecciona un barrio..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>

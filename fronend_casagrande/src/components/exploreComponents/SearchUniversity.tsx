@@ -19,7 +19,8 @@ import {
   //CommandSeparator,
   CommandGroup,
 } from "@/components/ui/command"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronsUpDown, University } from "lucide-react"
+
 
 //Importacion de utilidades
 import { cn } from "@/lib/utils"
@@ -52,6 +53,19 @@ type UniversidadSearchProps = {
 };
 
 let universidadesdeColombiaJsonARenderizar = []
+
+function limitCharactersVisibleLenght (universidadLabel: string, ciudadLabel: string) {
+  
+  const fullLabel = universidadLabel + ", " + ciudadLabel
+
+  if (fullLabel.length > 35) {
+    const cuttedLabel = fullLabel.slice(0, 35).trim() + "..."
+    return cuttedLabel
+  }
+
+return fullLabel
+  
+}
 
 export function SearchUniversity({ urlFilters = []/*Valor por defecto para un array vacio en caso de ser undefined */,
   paramsClasificados,
@@ -141,12 +155,13 @@ if (ciudadSlug) {
 
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
+          variant="default"
           role="combobox"
           aria-expanded={open}
-          className="w-[20rem] justify-between"
+          className="w-[20rem] justify-between font-bold"
           >
-            {selected ? `${selected.label}, ${selected.ciudad}` : "Selecciona una Universidad..."}
+            <University></University>
+            {selected ? limitCharactersVisibleLenght(selected.label, selected.ciudad) : "Selecciona una Universidad..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>

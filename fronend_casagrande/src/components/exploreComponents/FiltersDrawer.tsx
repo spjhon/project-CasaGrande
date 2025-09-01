@@ -22,6 +22,9 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
+
+import { SlidersHorizontalIcon } from "lucide-react";
+
 //Importe de componentes que son los diferentes filtros extra
 import { YesNoSelect } from "./drawerFilters/YesNoSelect";
 import { GenreSelect } from "./drawerFilters/GenreSelect";
@@ -137,19 +140,10 @@ export function FiltersDrawer({
 
   const estratoEstadoInicial = getEstratoInicial(paramsClasificados?.estrato?.slug)
 
-  let precioMinimoInicial = paramsClasificados?.minPrice?.value ?? null
-  let precioMaximoInicial = paramsClasificados?.maxPrice?.value ?? null
+  const precioMinimoInicial = paramsClasificados?.minPrice?.value ?? null
+  const precioMaximoInicial = paramsClasificados?.maxPrice?.value ?? null
 
-  if (
-    precioMinimoInicial !== null &&
-    precioMaximoInicial !== null &&
-    precioMinimoInicial > precioMaximoInicial
-  ) {
-    // Intercambiar valores si min es mayor que max
-    const temp = precioMinimoInicial
-    precioMinimoInicial = precioMaximoInicial
-    precioMaximoInicial = temp
-  }
+
 
 
   //DEFINICION DE STATES
@@ -228,8 +222,17 @@ export function FiltersDrawer({
     newFiltros = actualizarFiltrosEstrato(estrato, paramsClasificados?.estrato?.slug, newFiltros);
 
     // Filtro especial para la seleccion de los precios
-    newFiltros = actualizarFiltrosPrecioMinimo(minPrice, newFiltros);
-    newFiltros = actualizarFiltrosPrecioMaximo(maxPrice, newFiltros);
+    if (minPrice !== null && maxPrice !== null ) {
+
+      if (minPrice > maxPrice) {
+        newFiltros = actualizarFiltrosPrecioMinimo(maxPrice, newFiltros);
+        newFiltros = actualizarFiltrosPrecioMaximo(minPrice, newFiltros);
+      }else{
+        newFiltros = actualizarFiltrosPrecioMinimo(minPrice, newFiltros);
+        newFiltros = actualizarFiltrosPrecioMaximo(maxPrice, newFiltros);
+      }
+    }
+    
 
     setOpen(false);
     // @ts-expect-error es necesario
@@ -261,7 +264,10 @@ const handleReset = () => {
 
 
       <DrawerTrigger asChild >
-        <Button variant="outline" >+ Filtros</Button>
+        <Button className="font-bold" variant="outline" >
+          <SlidersHorizontalIcon></SlidersHorizontalIcon>
+          Filtros
+        </Button>
       </DrawerTrigger>
 
 

@@ -53,6 +53,7 @@ import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
 import { construirMensajeBusqueda } from "@/lib/utilsFiltersLayoutExplorer";
 import { Button } from "@/components/ui/button";
 import ResetButton from "@/components/exploreComponents/ResetButton";
+import { CircleEllipsis } from "lucide-react";
 
 //Los tipes utilizados en la funcion clasificarParams 
 export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo" | "estrato" | "minPrice" | "maxPrice"
@@ -351,7 +352,9 @@ export default async function ExploreLayout({children, params}:{params: Promise<
     <section>
       <div className="my-5 mx-10 gap-10">
 
-        <div className="border-1 border-amber-200 rounded-2xl">
+        <div className="border-b-1 border-b-border rounded-2xl shadow-xl">
+
+          <BreadcrumbWithCustomSeparator paramsClasificados={paramsClasificados} />
 
           <div className="flex gap-5 justify-center my-5 flex-wrap">
 
@@ -394,30 +397,20 @@ export default async function ExploreLayout({children, params}:{params: Promise<
               paramsClasificados = {paramsClasificados}>
             </ResetButton>
             
-            <Button variant="outline">Caracteristicas extra</Button>
+            <Button className="font-bold" variant="outline">
+              <CircleEllipsis></CircleEllipsis>
+              Caracteristicas extra
+            </Button>
 
           </div>
 
         </div>
 
-        <div className="pt-5">
-
-          <BreadcrumbWithCustomSeparator paramsClasificados={paramsClasificados} />
-
-          <div className="mt-2">
-          
-            
-
-            <div>
-              {construirMensajeBusqueda(paramsClasificados)}
-            </div>
-
-            
-
-          </div>
-
+        <div className="mt-3 font-bold">
+          {construirMensajeBusqueda(paramsClasificados)}
         </div>
 
+        
       </div>
 
       {children}

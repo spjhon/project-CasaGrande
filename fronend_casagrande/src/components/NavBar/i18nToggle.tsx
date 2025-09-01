@@ -11,6 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { Languages } from "lucide-react";
+
 
 import {useParams} from 'next/navigation';
 import {useTransition} from 'react';
@@ -52,12 +54,13 @@ export function I18nToggle() {
           className="ghost"
           disabled={isPending}
         >
+          <Languages></Languages>
           Cambio de Idioma
           <span className="sr-only">Cambio de idioma</span>
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="w-[10rem]">
         <DropdownMenuItem onClick={() => handleClick("English")}>
           English
         </DropdownMenuItem>

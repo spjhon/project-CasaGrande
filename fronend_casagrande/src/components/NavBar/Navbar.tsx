@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/navigation-menu";
 
 
+import { Megaphone } from "lucide-react";
+
 import {useTranslations} from 'next-intl';
 //Link especial para i18n
 import {Link} from '@/i18n/navigation';
@@ -55,7 +57,7 @@ export const Navbar = () => {
 ];
   
   return (
-    <header className="sticky border-b-[1px] top-0 z-40 bg-white dark:border-b-slate-700 dark:bg-background">
+    <header className="bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 sticky border-b-[1px] top-0 z-40 dark:border-b-slate-700 dark:bg-background">
       <div className="container flex flex-row justify-between items-center mx-auto relative">
 
         <Link
@@ -76,8 +78,8 @@ export const Navbar = () => {
                   rel="noreferrer noopener"
                   href={route.href}
                   key={i}
-                  className={`text-[17px] ${buttonVariants({
-                    variant: "ghost",
+                  className={`text-[17px] !font-bold ${buttonVariants({
+                    variant: "outline",
                   })}`}
                 >
                   {route.label}
@@ -97,8 +99,8 @@ export const Navbar = () => {
               className={`border ${buttonVariants({ variant: "secondary" })} flex items-center justify-center h-5 gap-2`}
               aria-label="Contactar por WhatsApp"
             >
-              
-              <span className="text-sm">+57 321 522 45 83</span>
+              <Megaphone></Megaphone>
+              <span className="text-sm font-bold">Publica Tu Habitacion</span>
             </a>
 
             <ModeToggle />

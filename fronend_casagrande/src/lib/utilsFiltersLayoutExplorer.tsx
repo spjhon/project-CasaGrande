@@ -43,12 +43,15 @@ export function construirMensajeBusqueda(result: finalResultFromClasificarParams
   if (result.tiempoContratoMinimo) partes.push(`con mínimo ${result.tiempoContratoMinimo.label.toLowerCase()} de contrato`);
 
   // Precio
+  const valorMinimo = result.minPrice?.value ?? 0
+  const valorMaximo = result.maxPrice?.value ?? 0
+  
   if (result.minPrice && result.maxPrice) {
-    partes.push(`y un precio entre ${result.minPrice.value.toLocaleString("es-CO")} y ${result.maxPrice.value.toLocaleString("es-CO")}`);
+    partes.push(`y un precio entre ${valorMinimo.toLocaleString("es-CO")} y ${valorMaximo.toLocaleString("es-CO")}`);
   } else if (result.minPrice) {
-    partes.push(`con precio desde ${result.minPrice.value.toLocaleString("es-CO")}`);
+    partes.push(`con precio desde ${valorMinimo.toLocaleString("es-CO")}`);
   } else if (result.maxPrice) {
-    partes.push(`con precio hasta ${result.maxPrice.value.toLocaleString("es-CO")}`);
+    partes.push(`con precio hasta ${valorMaximo.toLocaleString("es-CO")}`);
   }
 
   // Unir todo

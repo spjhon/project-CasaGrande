@@ -42,7 +42,7 @@ export function PetSelect({ selectedPet, setSelectedPet }: PetSelectProps) {
             className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white
               dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
           />
-          <span className="text-sm font-medium">{option.label}</span>
+          <span className="text-sm font-bold">{option.label}</span>
         </Label>
       ))}
     </div>
