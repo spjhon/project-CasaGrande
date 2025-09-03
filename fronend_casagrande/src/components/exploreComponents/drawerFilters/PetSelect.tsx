@@ -3,7 +3,8 @@
 // Importaciones de componentes primitivos de shadcn
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
-import { FILTERS_CONFIG, PetTypeState } from "../FiltersDrawer"
+import { PetTypeState } from "../FiltersDrawer"
+import { FILTERS_CONFIG } from "@/lib/utilsFiltersDrawer"
 
 // Props que recibe el componente
 interface PetSelectProps {

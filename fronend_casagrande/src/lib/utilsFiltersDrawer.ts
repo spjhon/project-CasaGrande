@@ -1,4 +1,63 @@
+import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout";
 import { ContractTypeState, Direction, EstratoTypeState, FiltrosState, GeneroTypeState, PetTypeState } from "@/components/exploreComponents/FiltersDrawer";
+
+
+/**------------------------------------------------------------------------------------------------------------------------------- */
+
+
+/**
+ * Este es el object de configuracion de los filtros
+ */
+
+
+// Primero, definir la configuración de filtros fuera del componente
+export const FILTERS_CONFIG = {
+  amoblado: { Si: "amoblado", No: "sin-amoblado", Todos: null },
+  alimentacion: { Si: "con-alimentacion", No: "sin-alimentacion", Todos: null },
+  arregloRopa: { Si: "con-arreglo-ropa", No: "sin-arreglo-ropa", Todos: null },
+  bañoPrivado: { Si: "con-bano-privado", No: "sin-bano-privado", Todos: null },
+  arregloHabitacion: { Si: "arreglo-habitacion", No: "sin-arreglo-habitacion", Todos: null },
+  generoOptions: [
+    { slug: "todos", label: "Todos" },
+    { slug: "solo-mujeres", label: "Solo Mujeres" },
+    { slug: "solo-hombres", label: "Solo Hombres" },
+    { slug: "mixto", label: "Mixto" },
+    
+  ],
+  petOptions: [
+    { slug: "gatos", label: "GATOS" },
+    { slug: "perros-pequenos", label: "PERROS PEQUEÑOS" },
+    { slug: "perros-grandes", label: "PERROS GRANDES" },
+    { slug: "sin-mascotas", label: "NO SE ACEPTAN MASCOTAS" },
+  ],
+  contractOptions: [
+    {slug: "tiempo-minimo-1-mes", label: "1 Mes"},
+    {slug: "tiempo-minimo-3-meses", label: "3 Meses"},
+    {slug: "tiempo-minimo-6-meses", label: "6 Meses"},
+    {slug: "tiempo-minimo-1-ano", label: "1 Año"},
+  ],
+  estratoOptions: [
+    {slug: "estrato-1", label: "Estrato 1"},
+    {slug: "estrato-2", label: "Estrato 2"},
+    {slug: "estrato-3", label: "Estrato 3"},
+    {slug: "estrato-4", label: "Estrato 4"},
+    {slug: "estrato-5", label: "Estrato 5"},
+    {slug: "estrato-6", label: "Estrato 6"},
+  ]
+} as const;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -109,6 +168,13 @@ return null; // valor por defecto
 
 
 
+
+
+
+
+
+
+
 /**------------------------------------------------------------------------------------------------------------------------ */
 
 /**
@@ -207,6 +273,12 @@ export function onClickEstadoGenero(
     setState(estadosGenero[indexGenero - 1]);
   }
 }
+
+
+
+
+
+
 
 
 
@@ -434,4 +506,30 @@ export function actualizarFiltrosPrecioMaximo(
   }
 
   return filtros;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*--------------------------------------------------------------------------------------------------------------------------- */
+
+export function contarFiltrosExtras(paramsClasificados: finalResultFromClasificarParams) {
+  // Filtros básicos que NO queremos contar
+  const filtrosBasicos = ['tipo', 'barrio', 'ciudad', 'universidad'];
+  
+  // Contar solo las keys que NO están en filtrosBasicos
+  const filtrosExtras = Object.keys(paramsClasificados).filter(
+    key => !filtrosBasicos.includes(key)
+  );
+  
+  return filtrosExtras.length;
 }

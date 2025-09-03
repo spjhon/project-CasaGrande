@@ -51,9 +51,10 @@ import { SearchType } from "@/components/exploreComponents/SearchType";
 import { SearchUniversity } from "@/components/exploreComponents/SearchUniversity";
 import { FiltersDrawer } from "@/components/exploreComponents/FiltersDrawer";
 import { construirMensajeBusqueda } from "@/lib/utilsFiltersLayoutExplorer";
-import { Button } from "@/components/ui/button";
+
 import ResetButton from "@/components/exploreComponents/ResetButton";
-import { CircleEllipsis } from "lucide-react";
+
+import { ExtraFiltersDrawer } from "@/components/exploreComponents/ExtraFiltersDrawer";
 
 //Los tipes utilizados en la funcion clasificarParams 
 export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo" | "estrato" | "minPrice" | "maxPrice"
@@ -391,13 +392,8 @@ export default async function ExploreLayout({children, params}:{params: Promise<
               paramsClasificados = {paramsClasificados}
               >
             </FiltersDrawer>
-            
 
-            
-            <Button className="font-bold" variant="outline">
-              <CircleEllipsis></CircleEllipsis>
-              Caracteristicas extra | 0 Seleccionados
-            </Button>
+            <ExtraFiltersDrawer></ExtraFiltersDrawer>
 
             <ResetButton 
               urlFilters={urlFilters} 

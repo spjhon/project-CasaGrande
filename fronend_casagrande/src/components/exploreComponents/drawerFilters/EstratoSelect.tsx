@@ -1,5 +1,6 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { EstratoTypeState, FILTERS_CONFIG } from "../FiltersDrawer"
+import { EstratoTypeState} from "../FiltersDrawer"
+import { FILTERS_CONFIG } from "@/lib/utilsFiltersDrawer"
 
 
 

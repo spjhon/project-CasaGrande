@@ -1,5 +1,6 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { ContractTypeState, FILTERS_CONFIG } from "../FiltersDrawer"
+import { ContractTypeState} from "../FiltersDrawer"
+import { FILTERS_CONFIG } from "@/lib/utilsFiltersDrawer"
 
 
 

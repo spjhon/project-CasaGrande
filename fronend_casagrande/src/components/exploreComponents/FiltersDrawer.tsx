@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useRouter } from "@/i18n/navigation"
 
 //Importacion de funciones utilitarias
-import {updateURLFromFilters, actualizarFiltrosGenero, actualizarFiltrosMascota, onClickEstado, onClickEstadoGenero, getEstadoInicial, getGeneroInicial, getPetInicial, getContratoInicial, actualizarFiltrosContratos, getEstratoInicial, actualizarFiltrosEstrato, actualizarFiltrosPrecioMinimo, actualizarFiltrosPrecioMaximo} from "@/lib/utilsFiltersDrawer"
+import {updateURLFromFilters, actualizarFiltrosGenero, actualizarFiltrosMascota, onClickEstado, onClickEstadoGenero, getEstadoInicial, getGeneroInicial, getPetInicial, getContratoInicial, actualizarFiltrosContratos, getEstratoInicial, actualizarFiltrosEstrato, actualizarFiltrosPrecioMinimo, actualizarFiltrosPrecioMaximo, contarFiltrosExtras, FILTERS_CONFIG} from "@/lib/utilsFiltersDrawer"
 
 //importe de primitivos
 import { Button } from "@/components/ui/button";
@@ -55,43 +55,6 @@ type FiltersDrawerProps = {
 };
 
 
-// Primero, definir la configuración de filtros fuera del componente
-export const FILTERS_CONFIG = {
-  amoblado: { Si: "amoblado", No: "sin-amoblado", Todos: null },
-  alimentacion: { Si: "con-alimentacion", No: "sin-alimentacion", Todos: null },
-  arregloRopa: { Si: "con-arreglo-ropa", No: "sin-arreglo-ropa", Todos: null },
-  bañoPrivado: { Si: "con-bano-privado", No: "sin-bano-privado", Todos: null },
-  arregloHabitacion: { Si: "arreglo-habitacion", No: "sin-arreglo-habitacion", Todos: null },
-  generoOptions: [
-    { slug: "todos", label: "Todos" },
-    { slug: "solo-mujeres", label: "Solo Mujeres" },
-    { slug: "solo-hombres", label: "Solo Hombres" },
-    { slug: "mixto", label: "Mixto" },
-    
-  ],
-  petOptions: [
-    { slug: "gatos", label: "GATOS" },
-    { slug: "perros-pequenos", label: "PERROS PEQUEÑOS" },
-    { slug: "perros-grandes", label: "PERROS GRANDES" },
-    { slug: "sin-mascotas", label: "NO SE ACEPTAN MASCOTAS" },
-  ],
-  contractOptions: [
-    {slug: "tiempo-minimo-1-mes", label: "1 Mes"},
-    {slug: "tiempo-minimo-3-meses", label: "3 Meses"},
-    {slug: "tiempo-minimo-6-meses", label: "6 Meses"},
-    {slug: "tiempo-minimo-1-ano", label: "1 Año"},
-  ],
-  estratoOptions: [
-    {slug: "estrato-1", label: "Estrato 1"},
-    {slug: "estrato-2", label: "Estrato 2"},
-    {slug: "estrato-3", label: "Estrato 3"},
-    {slug: "estrato-4", label: "Estrato 4"},
-    {slug: "estrato-5", label: "Estrato 5"},
-    {slug: "estrato-6", label: "Estrato 6"},
-  ]
-} as const;
-
-
 /**
  * 
  * @returns Retorna el drawer con todos sus hijos que son filtros y con el boton de submit que le da un .push() a la url
@@ -103,6 +66,9 @@ export function FiltersDrawer({
 
 
   const router = useRouter();
+
+  //Cantidad de filtros del drawer para poder contar cuandos hay seleccionados en el drawer
+  const QuantityOfDrawerFiltersFromParamsClasificados = paramsClasificados? contarFiltrosExtras(paramsClasificados) : 0
 
 
 
@@ -266,7 +232,7 @@ const handleReset = () => {
       <DrawerTrigger asChild >
         <Button className="font-bold" variant="outline" >
           <SlidersHorizontalIcon></SlidersHorizontalIcon>
-          Filtros | 0 Seleccionados
+          Comodidades | {`${QuantityOfDrawerFiltersFromParamsClasificados}`} Seleccionados
         </Button>
       </DrawerTrigger>
 
