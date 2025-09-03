@@ -266,7 +266,7 @@ const handleReset = () => {
       <DrawerTrigger asChild >
         <Button className="font-bold" variant="outline" >
           <SlidersHorizontalIcon></SlidersHorizontalIcon>
-          Filtros
+          Filtros | 0 Seleccionados
         </Button>
       </DrawerTrigger>
 

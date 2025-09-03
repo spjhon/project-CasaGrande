@@ -392,15 +392,17 @@ export default async function ExploreLayout({children, params}:{params: Promise<
               >
             </FiltersDrawer>
             
+
+            
+            <Button className="font-bold" variant="outline">
+              <CircleEllipsis></CircleEllipsis>
+              Caracteristicas extra | 0 Seleccionados
+            </Button>
+
             <ResetButton 
               urlFilters={urlFilters} 
               paramsClasificados = {paramsClasificados}>
             </ResetButton>
-            
-            <Button className="font-bold" variant="outline">
-              <CircleEllipsis></CircleEllipsis>
-              Caracteristicas extra
-            </Button>
 
           </div>
 
