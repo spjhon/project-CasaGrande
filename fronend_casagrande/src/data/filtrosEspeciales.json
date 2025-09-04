@@ -9,6 +9,11 @@
     "label": "Ascensor",
     "slug": "ascensor",
     "category": "specialFilters"
+  },
+  {
+    "label": "Agua Caliente",
+    "slug": "agua-caliente",
+    "category": "specialFilters"
   }
 
 

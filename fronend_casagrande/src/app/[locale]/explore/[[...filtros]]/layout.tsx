@@ -423,7 +423,8 @@ console.log(paramsClasificados)
 
             <SpecialFiltersDrawer
               urlFilters={urlFilters} 
-              paramsClasificados = {paramsClasificados}>
+              paramsClasificados = {paramsClasificados}
+              specialFiltersJson = {specialFiltersJson}>
             </SpecialFiltersDrawer>
 
             <ResetButton 
