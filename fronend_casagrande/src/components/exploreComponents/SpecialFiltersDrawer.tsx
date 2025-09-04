@@ -15,14 +15,20 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
+import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout"
 
 
-export function ExtraFiltersDrawer() {
-  const [goal, setGoal] = React.useState(350)
 
-  function onClick(adjustment: number) {
-    setGoal(Math.max(200, Math.min(400, goal + adjustment)))
-  }
+type FiltersDrawerProps = {
+  urlFilters?: string[];
+  paramsClasificados?: finalResultFromClasificarParams;
+};
+
+export function SpecialFiltersDrawer({paramsClasificados}: FiltersDrawerProps) {
+  
+
+    //Cantidad de filtros del drawer para poder contar cuandos hay seleccionados en el drawer
+    const QuantityOfSpecialDrawerFiltersFromParamsClasificados = paramsClasificados?.caracteristicasEspeciales ? paramsClasificados.caracteristicasEspeciales.length : 0
 
   return (
     <Drawer>
@@ -31,7 +37,7 @@ export function ExtraFiltersDrawer() {
       <DrawerTrigger asChild>
         <Button className="font-bold" variant="outline">
             <CircleEllipsis></CircleEllipsis>
-            Caracteristicas Especiales | 0 Seleccionados
+            Caracteristicas Especiales | {`${QuantityOfSpecialDrawerFiltersFromParamsClasificados}`} Seleccionados
         </Button>
       </DrawerTrigger>
 
@@ -48,16 +54,13 @@ export function ExtraFiltersDrawer() {
                 variant="outline"
                 size="icon"
                 className="h-8 w-8 shrink-0 rounded-full"
-                onClick={() => onClick(-10)}
-                disabled={goal <= 200}
+               
               >
                 <Minus />
                 <span className="sr-only">Decrease</span>
               </Button>
               <div className="flex-1 text-center">
-                <div className="text-7xl font-bold tracking-tighter">
-                  {goal}
-                </div>
+                
                 <div className="text-muted-foreground text-[0.70rem] uppercase">
                   Calories/day
                 </div>
@@ -66,8 +69,7 @@ export function ExtraFiltersDrawer() {
                 variant="outline"
                 size="icon"
                 className="h-8 w-8 shrink-0 rounded-full"
-                onClick={() => onClick(10)}
-                disabled={goal >= 400}
+             
               >
                 <Plus />
                 <span className="sr-only">Increase</span>

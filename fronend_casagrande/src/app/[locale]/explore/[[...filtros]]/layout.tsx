@@ -42,6 +42,13 @@ import universitiesJson from "@/data/universidades.json"
  */
 import extraFiltersJson from "@/data/filtrosExtra.json"
 
+
+/**
+ * Filtros extra llegan con esta estructura
+ * {"category": string, "label": string, "slug": string}
+ */
+import specialFiltersJson from "@/data/filtrosEspeciales.json"
+
 //Importacion de funciones utilitarias
 import { slugify } from "@/lib/utils";
 
@@ -54,10 +61,10 @@ import { construirMensajeBusqueda } from "@/lib/utilsFiltersLayoutExplorer";
 
 import ResetButton from "@/components/exploreComponents/ResetButton";
 
-import { ExtraFiltersDrawer } from "@/components/exploreComponents/ExtraFiltersDrawer";
+import { SpecialFiltersDrawer } from "@/components/exploreComponents/SpecialFiltersDrawer";
 
 //Los tipes utilizados en la funcion clasificarParams 
-export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo" | "estrato" | "minPrice" | "maxPrice"
+export type categoriesToSearch = "ciudad" | "barrio" | "universidad" | "tipo" | "amoblado" | "alimentacion" | "arregloRopa" | "bañoPrivado" | "arregloHabitacion" | "genero" | "mascota" | "tiempoContratoMinimo" | "estrato" | "minPrice" | "maxPrice" | "caracteristicasEspeciales"
 
 //Estos son los tipos de cada una de las keys del object que retorna la funcion clasificarParams
 export type finalFilters = {
@@ -87,8 +94,13 @@ export type finalFilters = {
  * 
  * ➡️ En resumen: es un mapa flexible donde cada categoría, si está presente, 
  * contiene la información tipada del filtro correspondiente.
+ * 
+ * NOTA, se agrega el exclude con el fin de dicionar el array de object que son las caracteristicas especiales
  */
-export type finalResultFromClasificarParams = Partial<Record<categoriesToSearch, finalFilters>>
+export type finalResultFromClasificarParams = Partial<
+  Record<Exclude<categoriesToSearch, "caracteristicasEspeciales">, finalFilters> &
+  { caracteristicasEspeciales: finalFilters[] }
+>
 
 
 
@@ -307,6 +319,22 @@ function clasificarParams(filtros: string[]): finalResultFromClasificarParams {
       }
       return;
     }
+
+
+    // ---------------- CARACTERÍSTICAS ESPECIALES ----------------
+    const matchCaracteristica = specialFiltersJson.find(u => u.slug === urlFilter);
+    if (matchCaracteristica) {
+      if (!result.caracteristicasEspeciales) {
+        result.caracteristicasEspeciales = [];
+      }
+      result.caracteristicasEspeciales.push({
+        group: "caracteristicasEspeciales",
+        slug: matchCaracteristica.slug,
+        label: matchCaracteristica.label,
+      });
+      used.add(urlFilter);
+      return;
+    }
     
   });
 
@@ -336,7 +364,7 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
   const paramsClasificados = (clasificarParams(urlFilters))
   
-
+console.log(paramsClasificados)
 
 
   /*
@@ -393,7 +421,10 @@ export default async function ExploreLayout({children, params}:{params: Promise<
               >
             </FiltersDrawer>
 
-            <ExtraFiltersDrawer></ExtraFiltersDrawer>
+            <SpecialFiltersDrawer
+              urlFilters={urlFilters} 
+              paramsClasificados = {paramsClasificados}>
+            </SpecialFiltersDrawer>
 
             <ResetButton 
               urlFilters={urlFilters} 

@@ -8,7 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { categoriesToSearch, finalFilters } from "@/app/[locale]/explore/[[...filtros]]/layout";
+import { categoriesToSearch, finalFilters, finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout";
 
 type tipodeArriendoOption = {
   id: string
@@ -18,7 +18,7 @@ type tipodeArriendoOption = {
 
 type paramsClasificadosProps = {
 filtros?: string[];
-    paramsClasificados?: Partial<Record<categoriesToSearch, finalFilters>>;
+    paramsClasificados?: finalResultFromClasificarParams;
     tipodeArriendo?: tipodeArriendoOption[];
 }
 

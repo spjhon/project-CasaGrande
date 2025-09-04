@@ -524,7 +524,7 @@ export function actualizarFiltrosPrecioMaximo(
 
 export function contarFiltrosExtras(paramsClasificados: finalResultFromClasificarParams) {
   // Filtros básicos que NO queremos contar
-  const filtrosBasicos = ['tipo', 'barrio', 'ciudad', 'universidad'];
+  const filtrosBasicos = ['tipo', 'barrio', 'ciudad', 'universidad', 'caracteristicasEspeciales'];
   
   // Contar solo las keys que NO están en filtrosBasicos
   const filtrosExtras = Object.keys(paramsClasificados).filter(
