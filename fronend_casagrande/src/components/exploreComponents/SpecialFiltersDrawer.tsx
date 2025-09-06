@@ -16,6 +16,8 @@ import {
 import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout"
 import { Checkbox } from "../ui/checkbox"
 import { Label } from "../ui/label"
+import { useState } from "react"
+import { useRouter } from "@/i18n/navigation"
 
 type FiltersDrawerProps = {
   urlFilters?: string[];
@@ -29,10 +31,17 @@ type FiltersDrawerProps = {
 
 export function SpecialFiltersDrawer({ paramsClasificados, urlFilters, specialFiltersJson }: FiltersDrawerProps) {
 
-  const selectedFiltersInitialState = paramsClasificados?.caracteristicasEspeciales.map(() )
+  const router = useRouter();
+  
+
+  //paramsClasificados?.caracteristicasEspeciales.map((item) => paramsClasificados?.caracteristicasEspeciales[item].slug );
+  const selectedFiltersInitialState = paramsClasificados?.caracteristicasEspeciales?.map((item) => (item.slug))
+  console.log(selectedFiltersInitialState)
 
   // State local para manejar filtros seleccionados
-  const [selectedFilters, setSelectedFilters] = React.useState<string[]>([])
+  const [selectedFilters, setSelectedFilters] = useState<string[]>(selectedFiltersInitialState ?? [])
+  //Este es el state para abrir y cerrar el dropdown
+    const [open, setOpen] = useState(false)
 
   const QuantityOfSpecialDrawerFiltersFromParamsClasificados =
     paramsClasificados?.caracteristicasEspeciales ? paramsClasificados.caracteristicasEspeciales.length : 0
@@ -43,8 +52,33 @@ export function SpecialFiltersDrawer({ paramsClasificados, urlFilters, specialFi
     )
   }
 
+
+
+
+
+
+  const handleSubmit = (selectedFilters:string[], urlFilters:string[] | undefined, arrayObjectsParamsCalsificados: string[] ) => {
+    console.log("handeliando")
+    let newFiltros = [...(urlFilters || [])];
+
+    
+    //if () {}
+
+
+
+    setOpen(false);
+    // @ts-expect-error es necesario
+    router.push(`/explore/${newFiltros.join("/")}`);
+  }
+
+
+
+
+
+
+
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="font-bold" variant="outline">
           <CircleEllipsis />
@@ -79,7 +113,7 @@ export function SpecialFiltersDrawer({ paramsClasificados, urlFilters, specialFi
         </div>
 
         <DrawerFooter className="mx-auto w-full justify-center my-auto flex-wrap">
-          <Button onClick={() => console.log("Seleccionados:", selectedFilters)}>
+          <Button onClick={() => handleSubmit(selectedFilters, urlFilters, paramsClasificados?.caracteristicasEspeciales)}>
             Aplicar filtros
           </Button>
           <DrawerClose asChild>

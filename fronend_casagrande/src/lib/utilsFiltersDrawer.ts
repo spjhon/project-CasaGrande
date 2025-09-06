@@ -398,6 +398,8 @@ export function actualizarFiltrosContratos(
   slugActual: string | undefined,
   filtros: string[]
 ): string[] {
+
+  
   if (nuevoContrato === null) {
     // si selecciona "todos", se elimina el slug actual si existe
     if (slugActual) {

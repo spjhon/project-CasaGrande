@@ -364,7 +364,6 @@ export default async function ExploreLayout({children, params}:{params: Promise<
 
   const paramsClasificados = (clasificarParams(urlFilters))
   
-console.log(paramsClasificados)
 
 
   /*
