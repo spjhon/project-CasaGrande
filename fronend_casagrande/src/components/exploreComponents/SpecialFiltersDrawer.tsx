@@ -13,14 +13,14 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout"
+import { finalFilters, finalResultFromClasificarParams } from "@/app/[locale]/explore/[[...filtros]]/layout"
 import { Checkbox } from "../ui/checkbox"
 import { Label } from "../ui/label"
 import { useState } from "react"
 import { useRouter } from "@/i18n/navigation"
 
 type FiltersDrawerProps = {
-  urlFilters?: string[];
+  urlFilters: string[];
   paramsClasificados?: finalResultFromClasificarParams;
   specialFiltersJson: {
     label: string,
@@ -34,9 +34,9 @@ export function SpecialFiltersDrawer({ paramsClasificados, urlFilters, specialFi
   const router = useRouter();
   
 
-  //paramsClasificados?.caracteristicasEspeciales.map((item) => paramsClasificados?.caracteristicasEspeciales[item].slug );
+  
   const selectedFiltersInitialState = paramsClasificados?.caracteristicasEspeciales?.map((item) => (item.slug))
-  console.log(selectedFiltersInitialState)
+  
 
   // State local para manejar filtros seleccionados
   const [selectedFilters, setSelectedFilters] = useState<string[]>(selectedFiltersInitialState ?? [])
@@ -57,13 +57,26 @@ export function SpecialFiltersDrawer({ paramsClasificados, urlFilters, specialFi
 
 
 
-  const handleSubmit = (selectedFilters:string[], urlFilters:string[] | undefined, arrayObjectsParamsCalsificados: string[] ) => {
-    console.log("handeliando")
-    let newFiltros = [...(urlFilters || [])];
+  const handleSubmit = (selectedFilters:string[], urlFilters:string[], caracteristicasEspeciales: finalFilters[] | undefined ) => {
+    
+    let newFiltros: string[] = []
+    
+
+
+
+    if (caracteristicasEspeciales != undefined ) {
+      const slugsFormCaracteristicasEspeciales = caracteristicasEspeciales.map((item) => item.slug )
+      newFiltros = urlFilters.filter(function(item) {
+        return !slugsFormCaracteristicasEspeciales.includes(item)
+      })
+
+    }else{
+      newFiltros = [...urlFilters]
+    }
+
+    newFiltros = [...new Set([...newFiltros, ...selectedFilters])];
 
     
-    //if () {}
-
 
 
     setOpen(false);
