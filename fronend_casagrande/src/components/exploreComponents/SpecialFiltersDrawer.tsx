@@ -85,6 +85,9 @@ export function SpecialFiltersDrawer({ paramsClasificados, urlFilters, specialFi
   }
 
 
+  const handleReset = () => {
+    setSelectedFilters([])
+  }
 
 
 
@@ -99,13 +102,13 @@ export function SpecialFiltersDrawer({ paramsClasificados, urlFilters, specialFi
         </Button>
       </DrawerTrigger>
 
-      <DrawerContent>
+      <DrawerContent >
         <DrawerHeader>
           <DrawerTitle>Características Especiales</DrawerTitle>
           <DrawerDescription>Detalles extra para necesidades específicas.</DrawerDescription>
         </DrawerHeader>
 
-        <div className="max-w-300 mx-auto overflow-y-auto flex flex-col gap-4 p-4">
+        <div className="max-w-300 mx-auto overflow-y-auto flex flex-wrap gap-4 p-4">
           {specialFiltersJson.map((filter) => (
             <Label
               key={filter.slug}
@@ -117,7 +120,7 @@ export function SpecialFiltersDrawer({ paramsClasificados, urlFilters, specialFi
                 id={filter.slug}
                 checked={selectedFilters.includes(filter.slug)}
                 onCheckedChange={(checked) => toggleFilter(filter.slug, checked === true)}
-                className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white
+                className="border-border data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white
                   dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
               />
               <span className="text-sm font-bold">{filter.label}</span>
@@ -125,12 +128,13 @@ export function SpecialFiltersDrawer({ paramsClasificados, urlFilters, specialFi
           ))}
         </div>
 
-        <DrawerFooter className="mx-auto w-full justify-center my-auto flex-wrap">
-          <Button onClick={() => handleSubmit(selectedFilters, urlFilters, paramsClasificados?.caracteristicasEspeciales)}>
+        <DrawerFooter className="mx-auto w-full justify-center my-auto flex-wrap py-10">
+          <Button className="w-100" onClick={handleReset}>Resetear Filtros</Button>
+          <Button className="w-100" onClick={() => handleSubmit(selectedFilters, urlFilters, paramsClasificados?.caracteristicasEspeciales)}>
             Aplicar filtros
           </Button>
           <DrawerClose asChild>
-            <Button variant="outline">Cancelar</Button>
+            <Button className="w-100" variant="outline">Cancelar</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

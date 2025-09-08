@@ -1,4 +1,4 @@
-import { Minus, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Direction, GeneroTypeState } from "../FiltersDrawer";
 import { FILTERS_CONFIG } from "@/lib/utilsFiltersDrawer";
@@ -26,7 +26,7 @@ export function GenreSelect({ onClick, goal, label }: FiltroProps) {
           onClick={() => onClick("prev")}
           disabled={currentIndex <= 0} // Deshabilita si ya está en la primera opción
         >
-          <Minus />
+          <ChevronLeft />
           <span className="sr-only">Anterior</span>
         </Button>
 
@@ -44,7 +44,7 @@ export function GenreSelect({ onClick, goal, label }: FiltroProps) {
           onClick={() => onClick("next")}
           disabled={currentIndex >= generoOptions.length - 1} // Deshabilita si está en la última
         >
-          <Plus />
+          <ChevronRight />
           <span className="sr-only">Siguiente</span>
         </Button>
       </div>

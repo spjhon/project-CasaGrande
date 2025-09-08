@@ -14,6 +14,26 @@
     "label": "Agua Caliente",
     "slug": "agua-caliente",
     "category": "specialFilters"
+  },
+  {
+    "label": "Parqueadero",
+    "slug": "parqueadero",
+    "category": "specialFilters"
+  },
+  {
+    "label": "Piscina",
+    "slug": "piscina",
+    "category": "specialFilters"
+  },
+  {
+    "label": "Spa",
+    "slug": "spa",
+    "category": "specialFilters"
+  },
+  {
+    "label": "Vigilancia Privada",
+    "slug": "vigilancia-privada",
+    "category": "specialFilters"
   }
 
 

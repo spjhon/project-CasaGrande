@@ -247,7 +247,7 @@ const handleReset = () => {
 
         <div className="flex overflow-y-auto flex-wrap">
 
-          <div className="mx-auto w-full max-w-sm order-2 md:order-1"> 
+          <div className="mx-auto w-full max-w-sm order-3 md:order-1"> 
             <MinTimeSelect contract={contract} setContract={setContract}/>
             <EstratoSelect estrato={estrato} setEstrato={setEstrato} /> 
             <PriceRangeSelect minPrice={minPrice} setMinPrice={setMinPrice} maxPrice={maxPrice} setMaxPrice={setMaxPrice} /> 
@@ -261,7 +261,7 @@ const handleReset = () => {
             <YesNoSelect onClick={onClickArregloHabitacion} goal={arregloHabitacion} label="ARREGLO DE HABITACION"/>  
           </div> 
 
-          <div className="mx-auto w-full max-w-sm order-3 md:order-3">
+          <div className="mx-auto w-full max-w-sm order-2 md:order-3">
             <GenreSelect onClick={onClickGenero} goal={genero} label="GENERO"/>  
             <PetSelect selectedPet={selectedPet} setSelectedPet={setSelectedPet} />
           </div>

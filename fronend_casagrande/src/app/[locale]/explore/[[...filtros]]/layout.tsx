@@ -356,7 +356,7 @@ function clasificarParams(filtros: string[]): finalResultFromClasificarParams {
  *
  * @returns el respectivo page con los hijos y sus respectivos states
 */
-export default async function ExploreLayout({children, params}:{params: Promise<{ filtros: string[] }>, children: React.ReactNode}) {
+export default async function ExploreLayout({children, params}:{params: Promise<{ filtros?: string[] | undefined; }>, children: React.ReactNode}) {
 
   const urlFilters = (await params).filtros || [];
  

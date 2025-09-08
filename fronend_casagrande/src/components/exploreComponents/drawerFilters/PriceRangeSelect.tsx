@@ -36,6 +36,7 @@ export function PriceRangeSelect({minPrice, setMinPrice, maxPrice, setMaxPrice}:
           <Label htmlFor="min-price">Precio mínimo</Label>
           <Input
             id="min-price"
+            className="border-border"
             type="text"
             inputMode="numeric"
             placeholder="$0"
@@ -48,6 +49,7 @@ export function PriceRangeSelect({minPrice, setMinPrice, maxPrice, setMaxPrice}:
           <Label htmlFor="max-price">Precio máximo</Label>
           <Input
             id="max-price"
+            className="border-border"
             type="text"
             inputMode="numeric"
             placeholder="$0"

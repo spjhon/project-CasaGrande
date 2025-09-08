@@ -38,7 +38,7 @@ export function MinTimeSelect({contract, setContract}: MinTimeSelectProps) {
           <ToggleGroupItem
             key={option.slug}
             value={option.slug}
-            className="px-4"
+            className="px-4 data-[state=on]:border-1 data-[state=on]:border-blue-900 data-[state=on]:bg-blue-50 dark:data-[state=on]:bg-blue-950 cursor-pointer"
           >
             {option.label}
           </ToggleGroupItem>

@@ -1,4 +1,4 @@
-import { Minus, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Direction, FiltrosState } from "../FiltersDrawer";
 
@@ -23,7 +23,7 @@ export function YesNoSelect({ onClick, goal, label }: FiltroProps) {
           onClick={() => onClick("prev")}
           disabled={goal === "Todos"}
         >
-          <Minus />
+          <ChevronLeft />
           <span className="sr-only">Anterior</span>
         </Button>
 
@@ -41,7 +41,7 @@ export function YesNoSelect({ onClick, goal, label }: FiltroProps) {
           onClick={() => onClick("next")}
           disabled={goal === "No"}
         >
-          <Plus />
+          <ChevronRight />
           <span className="sr-only">Siguiente</span>
         </Button>
       </div>
