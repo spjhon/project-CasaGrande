@@ -6,7 +6,7 @@ Website for real estate property listings for a Colombian agency selling real es
 
 ### Filtros URL
 
-Inicio / habitaciones / tipo / ciudad / universidad / barrio /
+Inicio / habitaciones / tipo / ciudad / universidad / barrio
 
 tipo:
 
@@ -16,7 +16,13 @@ tipo:
 - Suits de recuperacion / Habitaciones Postambulatorios
 - Apartaestudio
 
-### Search Params
+Ciudad
+
+Barrio
+
+Universidad
+
+### Filtros (Comodidades)
 
 - Amoblado o sin amoblar - SELECCION DUAL
 - Alimentacion o sin alimentar - SELECCION DUAL
