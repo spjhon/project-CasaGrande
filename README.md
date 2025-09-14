@@ -103,6 +103,8 @@ Amigos / visitas
 
 Permite visitas
 
-No permite visitas
+No permite  visita
 
 ### Tags
+
+Texto extra
