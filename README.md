@@ -106,5 +106,3 @@ Permite visitas
 No permite  visita
 
 ### Tags
-
-Texto extra
