@@ -100,3 +100,5 @@ Permite visitas
 No permite visitas
 
 ### Tags
+
+Cambio de texto desde la rama Feature/TextoExtra
